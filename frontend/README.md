@@ -22,7 +22,8 @@ yarn lint
 yarn build
 ```
 ### Unit Tests
-```yarn test
+```bash
+yarn test
 ```
 
 ### Customize the configuration
