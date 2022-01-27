@@ -2,6 +2,12 @@
 
 This project demonstrates a basic Hardhat use case. It comes with a sample contract, a test for that contract, a sample script that deploys that contract, and an example of a task implementation, which simply lists the available accounts.
 
+# dotenvrinment setup
+alchemayapi.io account necessary
+create .env in root with
+API_URL = "<alchemyapikey>"
+PRIVATE_KEY = "<metamask ropsten network private key>"
+
 Try running some of the following tasks:
 
 ```shell
@@ -14,5 +20,5 @@ node scripts/sample-script.js
 npx hardhat help
 npx hardhat run scripts/deploy.js --network ropsten
 
-see: https://ethereum.org/en/developers/tutorials/hello-world-smart-contract/#step-11
+see: https://ethereum.org/en/developers/tutorials/hello-world-smart-contract/#step-11 for complete tutorial
 ```
