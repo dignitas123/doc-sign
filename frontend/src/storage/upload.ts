@@ -12,7 +12,7 @@ function getAccessToken():string {
   return process.env.WEB3STORAGE_TOKEN as string
 }
 
-function makeStorageClient() {
+export function makeStorageClient() {
   return new Web3Storage({ token: getAccessToken() })
 }
 
