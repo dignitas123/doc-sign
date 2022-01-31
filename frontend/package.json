@@ -10,7 +10,8 @@
     "test": "echo \"No test specified\" && exit 0",
     "dev": "quasar dev",
     "build": "quasar build",
-    "build:pwa": "quasar build -m pwa"
+    "build:pwa": "quasar build -m pwa",
+    "backend:dev": "cd ../backend && source dsenv/bin/activate && export FLASK_APP=docsign && export FLASK_ENV=development && flask run"
   },
   "dependencies": {
     "@quasar/extras": "^1.0.0",
@@ -18,7 +19,9 @@
     "core-js": "^3.6.5",
     "openpgp": "^5.1.0",
     "quasar": "^2.0.0",
+    "vue": "^3.0.0",
     "vue-i18n": "^9.0.0",
+    "vue-router": "^4.0.0",
     "vuex": "^4.0.1",
     "web3": "^1.7.0",
     "web3.storage": "^3.5.3"

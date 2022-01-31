@@ -8,7 +8,14 @@ Doc Sign is a project to make Documents Signing easy and permissionless.
 yarn
 yarn dev
 yarn build
-````
+```
+
+# start application in development mode with:
+
+```shell
+yarn backend:dev
+yarn dev
+```
 
 # ethereum-testnet
 
