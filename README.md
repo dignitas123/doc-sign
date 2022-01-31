@@ -2,11 +2,18 @@
 
 Doc Sign is a project to make Documents Signing easy and permissionless.
 
+# backend
+
+```shell
+python3 -m venv dsenv
+source dsenv/bin/activate
+pip install -e .
+```
+
 # frontend
 
 ```shell
 yarn
-yarn dev
 yarn build
 ```
 
@@ -17,7 +24,7 @@ yarn backend:dev
 yarn dev
 ```
 
-# ethereum-testnet
+# deploy ethereum smart contract on ropsten testnet
 
 ```shell
 npm install
