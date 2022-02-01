@@ -46,7 +46,6 @@ export default defineComponent({
 
     const connectWallet = () => {
       getAccount().then((result) => {
-        console.log("result", result)
         account.value = result
       }).catch((error) => {
         console.log(error);
