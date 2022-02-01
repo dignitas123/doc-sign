@@ -14,6 +14,7 @@
     "backend:dev": "cd ../backend && source dsenv/bin/activate && export FLASK_APP=docsign && export FLASK_ENV=development && flask run"
   },
   "dependencies": {
+    "@metamask/providers": "^8.1.1",
     "@quasar/extras": "^1.0.0",
     "axios": "^0.21.1",
     "core-js": "^3.6.5",
