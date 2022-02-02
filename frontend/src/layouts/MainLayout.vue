@@ -1,7 +1,7 @@
 <template>
   <q-layout view="lHh Lpr lFf">
     <q-header>
-      <q-toolbar>
+      <q-toolbar id="main-layout-toolbar">
         <q-toolbar-title>
           <q-icon class="text-dark" size="lg">
             <img src="~assets/docsignlogo.svg" />
@@ -24,15 +24,15 @@
           @click="getAccount"
         />
       </q-toolbar>
-    </q-header>
-
-    <q-page-container>
       <q-toolbar>
         <q-tabs class="absolute-center">
           <q-route-tab label="Documents" to="/documents" exact active />
           <q-route-tab label="Signs" to="/signs" exact />
         </q-tabs>
       </q-toolbar>
+    </q-header>
+
+    <q-page-container>
       <router-view />
     </q-page-container>
   </q-layout>
@@ -76,3 +76,9 @@ export default defineComponent({
   },
 });
 </script>
+
+<style lang="scss" scoped>
+#main-layout-toolbar {
+  border-bottom: 2px solid #000;
+}
+</style>
