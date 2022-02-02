@@ -20,6 +20,7 @@ yarn build
 # start application in development mode with:
 
 ```shell
+cd frontend
 yarn backend:dev
 yarn dev
 ```
