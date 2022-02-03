@@ -19,7 +19,7 @@
           unelevated
           rounded
           label="Connect Wallet"
-          class="q-mx-md bg-secondary text-primary"
+          class="q-mx-xs bg-secondary text-primary"
           @click="getAccount"
         />
       </q-toolbar>
