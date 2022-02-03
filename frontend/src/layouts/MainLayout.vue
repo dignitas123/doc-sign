@@ -3,7 +3,7 @@
     <q-header>
       <q-toolbar id="main-layout-toolbar">
         <q-toolbar-title>
-          <q-icon class="text-dark" size="lg">
+          <q-icon size="lg">
             <img src="~assets/docsignlogo.svg" />
           </q-icon>
           <span class="gt-xs">Doc Sign</span>
@@ -18,9 +18,8 @@
           v-else
           unelevated
           rounded
-          color="secondary"
           label="Connect Wallet"
-          class="q-mx-md"
+          class="q-mx-md bg-secondary text-primary"
           @click="getAccount"
         />
       </q-toolbar>
@@ -76,9 +75,3 @@ export default defineComponent({
   },
 });
 </script>
-
-<style lang="scss" scoped>
-#main-layout-toolbar {
-  border-bottom: 2px solid #000;
-}
-</style>
