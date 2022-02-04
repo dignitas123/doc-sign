@@ -5,6 +5,7 @@
   "productName": "DocSign",
   "author": "Niclas Hummel <niclashummel.fx@gmail.com>",
   "private": true,
+  "license": "UNLICENSED",
   "scripts": {
     "lint": "eslint --ext .js,.ts,.vue ./",
     "test": "echo \"No test specified\" && exit 0",
