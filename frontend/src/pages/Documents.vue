@@ -21,7 +21,7 @@
 <script lang="ts">
 import { defineComponent, ref } from "vue";
 import { useQuasar } from "quasar";
-import { File, RejectedFile } from "./Documents.model";
+import { RejectedFile } from "./Documents.model";
 
 export default defineComponent({
   name: "PageIndex",
