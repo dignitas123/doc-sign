@@ -24,7 +24,6 @@ import { defineComponent, ref } from "vue";
 import { useQuasar } from "quasar";
 import { RejectedFile } from "./Documents.model";
 import { generateKey, encrypt, decrypt, createMessage, readKey, readMessage } from "openpgp";
-// import { createReadStream } from "fs";
 
 export default defineComponent({
   name: "PageIndex",
@@ -36,10 +35,14 @@ export default defineComponent({
 
     const fileUploader = ref<HTMLElement | null>(null);
 
+    async function blobToUint8Array(blob: File) {
+        const response = await new Response(blob).arrayBuffer();
+        return new Uint8Array(response);
+    }
+
     function onRejected(rejectedEntries: RejectedFile[]) {
       console.log("rejected entry", rejectedEntries);
 
-      // https://quasar.dev/quasar-plugins/notify#Installation
       if (Array.isArray(rejectedEntries)) {
         let reason = "";
         if (rejectedEntries[0].failedPropValidation === "max-file-size")
@@ -56,7 +59,7 @@ export default defineComponent({
     }
 
     // Test openpgp generate function
-    async function encryptInputFile(file: string) {
+    async function encryptInputFile(file: Uint8Array) {
       await generate()
         .then((result) => {
           const { privateKey, publicKey, revocationCertificate } = result;
@@ -81,42 +84,9 @@ export default defineComponent({
           passphrase: "super long and hard to guess secret", // protects the private key
           format: "armored", // output key format, defaults to 'armored' (other options: 'binary' or 'object')
         });
-
-      // console.log(privateKey); // '-----BEGIN PGP PRIVATE KEY BLOCK ... '
-      // console.log(publicKey); // '-----BEGIN PGP PUBLIC KEY BLOCK ... '
-      // console.log(revocationCertificate); // '-----BEGIN PGP PUBLIC KEY BLOCK ... '
     }
 
-    // async function encryptFile(pathToFile: string = "TestPng.png") {
-    //   const readableStream = createReadStream(pathToFile);
-
-    //   const message = await createMessage({ binary: readableStream });
-    //   const encrypted = await encrypt({
-    //     message, // input as Message object
-    //     passwords: ["secret stuff"], // multiple passwords possible
-    //     format: "binary", // don't ASCII armor (for Uint8Array output)
-    //   });
-    //   console.log(encrypted); // raw encrypted packets as ReadableStream<Uint8Array>
-
-    //   // Either pipe the above stream somewhere, pass it to another function,
-    //   // or read it manually as follows:
-    //   for await (const chunk of encrypted) {
-    //     console.log("new chunk:", chunk); // Uint8Array
-    //   }
-    //   // const encrypted = await encrypt({
-    //   //   message: message.fromText(createReadStream("dataset-1mill.json")),
-    //   //   publicKeys: (await key.readArmored(publicKeyArmored)).keys,
-    //   // });
-
-    //   // let readStream = encrypted.data;
-    //   // let writeStream = createWriteStream("encrypted-dataset.txt", { flags: "a" });
-    //   // readStream.pipe(writeStream);
-    //   // readStream.on("end", () => console.log("done!"));
-    // }
-
-    // config.allowUnauthenticatedStream = true;
-
-    async function encryptDecryptFile(publicKeyArmored: string, file: string) {
+    async function encryptDecryptFile(publicKeyArmored: string, file: Uint8Array) {
       const passphrase = 'secret stuff'; // Password that private key is encrypted with
 
       const publicKey = await readKey({ armoredKey: publicKeyArmored });
@@ -125,14 +95,6 @@ export default defineComponent({
       //     privateKey: await readPrivateKey({ armoredKey: privateKeyArmored }),
       //     passphrase
       // });
-
-      // const stream = inp.files[0].stream();
-      // const reader = stream.getReader();
-      // while( true ) {
-      //   const { done, value } = await reader.read();
-      //   if( done ) { break; }
-      //   console.log("value", value)
-      // }
 
       const encrypted = await encrypt({
           message: await createMessage({ binary: file }), // input as Message object
@@ -154,44 +116,14 @@ export default defineComponent({
           passwords: [passphrase]
       });
 
-      console.log("decrypted", decrypted)
-      // const chunks = [];
-      // for await (const chunk of decrypted.data) {
-      //     chunks.push(chunk);
-      // }
-
-      // const plaintext = chunks.join('');
-      // console.log(new Blob(decrypted))
-      // const privateKey = await readKey({armoredKey: privateKeyArmored})
-      // await privateKey.decrypt(passphrase);
-
-      // const decrypted = await decrypt({
-      //   message: await message.readArmored(
-      //     createReadStream("encrypted-dataset.txt")
-      //   ),
-      //   privateKeys: [privateKey],
-      // });
-
-      // let readStream = decrypted.data;
-      // let writeStream = fs.createWriteStream("decrypted-dataset.json", {
-      //   flags: "a",
-      // });
-      // readStream.pipe(writeStream);
-      // readStream.on("end", () => console.log("done!"));
+      console.log("decrypted message", decrypted)
     }
 
-    const reader = new FileReader();
-        reader.onload = async () => {
-        // console.log(reader.result);
-        if(typeof(reader.result) === 'string')
-          await encryptInputFile(reader.result);
-      }
-
-    function onAdded(files: File[]) {
-      
-      reader.readAsText(files[0]);
+    async function onAdded(files: File[]) {
       console.log("file added:", files[0] instanceof Blob);
 
+      const blobUint8Array = await blobToUint8Array(files[0]);
+      await encryptInputFile(blobUint8Array);
       noFileUploaded.value = false;
     }
 
