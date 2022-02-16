@@ -4,15 +4,15 @@
       label="UPLOAD YOUR DOCUMENT"
       ref="fileUploader"
       style="max-width: 300px"
-      accept=".jpg, .png, .pdf"
+      accept=".jpg, .jpeg, .png, .pdf"
       max-file-size="10000000"
       @rejected="onRejected"
       @added="onAdded"
       @removed="onRemoved"
     >
       <template v-if="noFileUploaded" #list>
-        <div class="text-info absolute-center">
-          Drag and Drop<br />.png, .jpg, .pdf
+        <div class="upload-info" @click="triggerPickFiles">
+          <div class="text-info absolute-center">Drag and Drop file here.</div>
         </div>
       </template>
     </q-uploader>
@@ -21,9 +21,16 @@
 
 <script lang="ts">
 import { defineComponent, ref } from "vue";
-import { useQuasar } from "quasar";
+import { useQuasar, QUploader } from "quasar";
 import { RejectedFile } from "./Documents.model";
-import { generateKey, encrypt, decrypt, createMessage, readKey, readMessage } from "openpgp";
+import {
+  generateKey,
+  encrypt,
+  decrypt,
+  createMessage,
+  readKey,
+  readMessage,
+} from "openpgp";
 
 export default defineComponent({
   name: "PageIndex",
@@ -33,11 +40,9 @@ export default defineComponent({
 
     const noFileUploaded = ref(true);
 
-    const fileUploader = ref<HTMLElement | null>(null);
-
     async function blobToUint8Array(blob: File) {
-        const response = await new Response(blob).arrayBuffer();
-        return new Uint8Array(response);
+      const response = await new Response(blob).arrayBuffer();
+      return new Uint8Array(response);
     }
 
     function onRejected(rejectedEntries: RejectedFile[]) {
@@ -65,11 +70,13 @@ export default defineComponent({
           const { privateKey, publicKey, revocationCertificate } = result;
           console.log(privateKey, publicKey, revocationCertificate);
 
-          encryptDecryptFile(publicKey, file).then((result) => {
-            console.log("encryptDecryptResult", result);
-          }).catch((error) => {
-            console.log(error);
-          });
+          encryptDecryptFile(publicKey, file)
+            .then((result) => {
+              console.log("encryptDecryptResult", result);
+            })
+            .catch((error) => {
+              console.log(error);
+            });
         })
         .catch((error) => {
           console.log(error);
@@ -78,16 +85,19 @@ export default defineComponent({
 
     async function generate() {
       return await generateKey({
-          type: "ecc", // Type of the key, defaults to ECC
-          curve: "curve25519", // ECC curve name, defaults to curve25519
-          userIDs: [{ name: "Jon Smith", email: "jon@example.com" }], // you can pass multiple user IDs
-          passphrase: "super long and hard to guess secret", // protects the private key
-          format: "armored", // output key format, defaults to 'armored' (other options: 'binary' or 'object')
-        });
+        type: "ecc", // Type of the key, defaults to ECC
+        curve: "curve25519", // ECC curve name, defaults to curve25519
+        userIDs: [{ name: "Jon Smith", email: "jon@example.com" }], // you can pass multiple user IDs
+        passphrase: "super long and hard to guess secret", // protects the private key
+        format: "armored", // output key format, defaults to 'armored' (other options: 'binary' or 'object')
+      });
     }
 
-    async function encryptDecryptFile(publicKeyArmored: string, file: Uint8Array) {
-      const passphrase = 'secret stuff'; // Password that private key is encrypted with
+    async function encryptDecryptFile(
+      publicKeyArmored: string,
+      file: Uint8Array
+    ) {
+      const passphrase = "secret stuff"; // Password that private key is encrypted with
 
       const publicKey = await readKey({ armoredKey: publicKeyArmored });
 
@@ -97,26 +107,26 @@ export default defineComponent({
       // });
 
       const encrypted = await encrypt({
-          message: await createMessage({ binary: file }), // input as Message object
-          encryptionKeys: publicKey,
-          // signingKeys: privateKey, // optional
-          passwords: ['secret stuff'],
-          format: "binary"
+        message: await createMessage({ binary: file }), // input as Message object
+        encryptionKeys: publicKey,
+        // signingKeys: privateKey, // optional
+        passwords: ["secret stuff"],
+        format: "binary",
       });
       console.log("encrypted", encrypted); // ReadableStream containing '-----BEGIN PGP MESSAGE ... END PGP MESSAGE-----'
 
       const message = await readMessage({
-          binaryMessage: encrypted // parse armored message
+        binaryMessage: encrypted, // parse armored message
       });
 
       const decrypted = await decrypt({
-          message,
-          verificationKeys: publicKey, // optional
-          // decryptionKeys: privateKey
-          passwords: [passphrase]
+        message,
+        verificationKeys: publicKey, // optional
+        // decryptionKeys: privateKey
+        passwords: [passphrase],
       });
 
-      console.log("decrypted message", decrypted)
+      console.log("decrypted message", decrypted);
     }
 
     async function onAdded(files: File[]) {
@@ -131,7 +141,28 @@ export default defineComponent({
       noFileUploaded.value = true;
     }
 
-    return { noFileUploaded, onRejected, onAdded, onRemoved, fileUploader };
+    const fileUploader = ref<QUploader | undefined>(undefined);
+    function triggerPickFiles() {
+      fileUploader.value?.pickFiles();
+    }
+
+    return {
+      noFileUploaded,
+      onRejected,
+      onAdded,
+      onRemoved,
+      fileUploader,
+      triggerPickFiles,
+    };
   },
 });
 </script>
+
+<style lang="scss" scoped>
+.upload-info {
+  min-height: 60px;
+  &:hover {
+    cursor: pointer;
+  }
+}
+</style>
