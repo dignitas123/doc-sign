@@ -25,10 +25,13 @@ yarn backend:dev
 yarn dev
 ```
 
-# deploy ethereum smart contract on ropsten testnet
+# deploy ethereum smart contract on ropsten testnet/local
 
 ```shell
+cd contracts/DSCidRecords
 npm install
 npx hardhat compile
 npx hardhat run scripts/deploy.js --network ropsten
+npx hardhat run scripts/deploy.js --network localhost
+npx hardhat console --network localhost
 ```
