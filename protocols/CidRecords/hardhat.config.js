@@ -13,7 +13,6 @@ task("accounts", "Prints the list of accounts", async (taskArgs, hre) => {
 require('dotenv').config();
 	
 require("@nomiclabs/hardhat-ethers");
-require("@nomiclabs/hardhat-web3");
 const { API_URL, PRIVATE_KEY } = process.env;
 	
 // You need to export an object to set up your config

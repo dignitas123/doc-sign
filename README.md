@@ -10,9 +10,10 @@ source dsenv/bin/activate
 pip install -e .
 ```
 
-# frontend
+# frontend build for production
 
 ```shell
+cd frontend
 yarn
 yarn build
 ```
@@ -28,10 +29,11 @@ yarn dev
 # deploy ethereum smart contract on ropsten testnet/local
 
 ```shell
-cd contracts/DSCidRecords
+cd protocols/CidRecords
 npm install
 npx hardhat compile
 npx hardhat run scripts/deploy.js --network ropsten
 npx hardhat run scripts/deploy.js --network localhost
+npx hardhat console --network ropsten
 npx hardhat console --network localhost
 ```

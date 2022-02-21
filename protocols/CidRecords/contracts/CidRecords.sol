@@ -1,37 +1,32 @@
 //SPDX-License-Identifier: Unlicense
 pragma solidity ^0.8.0;
 
-contract DSCidRecords {
-    struct CidRecords {
+import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+
+contract CidRecords {
+    struct Records {
         string keyPairCid;
         string[] documentCids;
     }
 
-    mapping(address => CidRecords) public cidRecords;
+    mapping(address => Records) public cidRecords;
 
     event DocumentDeleted(string documentCid);
 
-    function userExists(/*address _address*/) private pure returns (bool) {
-      // return (cidRecords[_address] != bytes4(0x0));
-      return true;
-    }
-
-    function showCidRecords(address _address) public view returns(CidRecords memory) {
+    function getCidRecords(address _address) external view returns(Records memory) {
       return cidRecords[_address];
     }
 
-    function userHasKey(address _address) public view returns(bool) {
-      require(userExists());
-      return bytes(cidRecords[_address].keyPairCid).length > 0;
+    function getDocuments(address _address) external view returns(string[] memory) {
+      return cidRecords[_address].documentCids;
     }
 
     function setUserKeyCid(string memory _keyPairCid) external {
       cidRecords[msg.sender].keyPairCid = _keyPairCid;
     }
 
-    function getUserKeyPairCid(address _address) external view returns(string memory) {
-      require(userHasKey(_address));
-      return cidRecords[_address].keyPairCid;
+    function addDocumentCid(string memory _documentCid) external {
+      cidRecords[msg.sender].documentCids.push(_documentCid);
     }
 
     function indexOfDocument(string memory _documentCid, address _address) private view returns(uint256) {
@@ -41,15 +36,6 @@ contract DSCidRecords {
             }
         }
         return 0;
-    }
-
-    function addDocument(string memory _documentCid) external {
-      cidRecords[msg.sender].documentCids.push(_documentCid);
-    }
-
-    function getUserDocuments(address _address) external view returns(string[] memory) {
-      require(userExists());
-      return cidRecords[_address].documentCids;
     }
 
     function deleteDocument(string memory _documentCid) external returns(bool documentFound) {
