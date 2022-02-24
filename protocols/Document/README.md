@@ -3,6 +3,7 @@
 Protocols for the Docsign Project
 
 # dotenvrinment setup
+
 alchemayapi.io account necessary
 create .env in root with
 API_URL = "<alchemyapikey>"
@@ -23,11 +24,13 @@ see: https://ethereum.org/en/developers/tutorials/hello-world-smart-contract/#st
 ```
 
 # interact with the contract in the hardhat console, needs node 16.14.0 (openssl change in 17.x not supported)
+
 ```shell
-const contract = await hre.ethers.getContractAt,("CidRecords""0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9");
+const contract = await hre.ethers.getContractAt,("KeyPairss","0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9");
 ```
 
 # test
+
 ```shell
 npm test
 ```

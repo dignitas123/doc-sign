@@ -29,7 +29,7 @@ yarn dev
 # deploy ethereum smart contract on ropsten testnet/local
 
 ```shell
-cd protocols/CidRecords
+cd protocols/KeyPairss
 npm install
 npx hardhat compile
 npx hardhat run scripts/deploy.js --network ropsten

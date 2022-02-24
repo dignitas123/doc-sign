@@ -2,8 +2,9 @@
 pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+import "@openzeppelin/contracts/access/AccessControlEnumerable.sol";
 
-contract CidRecords {
+contract KeyPairs is AccessControlEnumerable {
     struct Records {
         string keyPairCid;
         string[] documentCids;
@@ -13,7 +14,7 @@ contract CidRecords {
 
     event DocumentDeleted(string documentCid);
 
-    function getCidRecords(address _address) external view returns(Records memory) {
+    function getKeyPairs(address _address) external view returns(Records memory) {
       return cidRecords[_address];
     }
 
