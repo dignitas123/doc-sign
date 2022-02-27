@@ -2,7 +2,7 @@
   "name": "key-pairs-protocol",
   "version": "1.0.0",
   "description": "Rinkeby Testnet for keypairs protocl",
-  "main": "deploy.js",
+  "main": "index.js",
   "scripts": {
     "test": "npx hardhat compile && npx hardhat test",
     "start:node": "npx hardhat node",
