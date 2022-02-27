@@ -6,8 +6,8 @@ const routes: RouteRecordRaw[] = [
     component: () => import("layouts/MainLayout.vue"),
     redirect: "/documents",
     children: [
-      { path: "todo", component: () => import("pages/Todo.vue") },
-      { path: "documents", component: () => import("pages/Documents.vue") },
+      { path: "documents", component: () => import("pages/Documents.vue")},
+      { path: "documents/create", component: () => import("components/CreateDocument.vue")},
       { path: "signs", component: () => import("pages/Signs.vue") },
       {
         path: "playground",
