@@ -3,17 +3,20 @@ import { RouteRecordRaw } from "vue-router";
 const routes: RouteRecordRaw[] = [
   {
     path: "/",
-    component: () => import("layouts/MainLayout.vue"),
     redirect: "/documents",
-    children: [
-      { path: "documents", component: () => import("pages/Documents.vue")},
-      { path: "documents/create", component: () => import("components/CreateDocument.vue")},
-      { path: "signs", component: () => import("pages/Signs.vue") },
-      {
-        path: "playground",
-        component: () => import("src/pages/Playground.vue"),
-      },
-    ],
+  },
+  {
+    path: "/documents",
+    component: () => import("src/pages/maintabs/Documents.vue"),
+  },
+  {
+    path: "/documents/create",
+    component: () => import("src/pages/CreateDocument.vue"),
+  },
+  { path: "/signs", component: () => import("src/pages/maintabs/Signs.vue") },
+  {
+    path: "/playground",
+    component: () => import("src/pages/maintabs/Playground.vue"),
   },
 
   // Always leave this as last one,

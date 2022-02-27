@@ -1,28 +1,35 @@
 <template>
-  <q-page class="row items-center justify-evenly">
-    <q-uploader
-      label="UPLOAD YOUR DOCUMENT"
-      ref="fileUploader"
-      style="max-width: 300px"
-      accept=".jpg, .jpeg, .png, .pdf"
-      max-file-size="10000000"
-      @rejected="onRejected"
-      @added="onAdded"
-      @removed="onRemoved"
-    >
-      <template v-if="noFileUploaded" #list>
-        <div class="upload-info" @click="triggerPickFiles">
-          <div class="text-info absolute-center">Drag and Drop file here.</div>
-        </div>
-      </template>
-    </q-uploader>
-  </q-page>
+  <MainLayout>
+    <q-page class="row items-center justify-evenly">
+      <q-uploader
+        label="UPLOAD YOUR DOCUMENT"
+        ref="fileUploader"
+        style="max-width: 300px"
+        accept=".jpg, .jpeg, .png, .pdf"
+        max-file-size="10000000"
+        @rejected="onRejected"
+        @added="onAdded"
+        @removed="onRemoved"
+      >
+        <template v-if="noFileUploaded" #list>
+          <div class="upload-info" @click="triggerPickFiles">
+            <div class="text-info absolute-center">
+              Drag and Drop file here.
+            </div>
+          </div>
+        </template>
+      </q-uploader>
+    </q-page>
+    <template #secondToolbar>
+      <Tabs />
+    </template>
+  </MainLayout>
 </template>
 
 <script lang="ts">
 import { defineComponent, ref } from "vue";
 import { useQuasar, QUploader } from "quasar";
-import { RejectedFile } from "./Documents.model";
+import { RejectedFile } from "./Playground.model";
 import {
   generateKey,
   encrypt,
@@ -31,10 +38,12 @@ import {
   readKey,
   readMessage,
 } from "openpgp";
+import MainLayout from "src/layouts/MainLayout.vue";
+import Tabs from "../Tabs.vue";
 
 export default defineComponent({
   name: "PageIndex",
-  components: {},
+  components: { MainLayout, Tabs },
   setup() {
     const $q = useQuasar();
 
