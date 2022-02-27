@@ -43,7 +43,10 @@ export default defineComponent({
   setup() {
     const account = ref("");
 
-    onMounted(() => {
+    const { getAccount } = useWeb3Provider();
+
+    onMounted(async () => {
+      await getAccount();
       const ethereum = window.ethereum;
       if (typeof ethereum !== "undefined") {
         ethereum.on("accountsChanged", function (accounts) {
@@ -67,7 +70,7 @@ export default defineComponent({
 
     return {
       account,
-      ...useWeb3Provider(),
+      getAccount
     };
   },
 });
