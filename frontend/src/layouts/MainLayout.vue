@@ -4,7 +4,7 @@
       <q-toolbar id="main-layout-toolbar">
         <q-toolbar-title>
           <q-icon size="lg">
-            <img src="~assets/docsignlogo.svg" />
+              <img src="~assets/docsignlogo.svg" />
           </q-icon>
           <span class="gt-xs">Doc Sign</span>
         </q-toolbar-title>
@@ -36,42 +36,16 @@
 
 <script lang="ts">
 import { useWeb3Provider } from "src/core/composables/web3provider";
-import { defineComponent, onMounted, ref } from "vue";
+import { defineComponent, inject, Ref } from "vue";
 
 export default defineComponent({
   name: "MainLayout",
   setup() {
-    const account = ref("");
-
+      const account = inject("account") as Ref<string>;
+    
     const { getAccount } = useWeb3Provider();
 
-    onMounted(async () => {
-      await getAccount();
-      const ethereum = window.ethereum;
-      if (typeof ethereum !== "undefined") {
-        ethereum.on("accountsChanged", function (accounts) {
-          let accountArr = accounts as string[];
-          if (accountArr.length > 0) {
-            account.value = accountArr[0];
-          } else {
-            account.value = "";
-          }
-        });
-
-        ethereum.on("connect", function (connectInfo) {
-          console.log(connectInfo);
-        });
-
-        if (ethereum.isConnected()) {
-          account.value = ethereum.selectedAddress ?? "";
-        }
-      }
-    });
-
-    return {
-      account,
-      getAccount
-    };
-  },
+    return { account, getAccount}
+  }
 });
 </script>

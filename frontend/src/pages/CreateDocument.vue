@@ -1,7 +1,7 @@
 <template>
   <MainLayout>
     <q-page class="row items-center justify-evenly">
-      <div class="q-pa-md" style="max-width: 400px">
+      <div class="q-pa-md shadow-1" style="max-width: 400px">
         <q-form @submit="onSubmit" @reset="onReset" class="q-gutter-md">
           <q-input
             filled
@@ -42,7 +42,9 @@
       </div>
     </q-page>
     <template #secondToolbar>
-      <p>Hallo</p>
+      <div class="absolute-center text-h6">
+        Create a signable Ethereum Document
+      </div>
     </template>
   </MainLayout>
 </template>
