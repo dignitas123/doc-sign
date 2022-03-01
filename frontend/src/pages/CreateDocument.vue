@@ -42,8 +42,18 @@
       </div>
     </q-page>
     <template #secondToolbar>
-      <div class="absolute-center text-h6">
-        Create a signable Ethereum Document
+      <div class="second-toolbar">
+        <q-breadcrumbs>
+          <q-breadcrumbs-el
+            class="breadcumb-element"
+            label="Documents"
+            icon="description"
+            to="/documents"
+          />
+        </q-breadcrumbs>
+        <div class="text-h6" style="text-align: center; width: 100%">
+          Create a signable Ethereum Document
+        </div>
       </div>
     </template>
   </MainLayout>
@@ -56,7 +66,7 @@ import MainLayout from "src/layouts/MainLayout.vue";
 
 export default defineComponent({
   components: {
-    MainLayout
+    MainLayout,
   },
   setup() {
     const $q = useQuasar();
@@ -98,3 +108,11 @@ export default defineComponent({
   },
 });
 </script>
+
+<style lang="scss" scoped>
+.second-toolbar {
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+}
+</style>

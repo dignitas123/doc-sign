@@ -1,1 +1,5 @@
 // app global css in SCSS form
+.q-gutter-y-sm > *,
+.q-gutter-sm > * {
+  margin-top: 0;
+}
