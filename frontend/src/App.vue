@@ -9,6 +9,7 @@ const { getProviderAndSigner } = useWeb3Provider();
 
 onMounted(async () => {
   await getProviderAndSigner();
+
   const ethereum = window.ethereum;
   if (typeof ethereum !== "undefined") {
     ethereum.on("accountsChanged", function (accounts) {
