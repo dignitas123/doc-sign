@@ -1,44 +1,174 @@
+<script setup>
+import { useQuasar } from "quasar";
+import { ref } from "vue";
+import MainLayout from "src/layouts/MainLayout.vue";
+
+const $q = useQuasar();
+
+const name = ref(null);
+const age = ref(null);
+const accept = ref(false);
+const documentHeader = ref("");
+const mediumScreen = ref(false);
+
+function onResize(size) {
+  if (size.width < 666) {
+    mediumScreen.value = true;
+  } else {
+    mediumScreen.value = false;
+  }
+}
+
+function onSubmit() {
+  if (accept.value !== true) {
+    $q.notify({
+      color: "red-5",
+      textColor: "white",
+      icon: "warning",
+      message: "You need to accept the license and terms first",
+    });
+  } else {
+    $q.notify({
+      color: "green-4",
+      textColor: "white",
+      icon: "cloud_done",
+      message: "Submitted",
+    });
+  }
+}
+
+function onReset() {
+  name.value = null;
+  age.value = null;
+  accept.value = false;
+}
+</script>
+
 <template>
   <MainLayout>
     <q-page class="row items-center justify-evenly">
-      <div class="q-pa-md shadow-1" style="max-width: 400px">
+      <div class="q-pa-md shadow-1" style="width: 700px">
         <q-form @submit="onSubmit" @reset="onReset" class="q-gutter-md">
-          <q-input
-            filled
-            v-model="name"
-            label="Your name *"
-            hint="Name and surname"
-            lazy-rules
-            :rules="[
-              (val) => (val && val.length > 0) || 'Please type something',
-            ]"
-          />
+          <div class="row">
+            <div class="col">
+              <q-input
+                v-model="documentHeader"
+                outlined
+                placeholder="Document Title"
+                :dense="true"
+              />
+            </div>
+          </div>
+          <div class="row text-center">
+            <div class="col items-center plus-text-col">
+              <span class="plus-text" style="background: white"
+                >Add to Document</span
+              >
+            </div>
+          </div>
+          <div class="row text-center add-button-row">
+            <div class="col" :class="{ 'col-8': mediumScreen }">
+              <q-btn
+                icon-right="text_fields"
+                align="between"
+                outline
+                color="primary"
+                style="width: 150px"
+              >
+                <template #default>
+                  <span class="gt-xs">Textfield</span>
+                </template>
+              </q-btn>
+              <q-btn
+                icon-right="save"
+                align="between"
+                outline
+                color="primary"
+                style="width: 150px"
+              >
+                <template #default>
+                  <span class="gt-xs">File</span>
+                </template>
+              </q-btn>
+              <q-btn
+                icon-right="edit_note"
+                align="between"
+                outline
+                color="primary"
+                style="width: 150px"
+              >
+                <template #default>
+                  <span class="gt-xs">Description</span>
+                </template>
+              </q-btn>
+              <q-btn
+                icon-right="library_add_check"
+                align="between"
+                outline
+                color="primary"
+                style="width: 150px"
+              >
+                <template #default>
+                  <span class="gt-xs">Radio</span>
+                </template>
+              </q-btn>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <q-input
+                filled
+                v-model="name"
+                label="Your name *"
+                hint="Name and surname"
+                lazy-rules
+                :rules="[
+                  (val) => (val && val.length > 0) || 'Please type something',
+                ]"
+              />
+            </div>
+          </div>
 
-          <q-input
-            filled
-            type="number"
-            v-model="age"
-            label="Your age *"
-            lazy-rules
-            :rules="[
-              (val) => (val !== null && val !== '') || 'Please type your age',
-              (val) => (val > 0 && val < 100) || 'Please type a real age',
-            ]"
-          />
-
-          <q-toggle v-model="accept" label="I accept the license and terms" />
-
-          <div>
-            <q-btn label="Submit" type="submit" color="primary" />
-            <q-btn
-              label="Reset"
-              type="reset"
-              color="primary"
-              flat
-              class="q-ml-sm"
-            />
+          <div class="row">
+            <div class="col">
+              <q-input
+                filled
+                type="number"
+                v-model="age"
+                label="Your age *"
+                lazy-rules
+                :rules="[
+                  (val) =>
+                    (val !== null && val !== '') || 'Please type your age',
+                  (val) => (val > 0 && val < 100) || 'Please type a real age',
+                ]"
+              />
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <q-toggle
+                v-model="accept"
+                label="I accept the license and terms"
+              />
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <div>
+                <q-btn label="Submit" type="submit" color="primary" />
+                <q-btn
+                  label="Reset"
+                  type="reset"
+                  color="primary"
+                  flat
+                  class="q-ml-sm"
+                />
+              </div>
+            </div>
           </div>
         </q-form>
+        <q-resize-observer @resize="onResize" />
       </div>
     </q-page>
     <template #secondToolbar>
@@ -59,60 +189,32 @@
   </MainLayout>
 </template>
 
-<script lang="ts">
-import { useQuasar } from "quasar";
-import { defineComponent, ref } from "vue";
-import MainLayout from "src/layouts/MainLayout.vue";
-
-export default defineComponent({
-  components: {
-    MainLayout,
-  },
-  setup() {
-    const $q = useQuasar();
-
-    const name = ref(null);
-    const age = ref(null);
-    const accept = ref(false);
-
-    function onSubmit() {
-      if (accept.value !== true) {
-        $q.notify({
-          color: "red-5",
-          textColor: "white",
-          icon: "warning",
-          message: "You need to accept the license and terms first",
-        });
-      } else {
-        $q.notify({
-          color: "green-4",
-          textColor: "white",
-          icon: "cloud_done",
-          message: "Submitted",
-        });
-      }
-    }
-
-    function onReset() {
-      name.value = null;
-      age.value = null;
-      accept.value = false;
-    }
-    return {
-      onSubmit,
-      onReset,
-      name,
-      age,
-      accept,
-    };
-  },
-});
-</script>
-
 <style lang="scss" scoped>
 .second-toolbar {
   display: flex;
   flex-direction: column;
   margin: 0 auto;
+}
+
+.plus-text-col {
+  background: #4d4d4d;
+  height: 1px;
+  margin-bottom: 3px;
+  .plus-text {
+    display: block;
+    margin: 0 auto;
+    margin-top: -11px;
+    width: 115px;
+  }
+}
+
+.add-button-row {
+  .col {
+    padding: 5px;
+    button {
+      margin-left: 5px;
+      margin-right: 1px;
+    }
+  }
 }
 </style>

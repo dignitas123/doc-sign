@@ -1,3 +1,8 @@
+<script setup>
+import MainLayout from "src/layouts/MainLayout.vue";
+import Tabs from "../Tabs.vue";
+</script>
+
 <template>
   <MainLayout>
     <q-page class="row items-center justify-evenly">
@@ -16,21 +21,3 @@
     </template>
   </MainLayout>
 </template>
-
-<script lang="ts">
-import { defineComponent } from "vue";
-import MainLayout from "src/layouts/MainLayout.vue";
-import Tabs from "../Tabs.vue";
-
-export default defineComponent({
-  name: "PageIndex",
-  components: { MainLayout, Tabs },
-  setup() {
-    function linkClick() {
-      console.log("link clicked");
-    }
-
-    return { linkClick };
-  },
-});
-</script>

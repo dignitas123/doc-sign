@@ -1,3 +1,16 @@
+<script setup>
+import { useWeb3Provider } from "src/core/composables/web3provider";
+import { inject, computed } from "vue";
+
+const account = inject("account");
+const { getProviderAndSigner } = useWeb3Provider();
+
+const accountCut = computed(() => {
+  console.log(account.value);
+  return account.value.slice(0, 4) + "..." + account.value.slice(-4);
+});
+</script>
+
 <template>
   <q-layout view="lHh Lpr lFf">
     <q-header>
@@ -24,7 +37,7 @@
           rounded
           label="Connect Wallet"
           class="q-mx-xs bg-secondary text-primary"
-          @click="getAccount"
+          @click="getProviderAndSigner"
         />
       </q-toolbar>
       <q-toolbar style="margin-top: 10px">
@@ -37,26 +50,3 @@
     </q-page-container>
   </q-layout>
 </template>
-
-<script lang="ts">
-import { useWeb3Provider } from "src/core/composables/web3provider";
-import { computed, defineComponent, inject, Ref } from "vue";
-
-export default defineComponent({
-  name: "MainLayout",
-  setup() {
-    const account = inject("account") as Ref<string>;
-
-    const { getAccount } = useWeb3Provider();
-
-    return {
-      account,
-      accountCut: computed(() => {
-        console.log(account.value);
-        return account.value.substring(0, 4) + "..." + account.value.slice(-4);
-      }),
-      getAccount,
-    };
-  },
-});
-</script>
