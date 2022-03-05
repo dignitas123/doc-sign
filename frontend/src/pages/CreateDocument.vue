@@ -76,8 +76,7 @@ function onReset() {
               <q-btn
                 icon-right="text_fields"
                 align="between"
-                outline
-                color="primary"
+                color="accent"
               >
                 <template #default>
                   <span v-if="!smallScreen">Input</span>
@@ -88,8 +87,7 @@ function onReset() {
               <q-btn
                 icon-right="edit_note"
                 align="between"
-                outline
-                color="primary"
+                color="accent"
               >
                 <template #default>
                   <span v-if="!smallScreen">Text</span>
@@ -100,8 +98,7 @@ function onReset() {
               <q-btn
                 icon-right="library_add_check"
                 align="between"
-                outline
-                color="primary"
+                color="accent"
               >
                 <template #default>
                   <span v-if="!smallScreen">Radio</span>
@@ -112,8 +109,7 @@ function onReset() {
                 <q-btn
                   icon-right="save"
                   align="between"
-                  outline
-                  color="primary"
+                  color="accent"
                 >
                   <template #default>
                     <span v-if="!smallScreen">File</span>
