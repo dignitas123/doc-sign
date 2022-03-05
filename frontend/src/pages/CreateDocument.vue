@@ -10,13 +10,18 @@ const age = ref(null)
 const accept = ref(false)
 const documentHeader = ref("")
 const mediumScreen = ref(false)
+const smallScreen = ref(false)
 
 function onResize(size) {
-  if (size.width < 666) {
+  if (size.width < 660)
     mediumScreen.value = true
-  } else {
+  else
     mediumScreen.value = false
-  }
+
+  if (size.width < 461)
+    smallScreen.value = true
+  else
+    smallScreen.value = false
 }
 
 function onSubmit() {
@@ -47,7 +52,7 @@ function onReset() {
 <template>
   <MainLayout>
     <q-page class="row items-center justify-evenly">
-      <div class="q-pa-md shadow-1" style="width: 700px">
+      <div class="q-pa-md shadow-1 absolute" style="top: 20px;">
         <q-form @submit="onSubmit" @reset="onReset" class="q-gutter-md">
           <div class="row">
             <div class="col">
@@ -66,31 +71,16 @@ function onReset() {
               >
             </div>
           </div>
-          <div class="row text-center add-button-row">
-            <!-- :class="{ 'col-8': mediumScreen }" -->
+          <div class="row text-center add-button-row" :class="{ 'add-button-row-medium-screen': mediumScreen }">
             <div class="col">
               <q-btn
                 icon-right="text_fields"
                 align="between"
                 outline
                 color="primary"
-                style="width: 150px"
               >
                 <template #default>
-                  <span class="gt-xs">Textfield</span>
-                </template>
-              </q-btn>
-            </div>
-            <div class="col">
-              <q-btn
-                icon-right="save"
-                align="between"
-                outline
-                color="primary"
-                style="width: 150px"
-              >
-                <template #default>
-                  <span class="gt-xs">File</span>
+                  <span v-if="!smallScreen">Input</span>
                 </template>
               </q-btn>
             </div>
@@ -100,10 +90,9 @@ function onReset() {
                 align="between"
                 outline
                 color="primary"
-                style="width: 150px"
               >
                 <template #default>
-                  <span class="gt-xs">Description</span>
+                  <span v-if="!smallScreen">Text</span>
                 </template>
               </q-btn>
             </div>
@@ -113,15 +102,26 @@ function onReset() {
                 align="between"
                 outline
                 color="primary"
-                style="width: 150px"
               >
                 <template #default>
-                  <span class="gt-xs">Radio</span>
+                  <span v-if="!smallScreen">Radio</span>
                 </template>
               </q-btn>
             </div>
+              <div class="col">
+                <q-btn
+                  icon-right="save"
+                  align="between"
+                  outline
+                  color="primary"
+                >
+                  <template #default>
+                    <span v-if="!smallScreen">File</span>
+                  </template>
+                </q-btn>
+              </div>
           </div>
-          <div class="row">
+          <!-- <div class="row">
             <div class="col">
               <q-input
                 filled
@@ -134,9 +134,9 @@ function onReset() {
                 ]"
               />
             </div>
-          </div>
+          </div> -->
 
-          <div class="row">
+          <!-- <div class="row">
             <div class="col">
               <q-input
                 filled
@@ -151,16 +151,18 @@ function onReset() {
                 ]"
               />
             </div>
-          </div>
-          <div class="row">
+          </div> -->
+
+          <!-- <div class="row">
             <div class="col">
               <q-toggle
                 v-model="accept"
                 label="I accept the license and terms"
               />
             </div>
-          </div>
-          <div class="row">
+          </div> -->
+
+          <!-- <div class="row">
             <div class="col">
               <div>
                 <q-btn label="Submit" type="submit" color="primary" />
@@ -173,7 +175,8 @@ function onReset() {
                 />
               </div>
             </div>
-          </div>
+          </div> -->
+
         </q-form>
         <q-resize-observer @resize="onResize" />
       </div>
@@ -216,12 +219,15 @@ function onReset() {
 }
 
 .add-button-row {
+  margin-top: 5px;
   .col {
     padding: 5px;
-    button {
-      margin-left: 5px;
-      margin-right: 1px;
-    }
+  }
+}
+
+.add-button-row-medium-screen {
+  .col {
+    width: 130px;
   }
 }
 </style>
