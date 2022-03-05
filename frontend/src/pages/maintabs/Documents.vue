@@ -1,6 +1,6 @@
 <script setup>
-import MainLayout from "src/layouts/MainLayout.vue";
-import Tabs from "../Tabs.vue";
+import MainLayout from "src/layouts/MainLayout.vue"
+import Tabs from "../Tabs.vue"
 </script>
 
 <template>

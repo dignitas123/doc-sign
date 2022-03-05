@@ -1,21 +1,21 @@
 <script setup>
-import { useQuasar } from "quasar";
-import { ref } from "vue";
-import MainLayout from "src/layouts/MainLayout.vue";
+import { useQuasar } from "quasar"
+import { ref } from "vue"
+import MainLayout from "src/layouts/MainLayout.vue"
 
-const $q = useQuasar();
+const $q = useQuasar()
 
-const name = ref(null);
-const age = ref(null);
-const accept = ref(false);
-const documentHeader = ref("");
-const mediumScreen = ref(false);
+const name = ref(null)
+const age = ref(null)
+const accept = ref(false)
+const documentHeader = ref("")
+const mediumScreen = ref(false)
 
 function onResize(size) {
   if (size.width < 666) {
-    mediumScreen.value = true;
+    mediumScreen.value = true
   } else {
-    mediumScreen.value = false;
+    mediumScreen.value = false
   }
 }
 
@@ -26,21 +26,21 @@ function onSubmit() {
       textColor: "white",
       icon: "warning",
       message: "You need to accept the license and terms first",
-    });
+    })
   } else {
     $q.notify({
       color: "green-4",
       textColor: "white",
       icon: "cloud_done",
       message: "Submitted",
-    });
+    })
   }
 }
 
 function onReset() {
-  name.value = null;
-  age.value = null;
-  accept.value = false;
+  name.value = null
+  age.value = null
+  accept.value = false
 }
 </script>
 
@@ -67,7 +67,8 @@ function onReset() {
             </div>
           </div>
           <div class="row text-center add-button-row">
-            <div class="col" :class="{ 'col-8': mediumScreen }">
+            <!-- :class="{ 'col-8': mediumScreen }" -->
+            <div class="col">
               <q-btn
                 icon-right="text_fields"
                 align="between"
@@ -79,6 +80,8 @@ function onReset() {
                   <span class="gt-xs">Textfield</span>
                 </template>
               </q-btn>
+            </div>
+            <div class="col">
               <q-btn
                 icon-right="save"
                 align="between"
@@ -90,6 +93,8 @@ function onReset() {
                   <span class="gt-xs">File</span>
                 </template>
               </q-btn>
+            </div>
+            <div class="col">
               <q-btn
                 icon-right="edit_note"
                 align="between"
@@ -101,6 +106,8 @@ function onReset() {
                   <span class="gt-xs">Description</span>
                 </template>
               </q-btn>
+            </div>
+            <div class="col">
               <q-btn
                 icon-right="library_add_check"
                 align="between"

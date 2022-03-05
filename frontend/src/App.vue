@@ -1,34 +1,35 @@
 <script setup>
-import { useWeb3Provider } from "src/core/composables/web3provider";
-import { onMounted, provide, ref } from "vue";
+import { useWeb3Provider } from "src/core/composables/web3provider"
+import { onMounted, provide, ref } from "vue"
 
-const account = ref("");
-provide("account", account);
+const account = ref("")
+provide("account", account)
 
-const { getProviderAndSigner } = useWeb3Provider();
+const { getProviderAndSigner } = useWeb3Provider()
 
 onMounted(async () => {
-  await getProviderAndSigner();
+  const { provider, signer } = await getProviderAndSigner()
+  // provider and signer can be provided. not in use yet
 
-  const ethereum = window.ethereum;
+  const { ethereum } = window
   if (typeof ethereum !== "undefined") {
     ethereum.on("accountsChanged", function (accounts) {
-      if (accounts.length > 0) {
-        account.value = accounts[0];
+      if (!accounts.length) {
+        account.value = accounts[0]
       } else {
-        account.value = "";
+        account.value = ""
       }
-    });
+    })
 
     ethereum.on("connect", function (connectInfo) {
-      console.log(connectInfo);
-    });
+      console.log("connected. Info", connectInfo)
+    })
 
     if (ethereum.isConnected()) {
-      account.value = ethereum.selectedAddress ?? "";
+      account.value = ethereum.selectedAddress ?? ""
     }
   }
-});
+})
 </script>
 
 <template>

@@ -1,6 +1,6 @@
 <script setup>
-import { ref } from "vue";
-import { useQuasar, QUploader } from "quasar";
+import { ref } from "vue"
+import { useQuasar, QUploader } from "quasar"
 import {
   generateKey,
   encrypt,
@@ -8,26 +8,26 @@ import {
   createMessage,
   readKey,
   readMessage,
-} from "openpgp";
-import MainLayout from "src/layouts/MainLayout.vue";
-import Tabs from "../Tabs.vue";
+} from "openpgp"
+import MainLayout from "src/layouts/MainLayout.vue"
+import Tabs from "../Tabs.vue"
 
-const $q = useQuasar();
+const $q = useQuasar()
 
-const noFileUploaded = ref(true);
+const noFileUploaded = ref(true)
 
 async function blobToUint8Array(blob) {
-  const response = await new Response(blob).arrayBuffer();
-  return new Uint8Array(response);
+  const response = await new Response(blob).arrayBuffer()
+  return new Uint8Array(response)
 }
 
 function onRejected(rejectedEntries) {
-  console.log("rejected entry", rejectedEntries);
+  console.log("rejected entry", rejectedEntries)
 
   if (Array.isArray(rejectedEntries)) {
-    let reason = "";
+    let reason = ""
     if (rejectedEntries[0].failedPropValidation === "max-file-size")
-      reason = "File too large (max size: 10mb)";
+      reason = "File too large (max size: 10mb)"
     $q.notify({
       type: "negative",
       message: `${
@@ -35,7 +35,7 @@ function onRejected(rejectedEntries) {
       } file(s) did not pass validation constraints. ${
         reason ? "Reason: " + reason + "." : ""
       }`,
-    });
+    })
   }
 }
 
@@ -43,20 +43,20 @@ function onRejected(rejectedEntries) {
 async function encryptInputFile(file) {
   await generate()
     .then((result) => {
-      const { privateKey, publicKey, revocationCertificate } = result;
-      console.log(privateKey, publicKey, revocationCertificate);
+      const { privateKey, publicKey, revocationCertificate } = result
+      console.log(privateKey, publicKey, revocationCertificate)
 
       encryptDecryptFile(publicKey, file)
         .then((result) => {
-          console.log("encryptDecryptResult", result);
+          console.log("encryptDecryptResult", result)
         })
         .catch((error) => {
-          console.log(error);
-        });
+          console.log(error)
+        })
     })
     .catch((error) => {
-      console.log(error);
-    });
+      console.log(error)
+    })
 }
 
 async function generate() {
@@ -66,18 +66,18 @@ async function generate() {
     userIDs: [{ name: "Jon Smith", email: "jon@example.com" }], // you can pass multiple user IDs
     passphrase: "super long and hard to guess secret", // protects the private key
     format: "armored", // output key format, defaults to 'armored' (other options: 'binary' or 'object')
-  });
+  })
 }
 
 async function encryptDecryptFile(publicKeyArmored, file) {
   const passphrase = "secret stuff"; // Password that private key is encrypted with
 
-  const publicKey = await readKey({ armoredKey: publicKeyArmored });
+  const publicKey = await readKey({ armoredKey: publicKeyArmored })
 
   // const privateKey = await decryptKey({
   //     privateKey: await readPrivateKey({ armoredKey: privateKeyArmored }),
   //     passphrase
-  // });
+  // })
 
   const encrypted = await encrypt({
     message: await createMessage({ binary: file }), // input as Message object
@@ -85,38 +85,38 @@ async function encryptDecryptFile(publicKeyArmored, file) {
     // signingKeys: privateKey, // optional
     passwords: ["secret stuff"],
     format: "binary",
-  });
-  console.log("encrypted", encrypted); // ReadableStream containing '-----BEGIN PGP MESSAGE ... END PGP MESSAGE-----'
+  })
+  console.log("encrypted", encrypted) // ReadableStream containing '-----BEGIN PGP MESSAGE ... END PGP MESSAGE-----'
 
   const message = await readMessage({
     binaryMessage: encrypted, // parse armored message
-  });
+  })
 
   const decrypted = await decrypt({
     message,
     verificationKeys: publicKey, // optional
     // decryptionKeys: privateKey
     passwords: [passphrase],
-  });
+  })
 
-  console.log("decrypted message", decrypted);
+  console.log("decrypted message", decrypted)
 }
 
 async function onAdded(files) {
-  console.log("file added:", files[0] instanceof Blob);
+  console.log("file added:", files[0] instanceof Blob)
 
-  const blobUint8Array = await blobToUint8Array(files[0]);
-  await encryptInputFile(blobUint8Array);
-  noFileUploaded.value = false;
+  const blobUint8Array = await blobToUint8Array(files[0])
+  await encryptInputFile(blobUint8Array)
+  noFileUploaded.value = false
 }
 
 function onRemoved() {
-  noFileUploaded.value = true;
+  noFileUploaded.value = true
 }
 
-const fileUploader = (ref < QUploader) | (undefined > undefined);
+const fileUploader = (ref < QUploader) | (undefined > undefined)
 function triggerPickFiles() {
-  fileUploader.value?.pickFiles();
+  fileUploader.value?.pickFiles()
 }
 </script>
 

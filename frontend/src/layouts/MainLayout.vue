@@ -1,13 +1,13 @@
 <script setup>
-import { useWeb3Provider } from "src/core/composables/web3provider";
-import { inject, computed } from "vue";
+import { useWeb3Provider } from "src/core/composables/web3provider"
+import { inject, computed } from "vue"
 
-const account = inject("account");
-const { getProviderAndSigner } = useWeb3Provider();
+const account = inject("account")
+console.log("account", account.value)
+const { getProviderAndSigner } = useWeb3Provider()
 
 const accountCut = computed(() => {
-  console.log(account.value);
-  return account.value.slice(0, 4) + "..." + account.value.slice(-4);
+  return account.value.slice(0, 4) + "..." + account.value.slice(-4)
 });
 </script>
 
@@ -37,7 +37,7 @@ const accountCut = computed(() => {
           rounded
           label="Connect Wallet"
           class="q-mx-xs bg-secondary text-primary"
-          @click="getProviderAndSigner"
+          @click="getProviderAndSigner()"
         />
       </q-toolbar>
       <q-toolbar style="margin-top: 10px">
