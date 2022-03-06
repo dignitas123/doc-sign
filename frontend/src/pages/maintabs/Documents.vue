@@ -12,7 +12,6 @@ import Tabs from "../Tabs.vue"
         to="/documents/create"
         label="Create a new Document"
         icon-right="add"
-        glossy
         color="accent"
       />
     </q-page>

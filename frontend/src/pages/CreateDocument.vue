@@ -5,24 +5,19 @@ import MainLayout from "src/layouts/MainLayout.vue"
 
 const $q = useQuasar()
 
-const name = ref(null)
-const age = ref(null)
-const accept = ref(false)
-const documentHeader = ref("")
-const mediumScreen = ref(false)
 const smallScreen = ref(false)
-
 function onResize(size) {
-  if (size.width < 660)
-    mediumScreen.value = true
-  else
-    mediumScreen.value = false
-
   if (size.width < 461)
     smallScreen.value = true
   else
     smallScreen.value = false
 }
+
+// form
+const name = ref(null)
+const age = ref(null)
+const accept = ref(false)
+const documentHeader = ref("")
 
 function onSubmit() {
   if (accept.value !== true) {
@@ -71,16 +66,14 @@ function onReset() {
               >
             </div>
           </div>
-          <div class="row text-center add-button-row" :class="{ 'add-button-row-medium-screen': mediumScreen }">
+          <div class="row text-center add-button-row add-button-row-medium-screen" :class="{ 'add-button-row-small-screen': smallScreen }">
             <div class="col">
               <q-btn
                 icon-right="text_fields"
                 align="between"
                 color="accent"
               >
-                <template #default>
-                  <span v-if="!smallScreen">Input</span>
-                </template>
+                <span v-if="!smallScreen">Input</span>
               </q-btn>
             </div>
             <div class="col">
@@ -89,9 +82,7 @@ function onReset() {
                 align="between"
                 color="accent"
               >
-                <template #default>
-                  <span v-if="!smallScreen">Text</span>
-                </template>
+                <span v-if="!smallScreen">Text</span>
               </q-btn>
             </div>
             <div class="col">
@@ -100,9 +91,7 @@ function onReset() {
                 align="between"
                 color="accent"
               >
-                <template #default>
-                  <span v-if="!smallScreen">Radio</span>
-                </template>
+                <span v-if="!smallScreen">Radio</span>
               </q-btn>
             </div>
               <div class="col">
@@ -111,9 +100,7 @@ function onReset() {
                   align="between"
                   color="accent"
                 >
-                  <template #default>
-                    <span v-if="!smallScreen">File</span>
-                  </template>
+                  <span v-if="!smallScreen">File</span>
                 </q-btn>
               </div>
           </div>
@@ -174,7 +161,7 @@ function onReset() {
           </div> -->
 
         </q-form>
-        <q-resize-observer @resize="onResize" />
+        <q-resize-observer :debounce="0" @resize="onResize" />
       </div>
     </q-page>
     <template #secondToolbar>
@@ -224,6 +211,12 @@ function onReset() {
 .add-button-row-medium-screen {
   .col {
     width: 130px;
+  }
+}
+
+.add-button-row-small-screen {
+  .col {
+    width: none !important;
   }
 }
 </style>
