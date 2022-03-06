@@ -16,10 +16,11 @@ const accountCut = computed(() => {
     <q-header>
       <q-toolbar id="main-layout-toolbar">
         <q-toolbar-title>
-          <q-icon size="lg">
-            <img src="~assets/docsignlogo.svg" />
-          </q-icon>
-          <span class="gt-xs">DocSign</span>
+          <router-link to="/">
+            <q-icon size="lg">
+              <img src="~assets/docsignlogo.svg" />
+            </q-icon>
+          </router-link>
         </q-toolbar-title>
 
         <q-btn flat round dense icon="notifications" class="q-mr-xs">
