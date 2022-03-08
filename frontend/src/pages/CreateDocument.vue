@@ -1,6 +1,6 @@
 <script setup>
 import { useQuasar } from "quasar";
-import { ref, reactive } from "vue";
+import { ref, reactive, watch } from "vue";
 import MainLayout from "src/layouts/MainLayout.vue";
 import QuestionButton from "../core/components/QuestionButton.vue";
 
@@ -27,6 +27,12 @@ const inputAllowed = reactive({
   Numbers: false,
   SpecialCharacters: false,
 });
+
+watch(inputAllowed, () => {
+  let allFalse = arr => arr.every(v => v === false);
+  if(allFalse(Object.values(inputAllowed).map((val) => { return val })))
+    inputAllowed.Text = true;
+})
 
 function onSubmit() {
   if (accept.value !== true) {
@@ -109,7 +115,7 @@ function onReset() {
               <q-input
                 v-model="inputName"
                 outlined
-                placeholder="Name of Input Field e.g. 'Address', 'Name'"
+                placeholder="Input Field Name"
                 :dense="true"
               />
               <!-- lazy-rules
