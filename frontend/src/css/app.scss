@@ -1,10 +1,31 @@
+// pixel variables
+$small-pixel: 4px;
+
 // app global css in SCSS form
 .q-gutter-y-sm > *,
 .q-gutter-sm > * {
   margin-top: 0;
 }
 
+// q-chip
+.q-chip {
+  height: auto;
+}
+
 // pseudo classes
 .flex-50 {
   flex: 50%;
+}
+
+// margin classes
+.ml-small {
+  margin-left: $small-pixel;
+}
+
+.mr-small {
+  margin-right: $small-pixel;
+}
+
+.m-small {
+  margin: $small-pixel;
 }

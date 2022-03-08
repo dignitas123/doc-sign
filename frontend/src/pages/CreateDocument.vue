@@ -1,23 +1,32 @@
 <script setup>
-import { useQuasar } from "quasar"
-import { ref } from "vue"
-import MainLayout from "src/layouts/MainLayout.vue"
+import { useQuasar } from "quasar";
+import { ref, reactive } from "vue";
+import MainLayout from "src/layouts/MainLayout.vue";
+import QuestionButton from "../core/components/QuestionButton.vue";
 
-const $q = useQuasar()
+const $q = useQuasar();
 
-const smallScreen = ref(false)
+const smallScreen = ref(false);
 function onResize(size) {
-  if (size.width < 461)
-    smallScreen.value = true
-  else
-    smallScreen.value = false
+  if (size.width < 461) smallScreen.value = true;
+  else smallScreen.value = false;
 }
 
 // form
-const name = ref(null)
-const age = ref(null)
-const accept = ref(false)
-const documentHeader = ref("")
+const name = ref(null);
+const age = ref(null);
+const accept = ref(false);
+const documentHeader = ref("");
+const inputName = ref();
+// const inputSelection = ref([]);
+// const first = ref(true);
+// const second = ref(true);
+
+const inputAllowed = reactive({
+  Text: true,
+  Numbers: false,
+  SpecialCharacters: false,
+});
 
 function onSubmit() {
   if (accept.value !== true) {
@@ -26,28 +35,28 @@ function onSubmit() {
       textColor: "white",
       icon: "warning",
       message: "You need to accept the license and terms first",
-    })
+    });
   } else {
     $q.notify({
       color: "green-4",
       textColor: "white",
       icon: "cloud_done",
       message: "Submitted",
-    })
+    });
   }
 }
 
 function onReset() {
-  name.value = null
-  age.value = null
-  accept.value = false
+  name.value = null;
+  age.value = null;
+  accept.value = false;
 }
 </script>
 
 <template>
-  <MainLayout>
+  <main-layout>
     <q-page class="row items-center justify-evenly">
-      <div class="q-pa-md shadow-1 absolute" style="top: 20px;">
+      <div class="q-pa-md shadow-1 absolute" style="top: 20px">
         <q-form @submit="onSubmit" @reset="onReset" class="q-gutter-md">
           <div class="row">
             <div class="col">
@@ -66,22 +75,17 @@ function onReset() {
               >
             </div>
           </div>
-          <div class="row text-center add-button-row add-button-row-medium-screen" :class="{ 'add-button-row-small-screen': smallScreen }">
+          <div
+            class="row text-center add-button-row add-button-row-medium-screen"
+            :class="{ 'add-button-row-small-screen': smallScreen }"
+          >
             <div class="col">
-              <q-btn
-                icon-right="text_fields"
-                align="between"
-                color="accent"
-              >
+              <q-btn icon-right="text_fields" align="between" color="accent">
                 <span v-if="!smallScreen">Input</span>
               </q-btn>
             </div>
             <div class="col">
-              <q-btn
-                icon-right="edit_note"
-                align="between"
-                color="accent"
-              >
+              <q-btn icon-right="edit_note" align="between" color="accent">
                 <span v-if="!smallScreen">Text</span>
               </q-btn>
             </div>
@@ -94,30 +98,111 @@ function onReset() {
                 <span v-if="!smallScreen">Radio</span>
               </q-btn>
             </div>
-              <div class="col">
-                <q-btn
-                  icon-right="save"
-                  align="between"
-                  color="accent"
-                >
-                  <span v-if="!smallScreen">File</span>
-                </q-btn>
-              </div>
-          </div>
-          <!-- <div class="row">
             <div class="col">
+              <q-btn icon-right="save" align="between" color="accent">
+                <span v-if="!smallScreen">File</span>
+              </q-btn>
+            </div>
+          </div>
+          <div class="row items-center">
+            <div class="col-xs-12 col-sm-4">
               <q-input
-                filled
-                v-model="name"
-                label="Your name *"
-                hint="Name and surname"
-                lazy-rules
+                v-model="inputName"
+                outlined
+                placeholder="Name of Input Field e.g. 'Address', 'Name'"
+                :dense="true"
+              />
+              <!-- lazy-rules
                 :rules="[
                   (val) => (val && val.length > 0) || 'Please type something',
-                ]"
-              />
+                ]" -->
             </div>
-          </div> -->
+            <div class="col ml-small q-pa-md text-center">
+              <q-chip
+                :ripple="false"
+                class="no-shadow"
+                v-model:selected="inputAllowed.Text"
+                square
+                outline
+                color="primary"
+                text-color="white"
+                icon="check_box_outline_blank"
+                :class="{ 'grey-color': !inputAllowed.Text }"
+              >
+                A,b,c
+              </q-chip>
+              <q-chip
+                :ripple="false"
+                class="no-shadow"
+                unelevated
+                v-model:selected="inputAllowed.Numbers"
+                square
+                outline
+                color="primary"
+                text-color="white"
+                icon="check_box_outline_blank"
+                :class="{ 'grey-color': !inputAllowed.Numbers }"
+              >
+                0,1,2
+              </q-chip>
+              <q-chip
+                :ripple="false"
+                class="no-shadow"
+                unelevated
+                v-model:selected="inputAllowed.SpecialCharacters"
+                square
+                outline
+                color="primary"
+                text-color="white"
+                icon="check_box_outline_blank"
+                :class="{ 'grey-color': !inputAllowed.SpecialCharacters }"
+              >
+                *,%,$
+              </q-chip>
+              <question-button
+                tooltip="Select the rules for the input field by toggling the chip buttons. A maximum of 50 characters is set for an input field."
+              />
+              <!-- <div>
+                  <q-toggle
+                    v-model="first"
+                    icon="looks_one"
+                  />
+                  <q-toggle
+                    v-model="second"
+                    color="pink"
+                    icon="mail"
+                    label="Same Icon for each state"
+                  />
+                </div> -->
+
+              <!-- checked-icon="star"
+                unchecked-icon="star_border"
+                indeterminate-icon="help" -->
+
+              <!-- <q-checkbox
+                  v-model="inputSelection"
+                  checked-icon="star"
+                  unchecked-icon="star_border"
+                  indeterminate-icon="help"
+                  val="xx"
+                />
+                <q-checkbox
+                  v-model="inputSelection"
+                  checked-icon="star"
+                  unchecked-icon="star_border"
+                  indeterminate-icon="help"
+                  val="teal"
+                  color="teal"
+                />
+                <q-checkbox
+                  v-model="inputSelection"
+                  val="orange"
+                  color="orange"
+                />
+                <q-checkbox v-model="inputSelection" val="red" color="red" />
+                <q-checkbox v-model="inputSelection" val="cyan" color="cyan" /> -->
+            </div>
+          </div>
 
           <!-- <div class="row">
             <div class="col">
@@ -159,7 +244,6 @@ function onReset() {
               </div>
             </div>
           </div> -->
-
         </q-form>
         <q-resize-observer :debounce="0" @resize="onResize" />
       </div>
@@ -175,14 +259,16 @@ function onReset() {
           />
         </q-breadcrumbs>
         <div class="text-h6" style="text-align: center; width: 100%">
-          Create a signable Ethereum Document
+          Create a Signable Ethereum Document
         </div>
       </div>
     </template>
-  </MainLayout>
+  </main-layout>
 </template>
 
 <style lang="scss" scoped>
+@import "../css/quasar.variables.scss";
+
 .second-toolbar {
   display: flex;
   flex-direction: column;
@@ -218,5 +304,13 @@ function onReset() {
   .col {
     width: none !important;
   }
+}
+
+.grey-color {
+  color: $info !important;
+}
+
+.q-field--highlighted {
+  color: transparent !important;
 }
 </style>

@@ -24,11 +24,13 @@ see: https://ethereum.org/en/developers/tutorials/hello-world-smart-contract/#st
 ```
 
 # interact with the contract in the hardhat console, needs node 16.14.0 (openssl change in 17.x not supported)
+
 - npx hardhat node
 - npx hardhat run scripts/deploy.js --network localhost
 - npx hardhat console --network localhost
+
 ```shell
-const contract = await hre.ethers.getContractAt("KeyPairs","deployedContractAddress");
+const contract = await hre.ethers.getContractAt("KeyPairs","0x5FbDB2315678afecb367f032d93F642f64180aa3");
 ```
 
 # test
