@@ -1,15 +1,16 @@
 <script setup>
 import { useQuasar } from "quasar";
-import { ref, reactive, watch } from "vue";
+import { computed, ref, reactive, watch } from "vue";
 import MainLayout from "src/layouts/MainLayout.vue";
-import QuestionButton from "../core/components/QuestionButton.vue";
+// import QuestionButton from "../core/components/QuestionButton.vue";
 
 const $q = useQuasar();
 
 const smallScreen = ref(false);
 function onResize(size) {
-  if (size.width < 461) smallScreen.value = true;
-  else smallScreen.value = false;
+  if (size.width < 461) {
+    smallScreen.value = true;
+  } else smallScreen.value = false;
 }
 
 // form
@@ -27,12 +28,59 @@ const inputAllowed = reactive({
   Numbers: false,
   SpecialCharacters: false,
 });
-
 watch(inputAllowed, () => {
-  let allFalse = arr => arr.every(v => v === false);
-  if(allFalse(Object.values(inputAllowed).map((val) => { return val })))
+  let allFalse = (arr) => arr.every((v) => v === false);
+  if (
+    allFalse(
+      Object.values(inputAllowed).map((val) => {
+        return val;
+      })
+    )
+  )
     inputAllowed.Text = true;
-})
+});
+
+//text editor
+const editor = ref("");
+
+const toolbarTextDesktopItems = ref([
+  ["link"],
+  [
+    {
+      label: $q.lang.editor.fontSize,
+      icon: $q.iconSet.editor.fontSize,
+      fixedLabel: true,
+      fixedIcon: true,
+      list: "no-icons",
+      options: [
+        "size-1",
+        "size-2",
+        "size-3",
+        "size-4",
+        "size-5",
+        "size-6",
+        "size-7",
+      ],
+    },
+  ],
+  ["unordered", "ordered", "outdent", "indent"],
+]);
+
+const editorToolBarItems = computed(() => {
+  return reactive([
+    [
+      {
+        label: $q.lang.editor.align,
+        icon: $q.iconSet.editor.align,
+        fixedLabel: true,
+        list: "only-icons",
+        options: ["left", "center", "right", "justify"],
+      },
+    ],
+    ["bold", "italic", "underline"],
+    ...($q.screen.lt.sm ? [] : toolbarTextDesktopItems.value),
+  ]);
+});
 
 function onSubmit() {
   if (accept.value !== true) {
@@ -63,7 +111,11 @@ function onReset() {
   <main-layout>
     <q-page class="row items-center justify-evenly">
       <div class="q-pa-md shadow-1 absolute" style="top: 20px">
-        <q-form @submit="onSubmit" @reset="onReset" class="q-gutter-md">
+        <q-form
+          @submit="onSubmit"
+          @reset="onReset"
+          class="q-gutter-md-top-bottom"
+        >
           <div class="row">
             <div class="col">
               <q-input
@@ -86,17 +138,29 @@ function onReset() {
             :class="{ 'add-button-row-small-screen': smallScreen }"
           >
             <div class="col">
-              <q-btn icon-right="text_fields" align="between" color="accent">
+              <q-btn
+                unelevated
+                class="no-shadow"
+                icon-right="text_fields"
+                align="between"
+                color="accent"
+              >
                 <span v-if="!smallScreen">Input</span>
               </q-btn>
             </div>
             <div class="col">
-              <q-btn icon-right="edit_note" align="between" color="accent">
+              <q-btn
+                unelevated
+                icon-right="edit_note"
+                align="between"
+                color="accent"
+              >
                 <span v-if="!smallScreen">Text</span>
               </q-btn>
             </div>
             <div class="col">
               <q-btn
+                unelevated
                 icon-right="library_add_check"
                 align="between"
                 color="accent"
@@ -105,13 +169,18 @@ function onReset() {
               </q-btn>
             </div>
             <div class="col">
-              <q-btn icon-right="save" align="between" color="accent">
+              <q-btn
+                unelevated
+                icon-right="save"
+                align="between"
+                color="accent"
+              >
                 <span v-if="!smallScreen">File</span>
               </q-btn>
             </div>
           </div>
-          <div class="row items-center">
-            <div class="col-xs-12 col-sm-4">
+          <div class="row">
+            <div class="col-xs-12 col-sm-6">
               <q-input
                 v-model="inputName"
                 outlined
@@ -119,137 +188,45 @@ function onReset() {
                 :dense="true"
               />
               <!-- lazy-rules
-                :rules="[
-                  (val) => (val && val.length > 0) || 'Please type something',
-                ]" -->
+                  :rules="[
+                    (val) => (val && val.length > 0) || 'Please type something',
+                  ]" -->
             </div>
-            <div class="col ml-small q-pa-md text-center">
-              <q-chip
-                :ripple="false"
-                class="no-shadow"
-                v-model:selected="inputAllowed.Text"
-                square
-                outline
+            <div class="col-xs-12 col-sm-6">
+              <q-checkbox
+                v-model="inputAllowed.Text"
+                label="A,b,c"
                 color="primary"
-                text-color="white"
-                icon="check_box_outline_blank"
-                :class="{ 'grey-color': !inputAllowed.Text }"
-              >
-                A,b,c
-              </q-chip>
-              <q-chip
-                :ripple="false"
-                class="no-shadow"
-                unelevated
-                v-model:selected="inputAllowed.Numbers"
-                square
-                outline
-                color="primary"
-                text-color="white"
-                icon="check_box_outline_blank"
-                :class="{ 'grey-color': !inputAllowed.Numbers }"
-              >
-                0,1,2
-              </q-chip>
-              <q-chip
-                :ripple="false"
-                class="no-shadow"
-                unelevated
-                v-model:selected="inputAllowed.SpecialCharacters"
-                square
-                outline
-                color="primary"
-                text-color="white"
-                icon="check_box_outline_blank"
-                :class="{ 'grey-color': !inputAllowed.SpecialCharacters }"
-              >
-                *,%,$
-              </q-chip>
-              <question-button
-                tooltip="Select the rules for the input field by toggling the chip buttons. A maximum of 50 characters is set for an input field."
               />
-              <!-- <div>
-                  <q-toggle
-                    v-model="first"
-                    icon="looks_one"
-                  />
-                  <q-toggle
-                    v-model="second"
-                    color="pink"
-                    icon="mail"
-                    label="Same Icon for each state"
-                  />
-                </div> -->
-
-              <!-- checked-icon="star"
-                unchecked-icon="star_border"
-                indeterminate-icon="help" -->
-
-              <!-- <q-checkbox
-                  v-model="inputSelection"
-                  checked-icon="star"
-                  unchecked-icon="star_border"
-                  indeterminate-icon="help"
-                  val="xx"
-                />
-                <q-checkbox
-                  v-model="inputSelection"
-                  checked-icon="star"
-                  unchecked-icon="star_border"
-                  indeterminate-icon="help"
-                  val="teal"
-                  color="teal"
-                />
-                <q-checkbox
-                  v-model="inputSelection"
-                  val="orange"
-                  color="orange"
-                />
-                <q-checkbox v-model="inputSelection" val="red" color="red" />
-                <q-checkbox v-model="inputSelection" val="cyan" color="cyan" /> -->
+              <q-checkbox
+                v-model="inputAllowed.Numbers"
+                label="0,1,2"
+                color="primary"
+              />
+              <q-checkbox
+                v-model="inputAllowed.SpecialCharacters"
+                label="*,$,%"
+                color="primary"
+              />
             </div>
           </div>
-
-          <!-- <div class="row">
-            <div class="col">
-              <q-input
-                filled
-                type="number"
-                v-model="age"
-                label="Your age *"
-                lazy-rules
-                :rules="[
-                  (val) =>
-                    (val !== null && val !== '') || 'Please type your age',
-                  (val) => (val > 0 && val < 100) || 'Please type a real age',
-                ]"
-              />
+          <div class="row justify-center">
+            <div class="col-12">
+              <q-btn
+                class="no-shadow"
+                unelevated
+                color="accent"
+                style="width: 100%"
+              >
+                Add
+              </q-btn>
             </div>
-          </div> -->
-
-          <!-- <div class="row">
+          </div>
+          <div class="row items-center">
             <div class="col">
-              <q-toggle
-                v-model="accept"
-                label="I accept the license and terms"
-              />
+              <q-editor v-model="editor" :toolbar="editorToolBarItems" />
             </div>
-          </div> -->
-
-          <!-- <div class="row">
-            <div class="col">
-              <div>
-                <q-btn label="Submit" type="submit" color="primary" />
-                <q-btn
-                  label="Reset"
-                  type="reset"
-                  color="primary"
-                  flat
-                  class="q-ml-sm"
-                />
-              </div>
-            </div>
-          </div> -->
+          </div>
         </q-form>
         <q-resize-observer :debounce="0" @resize="onResize" />
       </div>
@@ -284,6 +261,7 @@ function onReset() {
 .plus-text-col {
   background: #4d4d4d;
   height: 1px;
+  margin-top: 9px;
   margin-bottom: 3px;
   .plus-text {
     display: block;

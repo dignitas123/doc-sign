@@ -10,6 +10,7 @@ $small-pixel: 4px;
 // q-chip
 .q-chip {
   height: auto;
+  margin: 0;
 }
 
 // pseudo classes
@@ -28,4 +29,9 @@ $small-pixel: 4px;
 
 .m-small {
   margin: $small-pixel;
+}
+
+.q-gutter-md-top-bottom > * {
+  margin-top: 6px;
+  margin-bottom: 6px;
 }

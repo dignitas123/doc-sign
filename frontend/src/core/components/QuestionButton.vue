@@ -26,10 +26,7 @@ defineProps({
 @import "../../css/quasar.variables.scss";
 
 .question-button {
-  width: 12px;
   height: auto;
-  margin-top: 0;
-  margin-bottom: 0;
   &:hover {
     color: $primary !important;
   }

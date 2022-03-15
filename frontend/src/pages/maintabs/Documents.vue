@@ -1,6 +1,6 @@
 <script setup>
-import MainLayout from "src/layouts/MainLayout.vue"
-import Tabs from "../Tabs.vue"
+import MainLayout from "src/layouts/MainLayout.vue";
+import Tabs from "../Tabs.vue";
 </script>
 
 <template>
@@ -10,6 +10,7 @@ import Tabs from "../Tabs.vue"
         class="absolute"
         style="top: 20px"
         to="/documents/create"
+        unelevated
         label="Create a new Document"
         icon-right="add"
         color="accent"
