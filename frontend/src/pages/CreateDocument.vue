@@ -2,7 +2,6 @@
 import { useQuasar } from "quasar";
 import { computed, ref, reactive, watch } from "vue";
 import MainLayout from "src/layouts/MainLayout.vue";
-// import QuestionButton from "../core/components/QuestionButton.vue";
 
 const $q = useQuasar();
 
@@ -82,6 +81,10 @@ const editorToolBarItems = computed(() => {
   ]);
 });
 
+// radio
+const radioChoice = ref("multiple_choice");
+const radioOneCheck = ref(false);
+
 function onSubmit() {
   if (accept.value !== true) {
     $q.notify({
@@ -127,11 +130,12 @@ function onReset() {
             </div>
           </div>
           <div class="row text-center">
-            <div class="col items-center plus-text-col">
+            <!-- <div class="col items-center plus-text-col">
               <span class="plus-text" style="background: white"
                 >Add to Document</span
               >
-            </div>
+            </div> -->
+            <HyphenText>Add to Document</HyphenText>
           </div>
           <div
             class="row text-center add-button-row add-button-row-medium-screen"
@@ -192,7 +196,7 @@ function onReset() {
                     (val) => (val && val.length > 0) || 'Please type something',
                   ]" -->
             </div>
-            <div class="col-xs-12 col-sm-6">
+            <div class="col-xs-12 col-sm-6 text-center">
               <q-checkbox
                 v-model="inputAllowed.Text"
                 label="A,b,c"
@@ -227,6 +231,44 @@ function onReset() {
               <q-editor v-model="editor" :toolbar="editorToolBarItems" />
             </div>
           </div>
+          <div class="row">
+            <div class="col-xs-12 col-sm-6">
+              <q-input
+                v-model="inputName"
+                outlined
+                placeholder="Radio Field Name"
+                :dense="true"
+              />
+              <!-- lazy-rules
+                  :rules="[
+                    (val) => (val && val.length > 0) || 'Please type something',
+                  ]" -->
+            </div>
+            <div class="col-xs-12 col-sm-6 text-center">
+              <q-btn-toggle
+                v-model="radioChoice"
+                class="radio-choice-toggle ml-small"
+                :class="{ 'mt-small': $q.screen.lt.sm }"
+                no-caps
+                rounded
+                unelevated
+                toggle-color="accent"
+                color="secondary"
+                text-color="accent"
+                :options="[
+                  { label: 'Multiple Choice', value: 'multiple_choice' },
+                  { label: 'Single Choice', value: 'single_choice' },
+                ]"
+              />
+            </div>
+            <div class="col-xs-12 col-sm-6">
+              <q-checkbox
+                v-model="radioOneCheck"
+                label="At least one choice must be selected."
+                color="primary"
+              />
+            </div>
+          </div>
         </q-form>
         <q-resize-observer :debounce="0" @resize="onResize" />
       </div>
@@ -250,25 +292,10 @@ function onReset() {
 </template>
 
 <style lang="scss" scoped>
-@import "../css/quasar.variables.scss";
-
 .second-toolbar {
   display: flex;
   flex-direction: column;
   margin: 0 auto;
-}
-
-.plus-text-col {
-  background: #4d4d4d;
-  height: 1px;
-  margin-top: 9px;
-  margin-bottom: 3px;
-  .plus-text {
-    display: block;
-    margin: 0 auto;
-    margin-top: -11px;
-    width: 115px;
-  }
 }
 
 .add-button-row {
@@ -290,11 +317,11 @@ function onReset() {
   }
 }
 
-.grey-color {
-  color: $info !important;
-}
-
 .q-field--highlighted {
   color: transparent !important;
+}
+
+.radio-choice-toggle {
+  border: 1px solid var(--q-accent);
 }
 </style>

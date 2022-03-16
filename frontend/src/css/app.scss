@@ -27,6 +27,14 @@ $small-pixel: 4px;
   margin-right: $small-pixel;
 }
 
+.mt-small {
+  margin-top: $small-pixel;
+}
+
+.mb-small {
+  margin-bottom: $small-pixel;
+}
+
 .m-small {
   margin: $small-pixel;
 }
