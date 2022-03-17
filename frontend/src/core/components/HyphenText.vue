@@ -1,17 +1,3 @@
-<script setup>
-import { reactive } from 'vue';
-const props = defineProps({
-  background: {
-    type: String,
-    default: "primary",
-  },
-});
-
-const styleObject = reactive({
-  background: props.background,
-});
-</script>
-
 <template>
 <div class="col items-center plus-text-col">
     <span class="plus-text"><slot /></span>
@@ -30,7 +16,9 @@ const styleObject = reactive({
     display: block;
     margin: 0 auto;
     margin-top: -11px;
-    width: 115px;
+    width: fit-content;
+    padding-left: 2px;
+    padding-right: 2px;
   }
 }
 </style>

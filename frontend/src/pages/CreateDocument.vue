@@ -84,6 +84,7 @@ const editorToolBarItems = computed(() => {
 // radio
 const radioChoice = ref("multiple_choice");
 const radioOneCheck = ref(false);
+const radioChoiceTitle = ref('');
 
 function onSubmit() {
   if (accept.value !== true) {
@@ -130,11 +131,6 @@ function onReset() {
             </div>
           </div>
           <div class="row text-center">
-            <!-- <div class="col items-center plus-text-col">
-              <span class="plus-text" style="background: white"
-                >Add to Document</span
-              >
-            </div> -->
             <HyphenText>Add to Document</HyphenText>
           </div>
           <div
@@ -146,7 +142,6 @@ function onReset() {
                 unelevated
                 class="no-shadow"
                 icon-right="text_fields"
-                align="between"
                 color="accent"
               >
                 <span v-if="!smallScreen">Input</span>
@@ -176,7 +171,6 @@ function onReset() {
               <q-btn
                 unelevated
                 icon-right="save"
-                align="between"
                 color="accent"
               >
                 <span v-if="!smallScreen">File</span>
@@ -234,9 +228,9 @@ function onReset() {
           <div class="row">
             <div class="col-xs-12 col-sm-6">
               <q-input
-                v-model="inputName"
+                v-model="radioChoiceTitle"
                 outlined
-                placeholder="Radio Field Name"
+                placeholder="Radio Choice Title"
                 :dense="true"
               />
               <!-- lazy-rules
@@ -261,7 +255,38 @@ function onReset() {
                 ]"
               />
             </div>
-            <div class="col-xs-12 col-sm-6">
+          </div>
+          <div class="row">
+            <div class="col-xs-12 col-sm-6 mt-small">
+              <q-input
+                v-model="inputName"
+                outlined
+                placeholder="Choice Name"
+                :dense="true"
+              />
+              <!-- lazy-rules
+                  :rules="[
+                    (val) => (val && val.length > 0) || 'Please type something',
+                  ]" -->
+            </div>
+            <div class="col mt-small text-center ml-small">
+              <q-btn
+                unelevated
+                outline
+                color="accent"
+                label="Add Choice"
+                icon="add"
+                style="margin-top: 1px;"
+              />
+            </div>
+          </div>
+          <div class="row">
+            
+              <HyphenText>{{ radioChoiceTitle }}</HyphenText>
+            
+          </div>
+          <div class="row">
+            <div class="col text-center">
               <q-checkbox
                 v-model="radioOneCheck"
                 label="At least one choice must be selected."

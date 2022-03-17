@@ -1,4 +1,3 @@
-// src/boot/baseComponentRegistration.js
 const requireComponent = require.context('../core/components', false, /\.vue$/i);
 
 export default ({ app }) => {
