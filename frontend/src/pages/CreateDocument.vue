@@ -17,6 +17,7 @@ const name = ref(null);
 const age = ref(null);
 const accept = ref(false);
 const documentHeader = ref("");
+
 const inputName = ref();
 // const inputSelection = ref([]);
 // const first = ref(true);
@@ -84,7 +85,7 @@ const editorToolBarItems = computed(() => {
 // radio
 const radioChoice = ref("multiple_choice");
 const radioOneCheck = ref(false);
-const radioChoiceTitle = ref('');
+const radioChoiceTitle = ref("");
 
 function onSubmit() {
   if (accept.value !== true) {
@@ -120,18 +121,9 @@ function onReset() {
           @reset="onReset"
           class="q-gutter-md-top-bottom"
         >
-          <div class="row">
-            <div class="col">
-              <q-input
-                v-model="documentHeader"
-                outlined
-                placeholder="Document Title"
-                :dense="true"
-              />
-            </div>
-          </div>
+          <DocumentHeader v-model="documentHeader" />
           <div class="row text-center">
-            <HyphenText>Add to Document</HyphenText>
+            <hyphen-text>Add to Document</hyphen-text>
           </div>
           <div
             class="row text-center add-button-row add-button-row-medium-screen"
@@ -168,11 +160,7 @@ function onReset() {
               </q-btn>
             </div>
             <div class="col">
-              <q-btn
-                unelevated
-                icon-right="save"
-                color="accent"
-              >
+              <q-btn unelevated icon-right="save" color="accent">
                 <span v-if="!smallScreen">File</span>
               </q-btn>
             </div>
@@ -276,14 +264,12 @@ function onReset() {
                 color="accent"
                 label="Add Choice"
                 icon="add"
-                style="margin-top: 1px;"
+                style="margin-top: 1px"
               />
             </div>
           </div>
           <div class="row">
-            
-              <HyphenText>{{ radioChoiceTitle }}</HyphenText>
-            
+            <HyphenText>{{ radioChoiceTitle }}</HyphenText>
           </div>
           <div class="row">
             <div class="col text-center">
