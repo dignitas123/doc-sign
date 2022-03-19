@@ -12,16 +12,9 @@ function onResize(size) {
   } else smallScreen.value = false;
 }
 
-// form
-const name = ref(null);
-const age = ref(null);
-const accept = ref(false);
+// -- Form Variables --
 const documentHeader = ref("");
-
 const inputName = ref();
-// const inputSelection = ref([]);
-// const first = ref(true);
-// const second = ref(true);
 
 const inputAllowed = reactive({
   Text: true,
@@ -87,6 +80,7 @@ const radioChoice = ref("multiple_choice");
 const radioOneCheck = ref(false);
 const radioChoiceTitle = ref("");
 
+const accept = ref(false);
 function onSubmit() {
   if (accept.value !== true) {
     $q.notify({
@@ -106,8 +100,6 @@ function onSubmit() {
 }
 
 function onReset() {
-  name.value = null;
-  age.value = null;
   accept.value = false;
 }
 </script>
@@ -122,49 +114,8 @@ function onReset() {
           class="q-gutter-md-top-bottom"
         >
           <DocumentHeader v-model="documentHeader" />
-          <div class="row text-center">
-            <hyphen-text>Add to Document</hyphen-text>
-          </div>
-          <div
-            class="row text-center add-button-row add-button-row-medium-screen"
-            :class="{ 'add-button-row-small-screen': smallScreen }"
-          >
-            <div class="col">
-              <q-btn
-                unelevated
-                class="no-shadow"
-                icon-right="text_fields"
-                color="accent"
-              >
-                <span v-if="!smallScreen">Input</span>
-              </q-btn>
-            </div>
-            <div class="col">
-              <q-btn
-                unelevated
-                icon-right="edit_note"
-                align="between"
-                color="accent"
-              >
-                <span v-if="!smallScreen">Text</span>
-              </q-btn>
-            </div>
-            <div class="col">
-              <q-btn
-                unelevated
-                icon-right="library_add_check"
-                align="between"
-                color="accent"
-              >
-                <span v-if="!smallScreen">Radio</span>
-              </q-btn>
-            </div>
-            <div class="col">
-              <q-btn unelevated icon-right="save" color="accent">
-                <span v-if="!smallScreen">File</span>
-              </q-btn>
-            </div>
-          </div>
+          <HyphenText>Add to Document</HyphenText>
+          <AddButtonRow :smallScreen="smallScreen" />
           <div class="row">
             <div class="col-xs-12 col-sm-6">
               <q-input
@@ -307,25 +258,6 @@ function onReset() {
   display: flex;
   flex-direction: column;
   margin: 0 auto;
-}
-
-.add-button-row {
-  margin-top: 5px;
-  .col {
-    padding: 5px;
-  }
-}
-
-.add-button-row-medium-screen {
-  .col {
-    width: 130px;
-  }
-}
-
-.add-button-row-small-screen {
-  .col {
-    width: none !important;
-  }
 }
 
 .q-field--highlighted {

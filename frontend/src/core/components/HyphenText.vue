@@ -1,10 +1,12 @@
 <template>
-<div class="col items-center plus-text-col">
-    <span class="plus-text"><slot /></span>
-</div>
+  <div class="row text-center">
+    <div class="col items-center plus-text-col">
+      <span class="plus-text"><slot /></span>
+    </div>
+  </div>
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .plus-text-col {
   background: var(--q-primary);
   height: 1px;
