@@ -27,7 +27,7 @@ const radioChoiceInput = reactive({
   name: "",
   radioChoice: "multiple_choice",
   radioOneCheck: false,
-  radioChoiceNames: "", // should be reactive([])
+  radioChoiceNames: reactive([]),
 });
 
 function addButtonsRowClicked(type) {
@@ -61,7 +61,10 @@ function onReset() {
 <template>
   <main-layout>
     <q-page class="row items-center justify-evenly">
-      <div class="q-pa-md shadow-1 absolute" style="top: 20px">
+      <div
+        class="q-pa-md shadow-1 absolute"
+        style="top: 20px; max-width: 552px"
+      >
         <q-form
           @submit="onSubmit"
           @reset="onReset"

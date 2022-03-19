@@ -1,12 +1,12 @@
 <script setup>
-import { ref, computed, reactive } from 'vue';
+import { ref, computed, reactive } from "vue";
 import { useQuasar } from "quasar";
 
 const $q = useQuasar();
 
 const props = defineProps({
-    modelValue: String
-})
+  modelValue: String,
+});
 
 const emit = defineEmits(["update:modelValue"]);
 
@@ -55,9 +55,14 @@ const editorToolBarItems = computed(() => {
 </script>
 
 <template>
-    <div class="row items-center">
-        <div class="col">
-        <q-editor v-model="val" :toolbar="editorToolBarItems" @update="handleInput" />
-        </div>
+  <div class="row items-center">
+    <div class="col">
+      <q-editor
+        v-model="val"
+        :toolbar="editorToolBarItems"
+        @update="handleInput"
+      />
     </div>
+  </div>
+  <AddButton />
 </template>

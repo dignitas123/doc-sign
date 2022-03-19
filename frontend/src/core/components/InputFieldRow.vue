@@ -17,18 +17,21 @@ const val = ref(props.modelValue);
 
 const handleInput = () => emit("update:modelValue", val.value);
 
-watch(() => val.value.inputFieldAllowed, () => {
-  let allFalse = (arr) => arr.every((v) => v === false);
-  if (
-    allFalse(
-      Object.values(val.value.inputFieldAllowed).map((val) => {
-        return val;
-      })
+watch(
+  () => val.value.inputFieldAllowed,
+  () => {
+    let allFalse = (arr) => arr.every((v) => v === false);
+    if (
+      allFalse(
+        Object.values(val.value.inputFieldAllowed).map((val) => {
+          return val;
+        })
+      )
     )
-  )
-    val.value.inputFieldAllowed.Text = true;
+      val.value.inputFieldAllowed.Text = true;
     handleInput();
-});
+  }
+);
 </script>
 
 <template>
@@ -47,7 +50,11 @@ watch(() => val.value.inputFieldAllowed, () => {
             ]" -->
     </div>
     <div class="col-xs-12 col-sm-6 text-center">
-      <q-checkbox v-model="val.inputFieldAllowed.Text" label="A,b,c" color="primary" />
+      <q-checkbox
+        v-model="val.inputFieldAllowed.Text"
+        label="A,b,c"
+        color="primary"
+      />
       <q-checkbox
         v-model="val.inputFieldAllowed.Numbers"
         label="0,1,2"
@@ -60,4 +67,5 @@ watch(() => val.value.inputFieldAllowed, () => {
       />
     </div>
   </div>
+  <AddButton />
 </template>
