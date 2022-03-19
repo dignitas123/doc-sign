@@ -26,7 +26,7 @@ const handleInput = () => emit("update:modelValue", val.value);
         outlined
         :placeholder="placeholder"
         :dense="true"
-        v-on:update="handleInput"
+        @update="handleInput"
       />
     </div>
   </div>

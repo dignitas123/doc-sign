@@ -16,21 +16,24 @@ function onResize(size) {
 const documentHeader = ref("");
 const inputName = ref();
 
-const inputAllowed = reactive({
-  Text: true,
-  Numbers: false,
-  SpecialCharacters: false,
+const inputFieldInput = reactive({
+  name: '',
+  inputFieldAllowed: reactive({
+    Text: true,
+    Numbers: false,
+    SpecialCharacters: false,
+  })
 });
-watch(inputAllowed, () => {
+watch(inputFieldInput.inputFieldAllowed, () => {
   let allFalse = (arr) => arr.every((v) => v === false);
   if (
     allFalse(
-      Object.values(inputAllowed).map((val) => {
+      Object.values(inputFieldInput.inputFieldAllowed).map((val) => {
         return val;
       })
     )
   )
-    inputAllowed.Text = true;
+    inputFieldInput.inputFieldAllowed.Text = true;
 });
 
 //text editor
@@ -116,37 +119,7 @@ function onReset() {
           <DocumentHeader v-model="documentHeader" />
           <HyphenText>Add to Document</HyphenText>
           <AddButtonRow :smallScreen="smallScreen" />
-          <div class="row">
-            <div class="col-xs-12 col-sm-6">
-              <q-input
-                v-model="inputName"
-                outlined
-                placeholder="Input Field Name"
-                :dense="true"
-              />
-              <!-- lazy-rules
-                  :rules="[
-                    (val) => (val && val.length > 0) || 'Please type something',
-                  ]" -->
-            </div>
-            <div class="col-xs-12 col-sm-6 text-center">
-              <q-checkbox
-                v-model="inputAllowed.Text"
-                label="A,b,c"
-                color="primary"
-              />
-              <q-checkbox
-                v-model="inputAllowed.Numbers"
-                label="0,1,2"
-                color="primary"
-              />
-              <q-checkbox
-                v-model="inputAllowed.SpecialCharacters"
-                label="*,$,%"
-                color="primary"
-              />
-            </div>
-          </div>
+          <InputFieldRow v-model="inputFieldInput" />
           <div class="row justify-center">
             <div class="col-12">
               <q-btn
