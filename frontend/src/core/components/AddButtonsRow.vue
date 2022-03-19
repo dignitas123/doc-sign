@@ -2,6 +2,10 @@
 defineProps({
     smallScreen: Boolean
 })
+
+const emit = defineEmits(["buttonClicked"]);
+
+const emitButtonClicked = (type) => emit('buttonClicked', type);
 </script>
 
 <template>
@@ -15,12 +19,13 @@ defineProps({
         class="no-shadow"
         icon-right="text_fields"
         color="accent"
+        @click="emitButtonClicked('Input')"
       >
         <span v-if="!smallScreen">Input</span>
       </q-btn>
     </div>
     <div class="col">
-      <q-btn unelevated icon-right="edit_note" color="accent">
+      <q-btn unelevated icon-right="edit_note" color="accent" @click="emitButtonClicked('Text')">
         <span v-if="!smallScreen">Text</span>
       </q-btn>
     </div>
@@ -29,12 +34,13 @@ defineProps({
         unelevated
         icon-right="library_add_check"
         color="accent"
+        @click="emitButtonClicked('Radio')"
       >
         <span v-if="!smallScreen">Radio</span>
       </q-btn>
     </div>
     <div class="col">
-      <q-btn unelevated icon-right="save" color="accent">
+      <q-btn unelevated icon-right="save" color="accent" @click="emitButtonClicked('File')">
         <span v-if="!smallScreen">File</span>
       </q-btn>
     </div>
@@ -42,7 +48,6 @@ defineProps({
 </template>
 
 <style lang="scss" scoped>
-
 .add-button-row {
   margin-top: 5px;
   .col {

@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from "vue";
+import { ref, watch } from "vue";
 
 const props = defineProps({
   modelValue: {
@@ -16,6 +16,19 @@ const emit = defineEmits(["update:modelValue"]);
 const val = ref(props.modelValue);
 
 const handleInput = () => emit("update:modelValue", val.value);
+
+watch(() => val.value.inputFieldAllowed, () => {
+  let allFalse = (arr) => arr.every((v) => v === false);
+  if (
+    allFalse(
+      Object.values(val.value.inputFieldAllowed).map((val) => {
+        return val;
+      })
+    )
+  )
+    val.value.inputFieldAllowed.Text = true;
+    handleInput();
+});
 </script>
 
 <template>

@@ -1,6 +1,6 @@
 <script setup>
 import { useQuasar } from "quasar";
-import { computed, ref, reactive, watch } from "vue";
+import { ref, reactive } from "vue";
 import MainLayout from "src/layouts/MainLayout.vue";
 
 const $q = useQuasar();
@@ -15,7 +15,6 @@ function onResize(size) {
 // -- Form Variables --
 const documentHeader = ref("");
 const inputName = ref();
-
 const inputFieldInput = reactive({
   name: '',
   inputFieldAllowed: reactive({
@@ -24,64 +23,14 @@ const inputFieldInput = reactive({
     SpecialCharacters: false,
   })
 });
-watch(inputFieldInput.inputFieldAllowed, () => {
-  let allFalse = (arr) => arr.every((v) => v === false);
-  if (
-    allFalse(
-      Object.values(inputFieldInput.inputFieldAllowed).map((val) => {
-        return val;
-      })
-    )
-  )
-    inputFieldInput.inputFieldAllowed.Text = true;
-});
-
-//text editor
-const editor = ref("");
-
-const toolbarTextDesktopItems = ref([
-  ["link"],
-  [
-    {
-      label: $q.lang.editor.fontSize,
-      icon: $q.iconSet.editor.fontSize,
-      fixedLabel: true,
-      fixedIcon: true,
-      list: "no-icons",
-      options: [
-        "size-1",
-        "size-2",
-        "size-3",
-        "size-4",
-        "size-5",
-        "size-6",
-        "size-7",
-      ],
-    },
-  ],
-  ["unordered", "ordered", "outdent", "indent"],
-]);
-
-const editorToolBarItems = computed(() => {
-  return reactive([
-    [
-      {
-        label: $q.lang.editor.align,
-        icon: $q.iconSet.editor.align,
-        fixedLabel: true,
-        list: "only-icons",
-        options: ["left", "center", "right", "justify"],
-      },
-    ],
-    ["bold", "italic", "underline"],
-    ...($q.screen.lt.sm ? [] : toolbarTextDesktopItems.value),
-  ]);
-});
-
-// radio
+const editorContent = ref("");
 const radioChoice = ref("multiple_choice");
 const radioOneCheck = ref(false);
 const radioChoiceTitle = ref("");
+
+function addButtonsRowClicked(type) {
+  console.log(type, 'button clicked');
+}
 
 const accept = ref(false);
 function onSubmit() {
@@ -118,25 +67,9 @@ function onReset() {
         >
           <DocumentHeader v-model="documentHeader" />
           <HyphenText>Add to Document</HyphenText>
-          <AddButtonRow :smallScreen="smallScreen" />
+          <AddButtonsRow :smallScreen="smallScreen" @buttonClicked="addButtonsRowClicked" />
           <InputFieldRow v-model="inputFieldInput" />
-          <div class="row justify-center">
-            <div class="col-12">
-              <q-btn
-                class="no-shadow"
-                unelevated
-                color="accent"
-                style="width: 100%"
-              >
-                Add
-              </q-btn>
-            </div>
-          </div>
-          <div class="row items-center">
-            <div class="col">
-              <q-editor v-model="editor" :toolbar="editorToolBarItems" />
-            </div>
-          </div>
+          <EditorRow v-model="editorContent" />
           <div class="row">
             <div class="col-xs-12 col-sm-6">
               <q-input
