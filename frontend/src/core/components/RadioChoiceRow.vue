@@ -15,14 +15,14 @@ const emit = defineEmits(["update:modelValue"]);
 const val = ref(props.modelValue);
 const choiceName = ref("");
 
-const CHECKBOX_DSIABLED_VALUE = ref([]);
+const checkBoxDisabledValues = ref([]);
 
 const handleInput = () => emit("update:modelValue", val.value);
 
 function addRadioChoice() {
   if (choiceName.value) {
     val.value.radioChoiceNames.push(choiceName.value);
-    CHECKBOX_DSIABLED_VALUE.value.push(false);
+    checkBoxDisabledValues.value.push(false);
     choiceName.value = "";
     handleInput();
   } else {
@@ -36,8 +36,24 @@ function addRadioChoice() {
 
 function removeRadioChoice() {
   val.value.radioChoiceNames.pop();
-  CHECKBOX_DSIABLED_VALUE.value.pop();
+  checkBoxDisabledValues.value.pop();
   handleInput();
+}
+
+const radioChoiceTitleFocused = ref(false);
+function focusRadioChoiceTitle() {
+  radioChoiceTitleFocused.value = true;
+}
+function unfocusRadioChoiceTitle() {
+  radioChoiceTitleFocused.value = false;
+}
+
+const choiceNameFocused = ref(false);
+function focusChoiceName() {
+  choiceNameFocused.value = true;
+}
+function unfocusChoiceName() {
+  choiceNameFocused.value = false;
 }
 </script>
 
@@ -47,9 +63,11 @@ function removeRadioChoice() {
       <q-input
         v-model="val.name"
         outlined
-        placeholder="Radio Choice Title"
-        @update="handleInput"
         :dense="true"
+        :placeholder="radioChoiceTitleFocused ? '' : 'Radio Choice Title'"
+        @focus="focusRadioChoiceTitle"
+        @blur="unfocusRadioChoiceTitle"
+        @update="handleInput"
         @keydown.enter.prevent="$refs.choiceNameInput.$el.focus()"
       />
     </div>
@@ -79,8 +97,10 @@ function removeRadioChoice() {
         v-model="choiceName"
         outlined
         :disable="val.name ? false : true"
-        placeholder="Choice Name"
+        :placeholder="choiceNameFocused ? '' : 'Choice Name'"
         :dense="true"
+        @focus="focusChoiceName"
+        @blur="unfocusChoiceName"
         @keydown.enter.prevent="addRadioChoice"
       />
     </div>
@@ -115,16 +135,13 @@ function removeRadioChoice() {
         "
       />
     </div>
-    <!-- <div class="col mt-small text-center ml-small">
-        
-    </div> -->
   </div>
   <template v-if="val.name">
     <HyphenText>{{ val.name }}</HyphenText>
     <div v-if="val.radioChoiceNames.length" class="row">
       <div v-for="(name, i) in val.radioChoiceNames" :key="i">
         <q-checkbox
-          v-model="CHECKBOX_DSIABLED_VALUE[i]"
+          v-model="checkBoxDisabledValues[i]"
           color="primary"
           :label="name"
         />

@@ -29,6 +29,11 @@ const radioChoiceInput = reactive({
   radioOneCheck: true,
   radioChoiceNames: reactive([]),
 });
+const fileRequireInput = reactive({
+  name: "",
+  allowAllEndings: false,
+  allowedEndings: reactive([]),
+});
 
 function addButtonsRowClicked(type) {
   console.log(type, "button clicked");
@@ -76,6 +81,7 @@ function onReset() {
             :smallScreen="smallScreen"
             @buttonClicked="addButtonsRowClicked"
           />
+          <FileRequireRow v-model="fileRequireInput" />
           <InputFieldRow v-model="inputFieldInput" />
           <EditorRow v-model="editorInput" />
           <RadioChoiceRow v-model="radioChoiceInput" />
