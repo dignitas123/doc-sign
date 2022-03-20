@@ -26,7 +26,7 @@ const editorInput = ref("");
 const radioChoiceInput = reactive({
   name: "",
   radioChoice: "multiple_choice",
-  radioOneCheck: false,
+  radioOneCheck: true,
   radioChoiceNames: reactive([]),
 });
 

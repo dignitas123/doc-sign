@@ -50,6 +50,7 @@ function removeRadioChoice() {
         placeholder="Radio Choice Title"
         @update="handleInput"
         :dense="true"
+        @keydown.enter.prevent="$refs.choiceNameInput.$el.focus()"
       />
     </div>
     <div class="col-xs-12 col-sm-6 text-center">
@@ -74,14 +75,19 @@ function removeRadioChoice() {
   <div class="row">
     <div class="col-xs-12 col-sm-6 mt-small">
       <q-input
+        ref="choiceNameInput"
         v-model="choiceName"
         outlined
         :disable="val.name ? false : true"
         placeholder="Choice Name"
         :dense="true"
+        @keydown.enter.prevent="addRadioChoice"
       />
     </div>
-    <div class="col mt-small text-center ml-small justify-center" style="display: inline-flex">
+    <div
+      class="col mt-small text-center ml-small justify-center"
+      style="display: inline-flex"
+    >
       <q-btn
         unelevated
         outline
@@ -90,7 +96,10 @@ function removeRadioChoice() {
         icon="add"
         :disabled="val.name ? false : true"
         style="margin-top: 1px"
-        @click="addRadioChoice"
+        @click="
+          addRadioChoice();
+          $refs.choiceNameInput.$el.focus();
+        "
       />
       <q-btn
         class="ml-small"
@@ -100,7 +109,10 @@ function removeRadioChoice() {
         icon="remove"
         :disabled="val.radioChoiceNames.length ? false : true"
         style="margin-top: 1px"
-        @click="removeRadioChoice"
+        @click="
+          removeRadioChoice();
+          $refs.choiceNameInput.$el.focus();
+        "
       />
     </div>
     <!-- <div class="col mt-small text-center ml-small">
