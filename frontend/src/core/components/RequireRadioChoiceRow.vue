@@ -63,7 +63,7 @@ function unfocusChoiceName() {
       <q-input
         v-model="val.name"
         outlined
-        :dense="true"
+        dense
         :placeholder="radioChoiceTitleFocused ? '' : 'Radio Choice Title'"
         @focus="focusRadioChoiceTitle"
         @blur="unfocusRadioChoiceTitle"
@@ -96,9 +96,9 @@ function unfocusChoiceName() {
         ref="choiceNameInput"
         v-model="choiceName"
         outlined
+        dense
         :disable="val.name ? false : true"
         :placeholder="choiceNameFocused ? '' : 'Choice Name'"
-        :dense="true"
         @focus="focusChoiceName"
         @blur="unfocusChoiceName"
         @keydown.enter.prevent="addRadioChoice"

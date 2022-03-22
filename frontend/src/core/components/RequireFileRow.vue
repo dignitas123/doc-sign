@@ -107,12 +107,12 @@ function unfocusFileEnding() {
       <q-input
         v-model="val.name"
         outlined
+        dense
         :placeholder="fileDescriptionFocused ? '' : 'File Description'"
         @update="handleInput"
         @focus="focusFileDescription"
         @blur="unFocusFileDescription"
         @keydown.enter.prevent="$refs.endingNameInput.$el.focus()"
-        :dense="true"
       />
     </div>
     <div
@@ -123,8 +123,8 @@ function unfocusFileEnding() {
         ref="endingNameInput"
         v-model="endingName"
         outlined
+        dense
         :placeholder="fileEndingFocused ? '' : '(.png, .pdf, ...)'"
-        :dense="true"
         @focus="focusFileEnding"
         @blur="unfocusFileEnding"
         @keydown.enter.prevent="addEnding"

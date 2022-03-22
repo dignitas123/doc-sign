@@ -1,11 +1,25 @@
 <script setup>
+import { reactive, watch } from "vue";
+
 defineProps({
-    smallScreen: Boolean
-})
+  smallScreen: Boolean,
+});
 
-const emit = defineEmits(["buttonClicked"]);
+const emit = defineEmits(["buttonClicked", "mouseHover"]);
 
-const emitButtonClicked = (type) => emit('buttonClicked', type);
+const emitButtonClicked = (type) => emit("buttonClicked", type);
+const emitMouseHover = (hover) => emit("mouseHover", hover);
+
+const hover = reactive({
+  input: false,
+  text: false,
+  radio: false,
+  file: false,
+});
+
+watch(hover, () => {
+  emitMouseHover(hover);
+});
 </script>
 
 <template>
@@ -20,12 +34,21 @@ const emitButtonClicked = (type) => emit('buttonClicked', type);
         icon-right="text_fields"
         color="accent"
         @click="emitButtonClicked('Input')"
+        @mouseover="hover.input = true"
+        @mouseleave="hover.input = false"
       >
         <span v-if="!smallScreen">Input</span>
       </q-btn>
     </div>
     <div class="col">
-      <q-btn unelevated icon-right="edit_note" color="accent" @click="emitButtonClicked('Text')">
+      <q-btn
+        unelevated
+        icon-right="edit_note"
+        color="accent"
+        @click="emitButtonClicked('Text')"
+        @mouseover="hover.text = true"
+        @mouseleave="hover.text = false"
+      >
         <span v-if="!smallScreen">Text</span>
       </q-btn>
     </div>
@@ -35,12 +58,21 @@ const emitButtonClicked = (type) => emit('buttonClicked', type);
         icon-right="library_add_check"
         color="accent"
         @click="emitButtonClicked('Radio')"
+        @mouseover="hover.radio = true"
+        @mouseleave="hover.radio = false"
       >
         <span v-if="!smallScreen">Radio</span>
       </q-btn>
     </div>
     <div class="col">
-      <q-btn unelevated icon-right="save" color="accent" @click="emitButtonClicked('File')">
+      <q-btn
+        unelevated
+        icon-right="save"
+        color="accent"
+        @click="emitButtonClicked('File')"
+        @mouseover="hover.file = true"
+        @mouseleave="hover.file = false"
+      >
         <span v-if="!smallScreen">File</span>
       </q-btn>
     </div>

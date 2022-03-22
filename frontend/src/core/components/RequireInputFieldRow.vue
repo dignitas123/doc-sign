@@ -46,8 +46,8 @@ function unfocusInputFieldName() {
       <q-input
         v-model="val.name"
         outlined
+        dense
         :placeholder="inputFieldNameFocused ? '' : placeholder"
-        :dense="true"
         @focus="focusInputFieldName"
         @blur="unfocusInputFieldName"
         @update="handleInput"

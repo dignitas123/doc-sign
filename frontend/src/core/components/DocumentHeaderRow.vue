@@ -24,8 +24,8 @@ const handleInput = () => emit("update:modelValue", val.value);
       <q-input
         v-model="val"
         outlined
+        dense
         :placeholder="placeholder"
-        :dense="true"
         @update="handleInput"
       />
     </div>
