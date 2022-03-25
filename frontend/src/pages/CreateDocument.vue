@@ -1,11 +1,11 @@
 <script setup>
 import { useQuasar } from "quasar";
-import { ref, computed, reactive, shallowRef } from "vue";
+import { ref, reactive, inject } from "vue";
 import MainLayout from "src/layouts/MainLayout.vue";
-// import RequireFileRow from "src/core/components/RequireFileRow.vue";
-// import RequireInputFieldRow from "src/core/components/RequireInputFieldRow.vue";
-// import RequireEditorRow from "src/core/components/RequireEditorRow.vue";
-// import RequireRadioChoiceRow from "src/core/components/RequireRadioChoiceRow.vue";
+import RequireInputFieldRow from "src/core/components/RequireInputFieldRow.vue";
+import RequireEditorRow from "src/core/components/RequireEditorRow.vue";
+import RequireRadioChoiceRow from "src/core/components/RequireRadioChoiceRow.vue";
+import RequireFileRow from "src/core/components/RequireFileRow.vue";
 import RequireInputFieldRowGrey from "src/core/components/RequireInputFieldRowGrey.vue";
 import RequireEditorRowGrey from "src/core/components/RequireEditorRowGrey.vue";
 import RequireFileRowGrey from "src/core/components/RequireFileRowGrey.vue";
@@ -15,6 +15,12 @@ const requireInputFieldRowGrey = Object.freeze(RequireInputFieldRowGrey);
 const requireEditorRowGrey = Object.freeze(RequireEditorRowGrey);
 const requireFileRowGrey = Object.freeze(RequireFileRowGrey);
 const requireRadioChoiceRowGrey = Object.freeze(RequireRadioChoiceRowGrey);
+
+const requireInputFieldRow = Object.freeze(RequireInputFieldRow);
+const requireEditorRow = Object.freeze(RequireEditorRow);
+const requireRadioChoiceRow = Object.freeze(RequireRadioChoiceRow);
+const requireFileRow = Object.freeze(RequireFileRow);
+
 const $q = useQuasar();
 
 const smallScreen = ref(false);
@@ -26,26 +32,28 @@ function onResize(size) {
 
 // -- Form Variables --
 const documentHeader = ref("");
-// const inputFieldInput = reactive({
-//   name: "",
-//   inputFieldAllowed: reactive({
-//     Text: true,
-//     Numbers: false,
-//     SpecialCharacters: false,
-//   }),
-// });
-// const editorInput = ref("");
-// const radioChoiceInput = reactive({
-//   name: "",
-//   radioChoice: "multiple_choice",
-//   radioOneCheck: true,
-//   radioChoiceNames: reactive([]),
-// });
-// const fileRequireInput = reactive({
-//   name: "",
-//   allowAllEndings: false,
-//   allowedEndings: reactive([]),
-// });
+const inputFieldInput = reactive({
+  name: "",
+  inputFieldAllowed: reactive({
+    Text: true,
+    Numbers: false,
+    SpecialCharacters: false,
+  }),
+});
+const editorInput = reactive({
+  text: ''
+});
+const radioChoiceInput = reactive({
+  name: "",
+  radioChoice: "multiple_choice",
+  radioOneCheck: true,
+  radioChoiceNames: reactive([]),
+});
+const fileRequireInput = reactive({
+  name: "",
+  allowAllEndings: false,
+  allowedEndings: reactive([]),
+});
 
 const accept = ref(false);
 function onSubmit() {
@@ -73,26 +81,50 @@ function onReset() {
 // active preview and edit component
 const activePeComponent = reactive({
   component: undefined,
-  vModel: "",
+  vModel: {},
 });
 
-function addButtonsRowClicked() {
-  console.log("Add Buttons Row clicked.");
+function addButtonsRowClicked(buttonType) {
+  if (buttonType === 'Input') {
+    activePeComponent.component = requireInputFieldRow;
+    activePeComponent.vModel = inputFieldInput;
+  } else if (buttonType === 'Text') {
+    activePeComponent.component = requireEditorRow;
+    activePeComponent.vModel = editorInput;
+  } else if (buttonType === 'Radio') {
+    activePeComponent.component = requireRadioChoiceRow;
+    activePeComponent.vModel = radioChoiceInput;
+  } else if (buttonType === 'File') {
+    activePeComponent.component = requireFileRow;
+    activePeComponent.vModel = fileRequireInput;
+  }
 }
 
 function addButtonsRowHover(buttonType) {
-  if (buttonType.input) {
-    activePeComponent.component = requireInputFieldRowGrey;
-  } else if (buttonType.text) {
-    activePeComponent.component = requireEditorRowGrey;
-  } else if (buttonType.radio) {
-    activePeComponent.component = requireRadioChoiceRowGrey;
-  } else if (buttonType.file) {
-    activePeComponent.component = requireFileRowGrey;
-  } else {
-    activePeComponent.component = undefined;
+  if(Object.keys(activePeComponent.vModel).length === 0) {
+    if (buttonType.input) {
+      activePeComponent.component = requireInputFieldRowGrey;
+    } else if (buttonType.text) {
+      activePeComponent.component = requireEditorRowGrey;
+    } else if (buttonType.radio) {
+      activePeComponent.component = requireRadioChoiceRowGrey;
+    } else if (buttonType.file) {
+      activePeComponent.component = requireFileRowGrey;
+    } else {
+      resetActivePeComponent();
+    }
   }
 }
+
+function resetActivePeComponent() {
+  activePeComponent.component = undefined;
+  activePeComponent.vModel = {};
+}
+
+const emitter = inject('emitter');
+emitter.on("peComponentClosed", () => {
+  resetActivePeComponent();
+});
 </script>
 
 <template>

@@ -1,16 +1,11 @@
 <script setup>
-import { useQuasar } from "quasar";
-import { ref, watch } from "vue";
-const $q = useQuasar();
+import { ref } from "vue";
 
-const props = defineProps({
-  modelValue: String,
+defineProps({
+  modelValue: Object,
 });
 
-const val = ref(props.modelValue);
-
-const endingName = ref("");
-
+const emptyString = ref("");
 const allowAllFileEndings = ref(false);
 </script>
 
@@ -18,7 +13,7 @@ const allowAllFileEndings = ref(false);
   <div class="row">
     <div class="col-xs-12 col-sm-6">
       <q-input
-        v-model="val"
+        v-model="emptyString"
         outlined
         disable
         placeholder="File Description"
@@ -31,7 +26,7 @@ const allowAllFileEndings = ref(false);
     >
       <q-input
         ref="endingNameInput"
-        v-model="endingName"
+        v-model="emptyString"
         outlined
         dense
         disable

@@ -1,12 +1,11 @@
 <script setup>
 import { ref } from "vue";
 
-const props = defineProps({
-  modelValue: {
-    type: String,
-  },
+defineProps({
+  modelValue: Object,
 });
-const val = ref(props.modelValue);
+
+const emptyString = ref('');
 const checked = ref(true);
 const unChecked = ref(false);
 </script>
@@ -15,7 +14,7 @@ const unChecked = ref(false);
   <div class="row">
     <div class="col-xs-12 col-sm-6">
       <q-input
-        v-model="val"
+        v-model="emptyString"
         outlined
         disable
         dense

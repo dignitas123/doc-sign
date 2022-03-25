@@ -5,7 +5,7 @@ import { useQuasar } from "quasar";
 const $q = useQuasar();
 
 const props = defineProps({
-  modelValue: String,
+  modelValue: Object,
 });
 
 const emit = defineEmits(["update:modelValue"]);
@@ -58,7 +58,7 @@ const editorToolBarItems = computed(() => {
   <div class="row items-center">
     <div class="col">
       <q-editor
-        v-model="val"
+        v-model="val.text"
         :toolbar="editorToolBarItems"
         @update="handleInput"
       />

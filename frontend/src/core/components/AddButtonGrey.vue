@@ -1,6 +1,6 @@
 <template>
-  <div class="row justify-center">
-    <div class="col-12">
+  <div class="row justify-between">
+    <div class="col">
       <q-btn
         class="no-shadow"
         unelevated
@@ -10,6 +10,16 @@
       >
         Add
       </q-btn>
+    </div>
+    <div class="col- ml-small">
+      <q-btn
+        class="no-shadow"
+        unelevated
+        disable
+        outline
+        icon="close"
+        color="info"
+      />
     </div>
   </div>
 </template>

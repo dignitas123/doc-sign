@@ -4,11 +4,11 @@ import { useQuasar } from "quasar";
 
 const $q = useQuasar();
 
-const props = defineProps({
-  modelValue: String,
+defineProps({
+  modelValue: Object,
 });
-const val = ref(props.modelValue);
 
+const emptyString = ref('');
 const toolbarTextDesktopItems = ref([
   ["link"],
   [
@@ -54,7 +54,7 @@ const editorToolBarItems = computed(() => {
     <div class="col">
       <q-editor
         class="require-editor-row-grey"
-        v-model="val"
+        v-model="emptyString"
         :toolbar="editorToolBarItems"
       />
     </div>

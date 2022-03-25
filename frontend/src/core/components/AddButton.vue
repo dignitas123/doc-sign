@@ -1,21 +1,33 @@
 <script setup>
-const emit = defineEmits(["buttonClicked"]);
+import { inject } from 'vue';
+const emitter = inject('emitter');
 
-const emitClick = () => emit("buttonClicked");
+const emitAdd = () => emitter.emit("peComponentAdded");
+const emitClose = () => emitter.emit("peComponentClosed");
 </script>
 
 <template>
-<div class="row justify-center">
-    <div class="col-12">
-        <q-btn
+  <div class="row justify-between">
+    <div class="col">
+      <q-btn
         class="no-shadow"
         unelevated
         color="accent"
         style="width: 100%"
-        @click="emitClick"
-        >
+        @click="emitAdd"
+      >
         Add
-        </q-btn>
+      </q-btn>
     </div>
-</div>
+    <div class="col- ml-small">
+      <q-btn
+        class="no-shadow"
+        unelevated
+        outline
+        icon="close"
+        color="primary"
+        @click="emitClose"
+      />
+    </div>
+  </div>
 </template>

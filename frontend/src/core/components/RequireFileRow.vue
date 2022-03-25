@@ -6,7 +6,6 @@ const $q = useQuasar();
 const props = defineProps({
   modelValue: {
     type: Object,
-    default: () => {},
   },
 });
 
