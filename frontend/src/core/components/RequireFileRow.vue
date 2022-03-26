@@ -31,51 +31,62 @@ watch(
 
 function addEnding() {
   if (endingName.value) {
-    if(val.value.allowAllEndings) {
+    if (val.value.allowAllEndings) {
       val.value.allowAllEndings = false;
     }
 
-    if (/^\./.test(endingName.value)) {
-      if (endingName.value.length < 7) {
-        if (!val.value.allowedEndings.includes(endingName.value)) {
-          val.value.allowedEndings.push(endingName.value);
-          endingExistsValues.value.push(true);
-          endingName.value = "";
-          handleInput();
-        } else {
-          $q.notify({
-            type: "info",
-            message: `${endingName.value} already exists.`,
-            timeout: 500,
-          });
-        }
-      } else {
-        $q.notify({
-          type: "info",
-          message: "A file ending can't have more than 5 characters.",
-          timeout: 500,
-        });
-      }
+    if (
+      /[$&+,:;=?@#|'<>^*()%!-]/.test(endingName.value) ||
+      endingName.value === "."
+    ) {
+      $q.notify({
+        type: "info",
+        message: "Special characters in file endings are not allowed.",
+        timeout: 500,
+      });
     } else {
-      if (endingName.value.length < 6) {
-        if (!val.value.allowedEndings.includes("." + endingName.value)) {
-          val.value.allowedEndings.push("." + endingName.value);
-          endingExistsValues.value.push(true);
-          endingName.value = "";
-          handleInput();
+      if (/^\./.test(endingName.value)) {
+        if (endingName.value.length < 7) {
+          if (!val.value.allowedEndings.includes(endingName.value)) {
+            val.value.allowedEndings.push(endingName.value);
+            endingExistsValues.value.push(true);
+            endingName.value = "";
+            handleInput();
+          } else {
+            $q.notify({
+              type: "info",
+              message: `${endingName.value} already exists.`,
+              timeout: 500,
+            });
+          }
         } else {
           $q.notify({
             type: "info",
-            message: `${endingName.value} already exists.`,
+            message: "A file ending can't have more than 5 characters.",
             timeout: 500,
           });
         }
       } else {
-        $q.notify({
-          type: "info",
-          message: "A file ending can't have more than 5 characters.",
-          timeout: 500,
-        });
+        if (endingName.value.length < 6) {
+          if (!val.value.allowedEndings.includes("." + endingName.value)) {
+            val.value.allowedEndings.push("." + endingName.value);
+            endingExistsValues.value.push(true);
+            endingName.value = "";
+            handleInput();
+          } else {
+            $q.notify({
+              type: "info",
+              message: `${endingName.value} already exists.`,
+              timeout: 500,
+            });
+          }
+        } else {
+          $q.notify({
+            type: "info",
+            message: "A file ending can't have more than 5 characters.",
+            timeout: 500,
+          });
+        }
       }
     }
   } else {
@@ -125,7 +136,8 @@ function itemRemoved(index) {
       />
     </div>
     <div
-      class="col text-center ml-small justify-center" :class="{'mt-small': $q.screen.lt.sm }"
+      class="col text-center ml-small justify-center"
+      :class="{ 'mt-small': $q.screen.lt.sm }"
       style="display: inline-flex"
     >
       <q-input
