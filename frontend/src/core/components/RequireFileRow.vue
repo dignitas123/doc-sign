@@ -98,6 +98,12 @@ function focusFileEnding() {
 function unfocusFileEnding() {
   fileEndingFocused.value = false;
 }
+
+function itemRemoved(index) {
+  val.value.allowedEndings.splice(index, 1);
+  endingExistsValues.value.splice(index, 1);
+  handleInput();
+}
 </script>
 
 <template>
@@ -115,7 +121,7 @@ function unfocusFileEnding() {
       />
     </div>
     <div
-      class="col text-center ml-small justify-center"
+      class="col text-center ml-small justify-center" :class="{'mt-small': $q.screen.lt.sm }"
       style="display: inline-flex"
     >
       <q-input
@@ -151,6 +157,7 @@ function unfocusFileEnding() {
         text-color="white"
         :label="name"
         :title="name"
+        @remove="itemRemoved(i)"
       />
     </div>
   </div>

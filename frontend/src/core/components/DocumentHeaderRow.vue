@@ -25,6 +25,7 @@ const handleInput = () => emit("update:modelValue", val.value);
         v-model="val"
         outlined
         dense
+        autofocus
         :placeholder="placeholder"
         @update="handleInput"
       />

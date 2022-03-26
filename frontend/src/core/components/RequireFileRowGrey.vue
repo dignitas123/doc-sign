@@ -21,7 +21,7 @@ const allowAllFileEndings = ref(false);
       />
     </div>
     <div
-      class="col text-center ml-small justify-center"
+      class="col text-center ml-small justify-center" :class="{'mt-small': $q.screen.lt.sm }"
       style="display: inline-flex"
     >
       <q-input
