@@ -31,6 +31,10 @@ watch(
 
 function addEnding() {
   if (endingName.value) {
+    if(val.value.allowAllEndings) {
+      val.value.allowAllEndings = false;
+    }
+
     if (/^\./.test(endingName.value)) {
       if (endingName.value.length < 7) {
         if (!val.value.allowedEndings.includes(endingName.value)) {
