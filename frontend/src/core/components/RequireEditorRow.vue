@@ -8,11 +8,9 @@ const props = defineProps({
   modelValue: Object,
 });
 
-const emit = defineEmits(["update:modelValue"]);
+defineEmits(["update:modelValue"]);
 
 const val = ref(props.modelValue);
-
-const handleInput = () => emit("update:modelValue", val.value);
 
 const toolbarTextDesktopItems = ref([
   ["link"],
@@ -57,11 +55,7 @@ const editorToolBarItems = computed(() => {
 <template>
   <div class="row items-center">
     <div class="col">
-      <q-editor
-        v-model="val.text"
-        :toolbar="editorToolBarItems"
-        @update="handleInput"
-      />
+      <q-editor v-model="val.text" :toolbar="editorToolBarItems" />
     </div>
   </div>
   <AddButton />

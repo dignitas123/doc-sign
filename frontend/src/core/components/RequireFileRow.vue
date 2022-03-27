@@ -9,11 +9,10 @@ const props = defineProps({
   },
 });
 
-const emit = defineEmits(["update:modelValue"]);
+defineEmits(["update:modelValue"]);
 
 const val = ref(props.modelValue);
 
-const handleInput = () => emit("update:modelValue", val.value);
 const endingName = ref("");
 
 const endingExistsValues = ref([]);
@@ -24,7 +23,6 @@ watch(
     if (val.value.allowAllEndings) {
       endingExistsValues.value = [];
       val.value.allowedEndings = [];
-      handleInput();
     }
   }
 );
@@ -36,7 +34,9 @@ function addEnding() {
     }
 
     if (
-      /[$&+,:;=?@#|'<>^*()%!-]|[.](?![a-zA-Z0-9])|([a-zA-Z0-9])(?!==)[.]/.test(endingName.value)
+      /[$&+,:;=?@#|'<>^*()%!-]|[.](?![a-zA-Z0-9])|([a-zA-Z0-9])(?!==)[.]/.test(
+        endingName.value
+      )
     ) {
       $q.notify({
         type: "info",
@@ -50,7 +50,6 @@ function addEnding() {
             val.value.allowedEndings.push(endingName.value);
             endingExistsValues.value.push(true);
             endingName.value = "";
-            handleInput();
           } else {
             $q.notify({
               type: "info",
@@ -71,7 +70,6 @@ function addEnding() {
             val.value.allowedEndings.push("." + endingName.value);
             endingExistsValues.value.push(true);
             endingName.value = "";
-            handleInput();
           } else {
             $q.notify({
               type: "info",
@@ -116,7 +114,6 @@ function unfocusFileEnding() {
 function itemRemoved(index) {
   val.value.allowedEndings.splice(index, 1);
   endingExistsValues.value.splice(index, 1);
-  handleInput();
 }
 </script>
 
@@ -128,7 +125,6 @@ function itemRemoved(index) {
         outlined
         dense
         :placeholder="fileDescriptionFocused ? '' : 'File Description'"
-        @update="handleInput"
         @focus="focusFileDescription"
         @blur="unFocusFileDescription"
         @keydown.enter.prevent="$refs.endingNameInput.$el.focus()"

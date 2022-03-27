@@ -11,11 +11,9 @@ const props = defineProps({
     default: "Input Field Name",
   },
 });
-const emit = defineEmits(["update:modelValue"]);
+defineEmits(["update:modelValue"]);
 
 const val = ref(props.modelValue);
-
-const handleInput = () => emit("update:modelValue", val.value);
 
 watch(val.value.inputFieldAllowed, () => {
   let allFalse = (arr) => arr.every((v) => v === false);
@@ -27,7 +25,6 @@ watch(val.value.inputFieldAllowed, () => {
     )
   ) {
     val.value.inputFieldAllowed.Text = true;
-    handleInput();
   }
 });
 
@@ -50,7 +47,6 @@ function unfocusInputFieldName() {
         :placeholder="inputFieldNameFocused ? '' : placeholder"
         @focus="focusInputFieldName"
         @blur="unfocusInputFieldName"
-        @update="handleInput"
       />
     </div>
     <div class="col-xs-12 col-sm-6 text-center">

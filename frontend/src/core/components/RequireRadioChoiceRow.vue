@@ -10,21 +10,18 @@ const props = defineProps({
   },
 });
 
-const emit = defineEmits(["update:modelValue"]);
+defineEmits(["update:modelValue"]);
 
 const val = ref(props.modelValue);
 const choiceName = ref("");
 
 const checkBoxDisabledValues = ref([]);
 
-const handleInput = () => emit("update:modelValue", val.value);
-
 function addRadioChoice() {
   if (choiceName.value) {
     val.value.radioChoiceNames.push(choiceName.value);
     checkBoxDisabledValues.value.push(false);
     choiceName.value = "";
-    handleInput();
   } else {
     $q.notify({
       type: "info",
@@ -37,7 +34,6 @@ function addRadioChoice() {
 function removeRadioChoice() {
   val.value.radioChoiceNames.pop();
   checkBoxDisabledValues.value.pop();
-  handleInput();
 }
 
 const radioChoiceTitleFocused = ref(false);
@@ -67,14 +63,12 @@ function unfocusChoiceName() {
         :placeholder="radioChoiceTitleFocused ? '' : 'Radio Choice Title'"
         @focus="focusRadioChoiceTitle"
         @blur="unfocusRadioChoiceTitle"
-        @update="handleInput"
         @keydown.enter.prevent="$refs.choiceNameInput.$el.focus()"
       />
     </div>
     <div class="col-xs-12 col-sm-6 text-center">
       <q-btn-toggle
         v-model="val.radioChoice"
-        @update="handleInput"
         class="radio-choice-toggle ml-small"
         :class="{ 'mt-small': $q.screen.lt.sm }"
         no-caps

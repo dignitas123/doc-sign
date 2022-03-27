@@ -11,11 +11,9 @@ const props = defineProps({
     default: "Document Title",
   },
 });
-const emit = defineEmits(["update:modelValue"]);
+defineEmits(["update:modelValue"]);
 
 const val = ref(props.modelValue);
-
-const handleInput = () => emit("update:modelValue", val.value);
 </script>
 
 <template>
@@ -27,7 +25,6 @@ const handleInput = () => emit("update:modelValue", val.value);
         dense
         autofocus
         :placeholder="placeholder"
-        @update="handleInput"
       />
     </div>
   </div>
