@@ -123,7 +123,6 @@ function triggerPickFiles() {
 <template>
   <MainLayout>
     <q-page class="row items-center justify-evenly">
-      <AmazingButton link="https://google.com" />
       <q-uploader
         label="UPLOAD YOUR DOCUMENT"
         ref="fileUploader"

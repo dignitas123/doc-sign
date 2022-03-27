@@ -40,20 +40,45 @@ const inputFieldInput = reactive({
     SpecialCharacters: false,
   }),
 });
+function resetInputFieldInput() {
+  inputFieldInput.name = "";
+  inputFieldInput.inputFieldAllowed = reactive({
+    Text: true,
+    Numbers: false,
+    SpecialCharacters: false,
+  });
+}
+
 const editorInput = reactive({
   text: ""
 });
+function resetEditorInput() {
+  editorInput.text = "";
+}
+
 const radioChoiceInput = reactive({
   name: "",
   radioChoice: "multiple_choice",
   radioOneCheck: true,
   radioChoiceNames: reactive([]),
 });
+function resetRadioChoiceInput() {
+  radioChoiceInput.name = "";
+  radioChoiceInput.radioChoice = "multiple_choice";
+  radioChoiceInput.radioOneCheck = true;
+  radioChoiceInput.radioChoiceNames = reactive([]);
+}
+
 const fileRequireInput = reactive({
   name: "",
   allowAllEndings: false,
   allowedEndings: reactive([]),
 });
+function resetFileRequireInput() {
+  fileRequireInput.name = "";
+  fileRequireInput.allowAllEndings = false;
+  fileRequireInput.allowedEndings = reactive([]);
+}
 
 const accept = ref(false);
 function onSubmit() {
@@ -82,21 +107,33 @@ function onReset() {
 const activePeComponent = reactive({
   component: undefined,
   vModel: {},
+  name: "",
 });
 
+const requireField = {
+  Input: "Input",
+  Text: "Text",
+  Radio: "Radio",
+  File: "File",
+};
+
 function addButtonsRowClicked(buttonType) {
-  if (buttonType === 'Input') {
+  if (buttonType === requireField.Input) {
     activePeComponent.component = requireInputFieldRow;
     activePeComponent.vModel = inputFieldInput;
-  } else if (buttonType === 'Text') {
+    activePeComponent.name = requireField.Input;
+  } else if (buttonType === requireField.Text) {
     activePeComponent.component = requireEditorRow;
     activePeComponent.vModel = editorInput;
-  } else if (buttonType === 'Radio') {
+    activePeComponent.name = requireField.Text;
+  } else if (buttonType === requireField.Radio) {
     activePeComponent.component = requireRadioChoiceRow;
     activePeComponent.vModel = radioChoiceInput;
-  } else if (buttonType === 'File') {
+    activePeComponent.name = requireField.Radio;
+  } else if (buttonType === requireField.File) {
     activePeComponent.component = requireFileRow;
     activePeComponent.vModel = fileRequireInput;
+    activePeComponent.name = requireField.File;
   }
 }
 
@@ -117,8 +154,18 @@ function addButtonsRowHover(buttonType) {
 }
 
 function resetActivePeComponent() {
+  if(activePeComponent.name === requireField.Input) {
+    resetInputFieldInput();
+  } else if(activePeComponent.name === requireField.Text) {
+    resetEditorInput();
+  } else if(activePeComponent.name === requireField.Radio) {
+    resetRadioChoiceInput();
+  } else if(activePeComponent.name === requireField.File) {
+    resetFileRequireInput();
+  }
   activePeComponent.component = undefined;
   activePeComponent.vModel = {};
+  activePeComponent.name = "";
 }
 
 const emitter = inject('emitter');
