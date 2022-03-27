@@ -36,8 +36,7 @@ function addEnding() {
     }
 
     if (
-      /[$&+,:;=?@#|'<>^*()%!-]/.test(endingName.value) ||
-      endingName.value === "."
+      /[$&+,:;=?@#|'<>^*()%!-]|[.](?![a-zA-Z0-9])|([a-zA-Z0-9])(?!==)[.]/.test(endingName.value)
     ) {
       $q.notify({
         type: "info",
