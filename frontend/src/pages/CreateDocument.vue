@@ -41,7 +41,7 @@ const inputFieldInput = reactive({
   }),
 });
 const editorInput = reactive({
-  text: ''
+  text: ""
 });
 const radioChoiceInput = reactive({
   name: "",

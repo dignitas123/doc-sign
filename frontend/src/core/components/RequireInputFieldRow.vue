@@ -2,10 +2,7 @@
 import { ref, watch } from "vue";
 
 const props = defineProps({
-  modelValue: {
-    type: Object,
-    default: () => {},
-  },
+  modelValue: Object,
   placeholder: {
     type: String,
     default: "Input Field Name",

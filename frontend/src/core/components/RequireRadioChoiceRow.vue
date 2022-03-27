@@ -1,13 +1,10 @@
 <script setup>
 import { useQuasar } from "quasar";
-import { ref } from "vue";
+import { ref, watch } from "vue";
 const $q = useQuasar();
 
 const props = defineProps({
-  modelValue: {
-    type: Object,
-    default: () => {},
-  },
+  modelValue: Object,
 });
 
 defineEmits(["update:modelValue"]);
@@ -15,12 +12,29 @@ defineEmits(["update:modelValue"]);
 const val = ref(props.modelValue);
 const choiceName = ref("");
 
-const checkBoxDisabledValues = ref([]);
+const checkBoxValues = ref([]);
+watch(
+  () => [...checkBoxValues.value],
+  (newValues, oldValues) => {
+    if (val.value.radioChoice === "single_choice") {
+      const checkedValues = newValues.filter((el) => el === true).length;
+      if (checkedValues > 1) {
+        // find out which value changed
+        const newValueIndex = newValues.findIndex(
+          (el, index) => el !== oldValues[index]
+        );
+        checkBoxValues.value = checkBoxValues.value.map((el, index) =>
+          index === newValueIndex ? el : false
+        );
+      }
+    }
+  }
+);
 
 function addRadioChoice() {
   if (choiceName.value) {
     val.value.radioChoiceNames.push(choiceName.value);
-    checkBoxDisabledValues.value.push(false);
+    checkBoxValues.value.push(false);
     choiceName.value = "";
   } else {
     $q.notify({
@@ -33,7 +47,7 @@ function addRadioChoice() {
 
 function removeRadioChoice() {
   val.value.radioChoiceNames.pop();
-  checkBoxDisabledValues.value.pop();
+  checkBoxValues.value.pop();
 }
 
 const radioChoiceTitleFocused = ref(false);
@@ -51,6 +65,15 @@ function focusChoiceName() {
 function unfocusChoiceName() {
   choiceNameFocused.value = false;
 }
+
+const currentChoice = ref(val.value.radioChoice); // `multiple_choice` or `single_choice`
+watch(val.value, () => {
+  const newChoice = val.value.radioChoice;
+  if(currentChoice.value === "multiple_choice" && newChoice === "single_choice")
+    checkBoxValues.value = checkBoxValues.value.map(_ => false);
+  if(currentChoice.value !== val.value.radioChoice)
+    currentChoice.value = val.value.radioChoice;
+})
 </script>
 
 <template>
@@ -134,11 +157,7 @@ function unfocusChoiceName() {
     <HyphenText>{{ val.name }}</HyphenText>
     <div v-if="val.radioChoiceNames.length" class="row">
       <div v-for="(name, i) in val.radioChoiceNames" :key="i">
-        <q-checkbox
-          v-model="checkBoxDisabledValues[i]"
-          color="primary"
-          :label="name"
-        />
+        <q-checkbox v-model="checkBoxValues[i]" color="primary" :label="name" />
       </div>
     </div>
   </template>
