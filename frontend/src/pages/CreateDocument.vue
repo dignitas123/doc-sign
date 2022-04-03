@@ -182,6 +182,7 @@ emitter.on("peComponentClosed", () => {
           @submit="onSubmit"
           @reset="onReset"
           class="q-gutter-md-top-bottom"
+          spellcheck="false"
         >
           <DocumentHeaderRow v-model="documentHeader" />
           <HyphenText>Add to Document</HyphenText>
