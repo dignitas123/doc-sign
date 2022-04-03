@@ -25,6 +25,7 @@ const val = ref(props.modelValue);
         dense
         autofocus
         :placeholder="placeholder"
+        maxlength="63"
       />
     </div>
   </div>

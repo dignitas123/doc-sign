@@ -87,6 +87,7 @@ watch(val.value, () => {
         @focus="focusRadioChoiceTitle"
         @blur="unfocusRadioChoiceTitle"
         @keydown.enter.prevent="$refs.choiceNameInput.$el.focus()"
+        maxlength="63"
       />
     </div>
     <div class="col-xs-12 col-sm-6 text-center">
@@ -119,6 +120,7 @@ watch(val.value, () => {
         @focus="focusChoiceName"
         @blur="unfocusChoiceName"
         @keydown.enter.prevent="addRadioChoice"
+        maxlength="63"
       />
     </div>
     <div

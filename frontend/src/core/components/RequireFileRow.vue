@@ -128,6 +128,7 @@ function itemRemoved(index) {
         @focus="focusFileDescription"
         @blur="unFocusFileDescription"
         @keydown.enter.prevent="$refs.endingNameInput.$el.focus()"
+        maxlength="63"
       />
     </div>
     <div
@@ -144,6 +145,7 @@ function itemRemoved(index) {
         @focus="focusFileEnding"
         @blur="unfocusFileEnding"
         @keydown.enter.prevent="addEnding"
+        maxlength="6"
       />
       <q-btn
         class="ml-small"

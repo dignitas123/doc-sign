@@ -44,6 +44,7 @@ function unfocusInputFieldName() {
         :placeholder="inputFieldNameFocused ? '' : placeholder"
         @focus="focusInputFieldName"
         @blur="unfocusInputFieldName"
+        maxlength="63"
       />
     </div>
     <div class="col-xs-12 col-sm-6 text-center">
