@@ -12,7 +12,7 @@ const accountCut = computed(() => {
 </script>
 
 <template>
-  <q-layout view="lHh Lpr lFf">
+  <q-layout view="lHh Lpr lFf" id="mainLayout">
     <q-header>
       <q-toolbar id="main-layout-toolbar">
         <q-toolbar-title>
@@ -51,3 +51,9 @@ const accountCut = computed(() => {
     </q-page-container>
   </q-layout>
 </template>
+
+<style>
+#mainLayout {
+  background: var(--q-info);
+}
+</style>

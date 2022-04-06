@@ -219,6 +219,7 @@ emitter.on("peComponentClosed", () => {
 
 <style lang="scss" scoped>
 .create-document {
+  background: var(--q-secondary);
   top: 20px;
   max-width: 552px;
   min-height: 92%;
