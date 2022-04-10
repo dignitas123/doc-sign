@@ -1,8 +1,15 @@
 <script setup>
-import { ref, watch } from "vue";
+import { ref, watch, reactive } from "vue";
 
 const props = defineProps({
-  modelValue: Object,
+  modelValue: {
+    type: Object,
+    default: () => {},
+  },
+  preview: {
+    type: Boolean,
+    default: false,
+  },
   placeholder: {
     type: String,
     default: "Input Field Name",
@@ -10,7 +17,21 @@ const props = defineProps({
 });
 defineEmits(["update:modelValue"]);
 
-const val = ref(props.modelValue);
+function getModelValue() {
+  return (
+    props.modelValue ??
+    reactive({
+      name: "",
+      inputFieldAllowed: reactive({
+        Text: true,
+        Numbers: false,
+        SpecialCharacters: false,
+      }),
+    })
+  );
+}
+
+const val = ref(getModelValue());
 
 watch(val.value.inputFieldAllowed, () => {
   let allFalse = (arr) => arr.every((v) => v === false);
@@ -35,6 +56,10 @@ function unfocusInputFieldName() {
 </script>
 
 <template>
+  <div class="row justify-end" v-if="preview">
+    <q-btn dense flat icon="edit" size="xs" />
+    <q-btn dense flat icon="delete" size="xs" />
+  </div>
   <div class="row">
     <div class="col-xs-12 col-sm-6">
       <q-input
@@ -65,5 +90,5 @@ function unfocusInputFieldName() {
       />
     </div>
   </div>
-  <AddButton />
+  <AddButton v-if="!preview" />
 </template>

@@ -9,7 +9,7 @@ const routes = [
   },
   {
     path: "/documents/create",
-    component: () => import("src/pages/CreateDocument.vue"),
+    component: () => import("src/pages/create-document/Index.vue"),
   },
   { path: "/signs", component: () => import("src/pages/maintabs/Signs.vue") },
   {
