@@ -43,7 +43,7 @@ module.exports = configure(function (ctx) {
     // Full list of options: https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-build
     build: {
       vueRouterMode: "history", // available values: 'hash', 'history'
-
+      sourceMap: true,
       // transpile: false,
       // publicPath: '/',
 
@@ -53,10 +53,10 @@ module.exports = configure(function (ctx) {
       // transpileDependencies: [],
 
       // rtl: true, // https://quasar.dev/options/rtl-support
-      // preloadChunks: true,
-      // showProgress: false,
-      // gzip: true,
-      // analyze: true,
+      preloadChunks: true,
+      showProgress: true,
+      gzip: true,
+      analyze: true,
 
       // Options below are automatically set depending on the env, set them if you want to override
       // extractCSS: false,
@@ -68,9 +68,9 @@ module.exports = configure(function (ctx) {
           .plugin("eslint-webpack-plugin")
           .use(ESLintPlugin, [{ extensions: ["js", "vue"] }]);
       },
-    },
+  },
 
-    // Full list of options: https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-devServer
+    // Full list of options: https://qpuasar.dev/quasar-cli/quasar-conf-js#Property%3A-devServer
     devServer: {
       server: {
         type: "http",
