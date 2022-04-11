@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed, reactive } from "vue";
+import { ref, computed, reactive, watch } from "vue";
 import { useQuasar } from "quasar";
 
 const $q = useQuasar();
@@ -7,6 +7,11 @@ const $q = useQuasar();
 const props = defineProps({
   modelValue: Object,
 });
+
+const editorRef = ref();
+watch(editorRef, () => {
+  editorRef.value.focus();
+})
 
 defineEmits(["update:modelValue"]);
 
@@ -55,7 +60,7 @@ const editorToolBarItems = computed(() => {
 <template>
   <div class="row items-center">
     <div class="col">
-      <q-editor v-model="val.text" :toolbar="editorToolBarItems" />
+      <q-editor ref="editorRef" v-model="val.text" :toolbar="editorToolBarItems" />
     </div>
   </div>
   <AddButton />

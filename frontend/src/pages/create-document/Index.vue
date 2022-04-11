@@ -9,11 +9,11 @@ import { useModel } from "./Index.model";
 const {
   documentHeader,
   activePeComponent,
+  componentPreviewList,
   addButtonsRowClicked,
   addButtonsRowHover,
   resetActivePeComponent,
   addComponentToPreviewList,
-  componentPreviewList,
 } = useModel();
 
 const $q = useQuasar();
@@ -88,10 +88,14 @@ emitter.on("peComponentAdded", () => {
             @buttonClicked="addButtonsRowClicked"
             @mouseHover="addButtonsRowHover"
           />
-          <component
-            :is="activePeComponent.component"
-            v-model="activePeComponent.vModel"
-          />
+          <Transition name="fade">
+            <div v-if="activePeComponent.component" class="q-gutter-xs">
+              <component
+                :is="activePeComponent.component"
+                v-model="activePeComponent.vModel"
+              />
+            </div>
+          </Transition>
         </q-form>
         <q-resize-observer :debounce="0" @resize="onResize" />
       </div>
@@ -129,5 +133,14 @@ emitter.on("peComponentAdded", () => {
 
 .q-field--highlighted {
   color: transparent !important;
+}
+
+.fade-enter-active {
+  transition: opacity 0.5s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
 }
 </style>

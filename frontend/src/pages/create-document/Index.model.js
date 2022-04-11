@@ -1,4 +1,5 @@
 import { reactive, ref } from "vue";
+import InputFieldRow from "./components/Input/RequireInputFieldRow.vue";
 import RequireInputFieldRow from "./components/Input/RequireInputFieldRow.vue";
 import RequireInputFieldRowGrey from "./components/Input/RequireInputFieldRowGrey.vue";
 import RequireTextRow from "./components/Text/RequireTextRow.vue";
@@ -28,6 +29,8 @@ export function useModel() {
     name: "",
   });
 
+
+  const inputFieldRow = Object.freeze(InputFieldRow);
   const requireInputFieldRow = Object.freeze(RequireInputFieldRow);
   const requireInputFieldRowGrey = Object.freeze(RequireInputFieldRowGrey);
   const inputFieldInput = reactive({
@@ -141,7 +144,7 @@ export function useModel() {
   function addComponentToPreviewList(component) {
     if (component.name === requireField.Input) {
       componentPreviewList.value.push({
-        component: requireInputFieldRow,
+        component: inputFieldRow,
         props: {
           preview: true,
         },
@@ -163,10 +166,10 @@ export function useModel() {
   return {
     documentHeader,
     activePeComponent,
+    componentPreviewList,
     addButtonsRowClicked,
     addButtonsRowHover,
     resetActivePeComponent,
     addComponentToPreviewList,
-    componentPreviewList,
   };
 }
