@@ -19,6 +19,7 @@ function getModelValue() {
         Numbers: false,
         SpecialCharacters: false,
       }),
+      textAreaSize: 'small_input_field'
     })
   );
 }

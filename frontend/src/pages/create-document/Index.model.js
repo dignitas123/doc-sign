@@ -40,6 +40,7 @@ export function useModel() {
       Numbers: false,
       SpecialCharacters: false,
     }),
+    textAreaSize: 'small_input_field',
   });
   function resetInputFieldInput() {
     inputFieldInput.name = "";
@@ -48,6 +49,7 @@ export function useModel() {
       Numbers: false,
       SpecialCharacters: false,
     });
+    inputFieldInput.textAreaSize = 'small_input_field';
   }
 
   const requireTextRow = Object.freeze(RequireTextRow);
@@ -151,6 +153,7 @@ export function useModel() {
         vModel: reactive({
           name: inputFieldInput.name,
           inputFieldAllowed: { ...inputFieldInput.inputFieldAllowed },
+          textAreaSize: { ...inputFieldInput.textAreaSize },
         }),
       });
     } else if (component.name === requireField.Text) {

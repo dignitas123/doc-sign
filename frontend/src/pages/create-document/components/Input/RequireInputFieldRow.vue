@@ -13,7 +13,7 @@ const props = defineProps({
   },
   placeholder: {
     type: String,
-    default: "Input Field Name",
+    default: "Input Label (Name, Address, ...)",
   },
 });
 defineEmits(["update:modelValue"]);
@@ -28,19 +28,19 @@ function getModelValue() {
         Numbers: false,
         SpecialCharacters: false,
       }),
+      textAreaSize: 'small_input_field',
     })
   );
 }
 
 const val = ref(getModelValue());
 
+const allFalse = (arr) => arr.every((v) => v === false);
+
 watch(val.value.inputFieldAllowed, () => {
-  let allFalse = (arr) => arr.every((v) => v === false);
   if (
     allFalse(
-      Object.values(val.value.inputFieldAllowed).map((val) => {
-        return val;
-      })
+      Object.values(val.value.inputFieldAllowed).map((val) => val)
     )
   ) {
     val.value.inputFieldAllowed.Text = true;
@@ -82,17 +82,24 @@ function unfocusInputFieldName() {
           v-model="val.inputFieldAllowed.Text"
           label="A,b,c"
           color="primary"
-        />
+        ><q-tooltip :delay="750" :offset="[0, 10]">Allow alphabetical letters.</q-tooltip></q-checkbox>
         <q-checkbox
           v-model="val.inputFieldAllowed.Numbers"
           label="0,1,2"
           color="primary"
-        />
+        ><q-tooltip :delay="750" :offset="[0, 10]">Allow numbers.</q-tooltip></q-checkbox>
         <q-checkbox
           v-model="val.inputFieldAllowed.SpecialCharacters"
           label="*,$,%"
           color="primary"
-        />
+        ><q-tooltip :delay="750" :offset="[0, 10]">Allow special characters.</q-tooltip></q-checkbox>
+      </div>
+    </div>
+    <div class="row justify-center">
+      <div class="col-xs-12 col-sm-10 text-center">
+        <q-radio v-model="val.textAreaSize" val="small_input_field" label="Small Input Field" />
+        <q-radio v-model="val.textAreaSize" val="big_input_field" label="Big Input Field" />
+        <q-radio v-model="val.textAreaSize" val="textarea" label="Textarea" />
       </div>
     </div>
     <AddButton v-if="!preview" />
