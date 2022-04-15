@@ -31,7 +31,8 @@ body.desktop {
 }
 
 // turn off double click text selection
-.q-checkbox__label.q-anchor--skip {
+.q-checkbox__label.q-anchor--skip,
+.q-radio__label.q-anchor--skip {
   @include non-selectable;
 }
 
