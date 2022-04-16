@@ -29,6 +29,7 @@ function getModelValue() {
         SpecialCharacters: false,
       }),
       textAreaSize: 'small_input_field',
+      maxLength: 64,
     })
   );
 }
@@ -47,6 +48,15 @@ watch(val.value.inputFieldAllowed, () => {
   }
 });
 
+watch(() => val.value.textAreaSize, (textAreaSize) => {
+  if(textAreaSize === 'small_input_field' || textAreaSize === 'textarea') {
+    const currentName = val.value.name;
+    if(currentName.length > 26) {
+      val.value.name = currentName.slice(0, val.value.name.length - 26);
+    }
+  }
+});
+
 const inputFieldNameFocused = ref(false);
 function focusInputFieldName() {
   inputFieldNameFocused.value = true;
@@ -60,6 +70,7 @@ function unfocusInputFieldName() {
   <template v-if="preview">
     <div class="row justify-end">
       <q-btn dense flat icon="edit" size="xs" />
+      <q-btn dense flat icon="content_copy" size="xs" />
       <q-btn dense flat icon="delete" size="xs" />
     </div>
     <InputFieldRow v-if="preview" v-model="val" />
@@ -74,7 +85,7 @@ function unfocusInputFieldName() {
           :placeholder="inputFieldNameFocused ? '' : placeholder"
           @focus="focusInputFieldName"
           @blur="unfocusInputFieldName"
-          maxlength="63"
+          :maxlength="val.textAreaSize === 'big_input_field' ? val.maxLength : val.textAreaSize === 'small_input_field' ? 26 : 26"
         />
       </div>
       <div class="col-xs-12 col-sm-6 text-center">
@@ -102,6 +113,10 @@ function unfocusInputFieldName() {
         <q-radio v-model="val.textAreaSize" val="textarea" label="Textarea" />
       </div>
     </div>
+    <template v-if="val.name">
+    <HyphenText class="mt-small mb-big">Preview</HyphenText>
+      <InputFieldRow v-model="val" preview />
+    </template>
     <AddButton v-if="!preview" />
   </template>
 </template>

@@ -1,5 +1,7 @@
 // pixel variables
 $small-pixel: 4px;
+$medium-pixel: 8px;
+$big-pixel: 12px;
 
 // mixin
 @mixin non-selectable {
@@ -66,4 +68,44 @@ body.desktop {
 
 .m-small {
   margin: $small-pixel;
+}
+
+.ml-medium {
+  margin-left: $medium-pixel;
+}
+
+.mr-medium {
+  margin-right: $medium-pixel;
+}
+
+.mt-medium {
+  margin-top: $medium-pixel;
+}
+
+.mb-medium {
+  margin-bottom: $medium-pixel;
+}
+
+.m-medium {
+  margin: $medium-pixel;
+}
+
+.ml-big {
+  margin-left: $big-pixel;
+}
+
+.mr-big {
+  margin-right: $big-pixel;
+}
+
+.mt-big {
+  margin-top: $big-pixel;
+}
+
+.mb-big {
+  margin-bottom: $big-pixel;
+}
+
+.m-big {
+  margin: $big-pixel;
 }

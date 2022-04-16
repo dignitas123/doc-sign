@@ -41,6 +41,7 @@ export function useModel() {
       SpecialCharacters: false,
     }),
     textAreaSize: 'small_input_field',
+    maxLength: 64,
   });
   function resetInputFieldInput() {
     inputFieldInput.name = "";

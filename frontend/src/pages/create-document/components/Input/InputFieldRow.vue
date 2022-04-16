@@ -1,10 +1,14 @@
 <script setup>
-import { ref, watch, reactive } from "vue";
+import { ref, watch, reactive, computed } from "vue";
 
 const props = defineProps({
   modelValue: {
     type: Object,
     default: () => {},
+  },
+  preview: {
+    type: Boolean,
+    default: false,
   }
 });
 defineEmits(["update:modelValue"]);
@@ -19,7 +23,8 @@ function getModelValue() {
         Numbers: false,
         SpecialCharacters: false,
       }),
-      textAreaSize: 'small_input_field'
+      textAreaSize: 'small_input_field',
+      maxLength: 64
     })
   );
 }
@@ -48,21 +53,37 @@ function focusInputFieldName() {
 function unfocusInputFieldName() {
   inputFieldNameFocused.value = false;
 }
+
+const textRowClass = computed(() => {
+  return val.value.textAreaSize === 'big_input_field' ? ['col-grow', 'text-center'] : val.value.textAreaSize === 'small_input_field' ? ['col-xs-12 col-sm-6'] : ['col-xs-12 col-sm-6']
+})
+
+const descriptionRowClass = computed(() => {
+  return val.value.textAreaSize === 'big_input_field' ? 'col-aut' : val.value.textAreaSize === 'small_input_field' ? ['col-xs-12','col-sm-6','text-center'] : ['col-xs-12','col-sm-6','text-center']
+})
+
+const placeHolder = computed(() => {
+  if(props.preview) {
+    return val.value.textAreaSize === 'big_input_field' ? '63 characters allowed' : val.value.textAreaSize === 'small_input_field' ? '26 characters allowed' : 'Autogrow Textarea\n2000 Characters allowed';
+  } else return '';
+})
 </script>
 
 <template>
   <div class="row" style="align-items: baseline;">
-    <div class="col-auto">
+    <div :class="descriptionRowClass">
       <p class="mr-small"><b>{{val.name}}:</b></p>
     </div>
-    <div class="col-grow text-center">
+    <div :class="textRowClass">
       <q-input
         v-model="textInput"
         outlined
         dense
+        :autogrow="val.textAreaSize === 'textarea'"
         @focus="focusInputFieldName"
         @blur="unfocusInputFieldName"
-        maxlength="63"
+        :placeholder="placeHolder"
+        :maxlength="val.textAreaSize === 'big_input_field' ? val.maxLength : val.textAreaSize === 'small_input_field' ? 26 : 2000"
       />
     </div>
   </div>

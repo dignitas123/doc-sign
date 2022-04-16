@@ -156,7 +156,7 @@ watch(val.value, () => {
     </div>
   </div>
   <template v-if="val.name">
-    <HyphenText>{{ val.name }}</HyphenText>
+    <HyphenText class="mt-medium mb-medium">{{ val.name }}</HyphenText>
     <div v-if="val.radioChoiceNames.length" class="row">
       <div v-for="(name, i) in val.radioChoiceNames" :key="i">
         <q-checkbox v-model="checkBoxValues[i]" color="primary" :label="name" />
