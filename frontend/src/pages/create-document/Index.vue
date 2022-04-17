@@ -53,8 +53,17 @@ emitter.on("peComponentClosed", () => {
   resetActivePeComponent();
 });
 
-emitter.on("peComponentAdded", () => {
-  addComponentToPreviewList(activePeComponent);
+emitter.on("peComponentAdded", (data) => {
+  if (data.validated) {
+    addComponentToPreviewList(activePeComponent);
+  } else {
+    $q.notify({
+      color: "red-5",
+      textColor: "white",
+      icon: "warning",
+      message: data.message,
+    });
+  }
 });
 </script>
 

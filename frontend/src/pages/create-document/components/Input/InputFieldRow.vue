@@ -9,7 +9,7 @@ const props = defineProps({
   preview: {
     type: Boolean,
     default: false,
-  }
+  },
 });
 defineEmits(["update:modelValue"]);
 
@@ -23,8 +23,8 @@ function getModelValue() {
         Numbers: false,
         SpecialCharacters: false,
       }),
-      textAreaSize: 'small_input_field',
-      maxLength: 64
+      textAreaSize: "small_input_field",
+      maxLength: 64,
     })
   );
 }
@@ -55,24 +55,38 @@ function unfocusInputFieldName() {
 }
 
 const textRowClass = computed(() => {
-  return val.value.textAreaSize === 'big_input_field' ? ['col-grow', 'text-center'] : val.value.textAreaSize === 'small_input_field' ? ['col-xs-12 col-sm-6'] : ['col-xs-12 col-sm-6']
-})
+  return val.value.textAreaSize === "big_input_field"
+    ? ["col-grow", "text-center"]
+    : val.value.textAreaSize === "small_input_field"
+    ? ["col-xs-12 col-sm-6"]
+    : ["col-xs-12 col-sm-6"];
+});
 
 const descriptionRowClass = computed(() => {
-  return val.value.textAreaSize === 'big_input_field' ? 'col-aut' : val.value.textAreaSize === 'small_input_field' ? ['col-xs-12','col-sm-6','text-center'] : ['col-xs-12','col-sm-6','text-center']
-})
+  return val.value.textAreaSize === "big_input_field"
+    ? "col-aut"
+    : val.value.textAreaSize === "small_input_field"
+    ? ["col-xs-12", "col-sm-6", "text-center"]
+    : ["col-xs-12", "col-sm-6", "text-center"];
+});
 
 const placeHolder = computed(() => {
-  if(props.preview) {
-    return val.value.textAreaSize === 'big_input_field' ? '63 characters allowed' : val.value.textAreaSize === 'small_input_field' ? '26 characters allowed' : 'Autogrow Textarea\n2000 Characters allowed';
-  } else return '';
-})
+  if (props.preview) {
+    return val.value.textAreaSize === "big_input_field"
+      ? "63 characters allowed"
+      : val.value.textAreaSize === "small_input_field"
+      ? "26 characters allowed"
+      : "Autogrow Textarea\n2000 Characters allowed";
+  } else return "";
+});
 </script>
 
 <template>
-  <div class="row" style="align-items: baseline;">
+  <div class="row items-baseline">
     <div :class="descriptionRowClass">
-      <p class="mr-small"><b>{{val.name}}:</b></p>
+      <p class="mr-small">
+        <b>{{ val.name }}:</b>
+      </p>
     </div>
     <div :class="textRowClass">
       <q-input
@@ -80,10 +94,16 @@ const placeHolder = computed(() => {
         outlined
         dense
         :autogrow="val.textAreaSize === 'textarea'"
+        :placeholder="placeHolder"
+        :maxlength="
+          val.textAreaSize === 'big_input_field'
+            ? val.maxLength
+            : val.textAreaSize === 'small_input_field'
+            ? 26
+            : 2000
+        "
         @focus="focusInputFieldName"
         @blur="unfocusInputFieldName"
-        :placeholder="placeHolder"
-        :maxlength="val.textAreaSize === 'big_input_field' ? val.maxLength : val.textAreaSize === 'small_input_field' ? 26 : 2000"
       />
     </div>
   </div>

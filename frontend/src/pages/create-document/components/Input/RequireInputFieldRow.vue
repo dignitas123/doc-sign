@@ -1,5 +1,5 @@
 <script setup>
-import { ref, watch, reactive } from "vue";
+import { ref, watch, reactive, computed } from "vue";
 import InputFieldRow from "./InputFieldRow.vue";
 
 const props = defineProps({
@@ -28,7 +28,7 @@ function getModelValue() {
         Numbers: false,
         SpecialCharacters: false,
       }),
-      textAreaSize: 'small_input_field',
+      textAreaSize: "small_input_field",
       maxLength: 64,
     })
   );
@@ -39,23 +39,22 @@ const val = ref(getModelValue());
 const allFalse = (arr) => arr.every((v) => v === false);
 
 watch(val.value.inputFieldAllowed, () => {
-  if (
-    allFalse(
-      Object.values(val.value.inputFieldAllowed).map((val) => val)
-    )
-  ) {
+  if (allFalse(Object.values(val.value.inputFieldAllowed).map((val) => val))) {
     val.value.inputFieldAllowed.Text = true;
   }
 });
 
-watch(() => val.value.textAreaSize, (textAreaSize) => {
-  if(textAreaSize === 'small_input_field' || textAreaSize === 'textarea') {
-    const currentName = val.value.name;
-    if(currentName.length > 26) {
-      val.value.name = currentName.slice(0, val.value.name.length - 26);
+watch(
+  () => val.value.textAreaSize,
+  (textAreaSize) => {
+    if (textAreaSize === "small_input_field" || textAreaSize === "textarea") {
+      const currentName = val.value.name;
+      if (currentName.length > 26) {
+        val.value.name = currentName.slice(0, val.value.name.length - 26);
+      }
     }
   }
-});
+);
 
 const inputFieldNameFocused = ref(false);
 function focusInputFieldName() {
@@ -64,6 +63,15 @@ function focusInputFieldName() {
 function unfocusInputFieldName() {
   inputFieldNameFocused.value = false;
 }
+
+// -- Validation
+const validated = computed(() => {
+  return !!val.value.name.length;
+});
+
+const validationMessage = computed(() => {
+  return validated.value ? "" : "Name of Input Field can't be empty.";
+});
 </script>
 
 <template>
@@ -85,7 +93,13 @@ function unfocusInputFieldName() {
           :placeholder="inputFieldNameFocused ? '' : placeholder"
           @focus="focusInputFieldName"
           @blur="unfocusInputFieldName"
-          :maxlength="val.textAreaSize === 'big_input_field' ? val.maxLength : val.textAreaSize === 'small_input_field' ? 26 : 26"
+          :maxlength="
+            val.textAreaSize === 'big_input_field'
+              ? val.maxLength
+              : val.textAreaSize === 'small_input_field'
+              ? 26
+              : 26
+          "
         />
       </div>
       <div class="col-xs-12 col-sm-6 text-center">
@@ -93,30 +107,51 @@ function unfocusInputFieldName() {
           v-model="val.inputFieldAllowed.Text"
           label="A,b,c"
           color="primary"
-        ><q-tooltip :delay="750" :offset="[0, 10]">Allow alphabetical letters.</q-tooltip></q-checkbox>
+          ><q-tooltip :delay="750" :offset="[0, 10]"
+            >Allow alphabetical letters.</q-tooltip
+          ></q-checkbox
+        >
         <q-checkbox
           v-model="val.inputFieldAllowed.Numbers"
           label="0,1,2"
           color="primary"
-        ><q-tooltip :delay="750" :offset="[0, 10]">Allow numbers.</q-tooltip></q-checkbox>
+          ><q-tooltip :delay="750" :offset="[0, 10]"
+            >Allow numbers.</q-tooltip
+          ></q-checkbox
+        >
         <q-checkbox
           v-model="val.inputFieldAllowed.SpecialCharacters"
           label="*,$,%"
           color="primary"
-        ><q-tooltip :delay="750" :offset="[0, 10]">Allow special characters.</q-tooltip></q-checkbox>
+          ><q-tooltip :delay="750" :offset="[0, 10]"
+            >Allow special characters.</q-tooltip
+          ></q-checkbox
+        >
       </div>
     </div>
     <div class="row justify-center">
       <div class="col-xs-12 col-sm-10 text-center">
-        <q-radio v-model="val.textAreaSize" val="small_input_field" label="Small Input Field" />
-        <q-radio v-model="val.textAreaSize" val="big_input_field" label="Big Input Field" />
+        <q-radio
+          v-model="val.textAreaSize"
+          val="small_input_field"
+          label="Small Input Field"
+        />
+        <q-radio
+          v-model="val.textAreaSize"
+          val="big_input_field"
+          label="Big Input Field"
+        />
         <q-radio v-model="val.textAreaSize" val="textarea" label="Textarea" />
       </div>
     </div>
     <template v-if="val.name">
-    <HyphenText class="mt-small mb-big">Preview</HyphenText>
+      <HyphenText class="mt-small mb-big">Preview</HyphenText>
       <InputFieldRow v-model="val" preview />
     </template>
-    <AddButton v-if="!preview" />
+    <AddButton
+      v-if="!preview"
+      :validated="validated"
+      :message="validationMessage"
+    />
   </template>
 </template>

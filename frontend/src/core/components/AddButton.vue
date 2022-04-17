@@ -1,8 +1,23 @@
 <script setup>
-import { inject } from 'vue';
-const emitter = inject('emitter');
+import { inject } from "vue";
+const emitter = inject("emitter");
 
-const emitAdd = () => emitter.emit("peComponentAdded");
+const props = defineProps({
+  validated: {
+    type: Boolean,
+    required: true,
+  },
+  message: {
+    type: String,
+    default: "",
+  },
+});
+
+const emitAdd = () =>
+  emitter.emit("peComponentAdded", {
+    validated: props.validated,
+    message: props.message,
+  });
 const emitClose = () => emitter.emit("peComponentClosed");
 </script>
 

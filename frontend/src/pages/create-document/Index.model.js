@@ -29,7 +29,6 @@ export function useModel() {
     name: "",
   });
 
-
   const inputFieldRow = Object.freeze(InputFieldRow);
   const requireInputFieldRow = Object.freeze(RequireInputFieldRow);
   const requireInputFieldRowGrey = Object.freeze(RequireInputFieldRowGrey);
@@ -40,7 +39,7 @@ export function useModel() {
       Numbers: false,
       SpecialCharacters: false,
     }),
-    textAreaSize: 'small_input_field',
+    textAreaSize: "small_input_field",
     maxLength: 64,
   });
   function resetInputFieldInput() {
@@ -50,7 +49,8 @@ export function useModel() {
       Numbers: false,
       SpecialCharacters: false,
     });
-    inputFieldInput.textAreaSize = 'small_input_field';
+    inputFieldInput.textAreaSize = "small_input_field";
+    inputFieldInput.maxLength = 64;
   }
 
   const requireTextRow = Object.freeze(RequireTextRow);
@@ -154,7 +154,8 @@ export function useModel() {
         vModel: reactive({
           name: inputFieldInput.name,
           inputFieldAllowed: { ...inputFieldInput.inputFieldAllowed },
-          textAreaSize: { ...inputFieldInput.textAreaSize },
+          textAreaSize: inputFieldInput.textAreaSize,
+          maxLength: inputFieldInput.maxLength,
         }),
       });
     } else if (component.name === requireField.Text) {
