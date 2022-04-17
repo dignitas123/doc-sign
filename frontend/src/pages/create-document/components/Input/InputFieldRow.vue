@@ -76,7 +76,7 @@ const placeHolder = computed(() => {
       ? "63 characters allowed"
       : val.value.textAreaSize === "small_input_field"
       ? "26 characters allowed"
-      : "Autogrow Textarea\n2000 Characters allowed";
+      : "Autogrow Textarea\n300 Characters allowed";
   } else return "";
 });
 </script>
@@ -100,7 +100,7 @@ const placeHolder = computed(() => {
             ? val.maxLength
             : val.textAreaSize === 'small_input_field'
             ? 26
-            : 2000
+            : 300
         "
         @focus="focusInputFieldName"
         @blur="unfocusInputFieldName"
