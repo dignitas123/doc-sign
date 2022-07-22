@@ -1,6 +1,10 @@
 <script setup>
-import { ref, watch, reactive, computed } from "vue";
+import { ref, watch, reactive, computed, inject } from "vue";
 import InputFieldRow from "./InputFieldRow.vue";
+import RequireInputFieldRow from "./RequireInputFieldRow.vue";
+import SaveChangesButton from "../../../../core/components/SaveChangesButton.vue";
+
+const emitter = inject("emitter");
 
 const props = defineProps({
   modelValue: {
@@ -15,7 +19,12 @@ const props = defineProps({
     type: String,
     default: "Input Label (Name, Address, ...)",
   },
+  editActive: {
+    type: Boolean,
+    default: false,
+  },
 });
+
 defineEmits(["update:modelValue"]);
 
 function getModelValue() {
@@ -35,6 +44,7 @@ function getModelValue() {
 }
 
 const val = ref(getModelValue());
+const startValue = Object.assign({}, val.value);
 
 const allFalse = (arr) => arr.every((v) => v === false);
 
@@ -64,7 +74,6 @@ function unfocusInputFieldName() {
   inputFieldNameFocused.value = false;
 }
 
-// -- Validation
 const validated = computed(() => {
   return !!val.value.name.length;
 });
@@ -72,16 +81,43 @@ const validated = computed(() => {
 const validationMessage = computed(() => {
   return validated.value ? "" : "Name of Input Field can't be empty.";
 });
+
+const editActiveValue = ref(props.editActive);
+
+function setEditActive() {
+  editActiveValue.value = true;
+}
+
+emitter.on("editComponentChanged", (data) => {
+  if (data.validated) {
+    editActiveValue.value = false;
+  }
+});
+
+emitter.on("editComponentClosed", () => {
+  editActiveValue.value = false;
+  val.value = reactive(startValue);
+});
+
+function inputEnterKeyFired() {
+  emitter.emit("peComponentAdded", {
+    validated: validated.value,
+    message: validationMessage.value,
+  });
+}
 </script>
 
 <template>
   <template v-if="preview">
     <div class="row justify-end">
-      <q-btn dense flat icon="edit" size="xs" />
+      <q-btn dense flat icon="edit" size="xs" @click="setEditActive" />
       <q-btn dense flat icon="content_copy" size="xs" />
       <q-btn dense flat icon="delete" size="xs" />
     </div>
-    <InputFieldRow v-if="preview" v-model="val" />
+    <div v-if="editActiveValue" class="dotted-border">
+      <RequireInputFieldRow v-model="val" editActive />
+    </div>
+    <InputFieldRow v-else v-model="val" />
   </template>
   <template v-else>
     <div class="row">
@@ -93,6 +129,7 @@ const validationMessage = computed(() => {
           :placeholder="inputFieldNameFocused ? '' : placeholder"
           @focus="focusInputFieldName"
           @blur="unfocusInputFieldName"
+          @keyup.enter="inputEnterKeyFired"
           :maxlength="
             val.textAreaSize === 'big_input_field'
               ? val.maxLength
@@ -148,10 +185,11 @@ const validationMessage = computed(() => {
       <HyphenText class="mt-small mb-big">Preview</HyphenText>
       <InputFieldRow v-model="val" preview />
     </template>
-    <AddButton
-      v-if="!preview"
+    <SaveChangesButton
+      v-if="editActive"
       :validated="validated"
       :message="validationMessage"
     />
+    <AddButton v-else :validated="validated" :message="validationMessage" />
   </template>
 </template>

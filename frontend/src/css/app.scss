@@ -3,6 +3,8 @@ $small-pixel: 4px;
 $medium-pixel: 8px;
 $big-pixel: 12px;
 
+@import "./quasar.variables.scss";
+
 // mixin
 @mixin non-selectable {
   user-select: none;
@@ -108,4 +110,9 @@ body.desktop {
 
 .m-big {
   margin: $big-pixel;
+}
+
+.dotted-border {
+  border: $small-pixel dashed $info;
+  padding: $small-pixel;
 }

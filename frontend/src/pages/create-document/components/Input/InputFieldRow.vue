@@ -58,8 +58,8 @@ const textRowClass = computed(() => {
   return val.value.textAreaSize === "big_input_field"
     ? ["col-grow", "text-center"]
     : val.value.textAreaSize === "small_input_field"
-    ? ["col-xs-12 col-sm-6"]
-    : ["col-xs-12 col-sm-6"];
+    ? ["col-xs-12 col-sm-6 mb-small"]
+    : ["col-xs-12 col-sm-6 mb-small"];
 });
 
 const descriptionRowClass = computed(() => {

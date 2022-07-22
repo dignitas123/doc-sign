@@ -168,6 +168,30 @@ export function useModel() {
     resetActivePeComponent();
   }
 
+  function changeSavesToComponentPreview(component) {
+    if (component.name === requireField.Input) {
+      componentPreviewList.value.push({
+        component: inputFieldRow,
+        props: {
+          preview: true,
+        },
+        vModel: reactive({
+          name: inputFieldInput.name,
+          inputFieldAllowed: { ...inputFieldInput.inputFieldAllowed },
+          textAreaSize: inputFieldInput.textAreaSize,
+          maxLength: inputFieldInput.maxLength,
+        }),
+      });
+    } else if (component.name === requireField.Text) {
+      componentPreviewList.value.push(requireTextRow);
+    } else if (component.name === requireField.Radio) {
+      componentPreviewList.value.push(requireRadioChoiceRow);
+    } else if (component.name === requireField.File) {
+      componentPreviewList.value.push(requireFileRow);
+    }
+    resetActivePeComponent();
+  }
+
   return {
     documentHeader,
     activePeComponent,
@@ -176,5 +200,6 @@ export function useModel() {
     addButtonsRowHover,
     resetActivePeComponent,
     addComponentToPreviewList,
+    changeSavesToComponentPreview,
   };
 }

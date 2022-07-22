@@ -14,6 +14,7 @@ const {
   addButtonsRowHover,
   resetActivePeComponent,
   addComponentToPreviewList,
+  changeSavesToComponentPreview,
 } = useModel();
 
 const $q = useQuasar();
@@ -51,6 +52,19 @@ function onReset() {
 const emitter = inject("emitter");
 emitter.on("peComponentClosed", () => {
   resetActivePeComponent();
+});
+
+emitter.on("editComponentChanged", (data) => {
+  if (data.validated) {
+    changeSavesToComponentPreview(activePeComponent);
+  } else {
+    $q.notify({
+      color: "red-5",
+      textColor: "white",
+      icon: "warning",
+      message: data.message,
+    });
+  }
 });
 
 emitter.on("peComponentAdded", (data) => {
