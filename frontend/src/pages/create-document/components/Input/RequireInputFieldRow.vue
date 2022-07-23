@@ -105,6 +105,8 @@ function inputEnterKeyFired() {
     message: validationMessage.value,
   });
 }
+
+const deleteConfirm = ref(false);
 </script>
 
 <template>
@@ -112,7 +114,7 @@ function inputEnterKeyFired() {
     <div class="row justify-end">
       <q-btn dense flat icon="edit" size="xs" @click="setEditActive" />
       <q-btn dense flat icon="content_copy" size="xs" />
-      <q-btn dense flat icon="delete" size="xs" />
+      <q-btn dense flat icon="delete" size="xs" @click="deleteConfirm = true" />
     </div>
     <div v-if="editActiveValue" class="dotted-border">
       <RequireInputFieldRow v-model="val" editActive />
@@ -192,4 +194,16 @@ function inputEnterKeyFired() {
     />
     <AddButton v-else :validated="validated" :message="validationMessage" />
   </template>
+  <q-dialog v-model="deleteConfirm" persistent>
+  <q-card>
+    <q-card-section class="row items-center">
+      <span class="q-ml-sm">Do you really want to delete this row?</span>
+    </q-card-section>
+
+    <q-card-actions align="right">
+      <q-btn flat label="Cancel" color="primary" v-close-popup />
+      <q-btn flat label="Delete" color="primary" v-close-popup />
+    </q-card-actions>
+  </q-card>
+</q-dialog>
 </template>

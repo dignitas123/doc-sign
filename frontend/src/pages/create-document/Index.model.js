@@ -8,6 +8,7 @@ import RequireRadioChoiceRow from "./components/Radio/RequireRadioChoiceRow.vue"
 import RequireRadioChoiceRowGrey from "./components/Radio/RequireRadioChoiceRowGrey.vue";
 import RequireFileRow from "./components/File/RequireFileRow.vue";
 import RequireFileRowGrey from "./components/File/RequireFileRowGrey.vue";
+import { useQuasar } from "quasar";
 
 export function useModel() {
   // require Field names (add here if you need more)
@@ -19,6 +20,8 @@ export function useModel() {
   };
   // document header ref
   const documentHeader = ref("");
+
+  const $q = useQuasar();
 
   // BEGIN -- v-Model for components --
 
@@ -146,18 +149,27 @@ export function useModel() {
   const componentPreviewList = ref([]);
   function addComponentToPreviewList(component) {
     if (component.name === requireField.Input) {
-      componentPreviewList.value.push({
-        component: inputFieldRow,
-        props: {
-          preview: true,
-        },
-        vModel: reactive({
-          name: inputFieldInput.name,
-          inputFieldAllowed: { ...inputFieldInput.inputFieldAllowed },
-          textAreaSize: inputFieldInput.textAreaSize,
-          maxLength: inputFieldInput.maxLength,
-        }),
-      });
+      if(!componentPreviewList.value.map(componentDefinition => componentDefinition.vModel.name).includes(inputFieldInput.name)) {
+        componentPreviewList.value.push({
+          component: inputFieldRow,
+          props: {
+            preview: true,
+          },
+          vModel: reactive({
+            name: inputFieldInput.name,
+            inputFieldAllowed: { ...inputFieldInput.inputFieldAllowed },
+            textAreaSize: inputFieldInput.textAreaSize,
+            maxLength: inputFieldInput.maxLength,
+          }),
+        });
+      } else {
+        $q.notify({
+          color: "red-5",
+          textColor: "white",
+          icon: "warning",
+          message: `Row '${inputFieldInput.name}' already exists.`,
+        });
+      }
     } else if (component.name === requireField.Text) {
       componentPreviewList.value.push(requireTextRow);
     } else if (component.name === requireField.Radio) {
