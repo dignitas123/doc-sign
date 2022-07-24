@@ -1,8 +1,9 @@
 <script setup>
-import { ref, watch, reactive, computed, inject } from "vue";
+import { ref, watch, reactive, computed, inject, onMounted } from "vue";
 import InputFieldRow from "./InputFieldRow.vue";
 import RequireInputFieldRow from "./RequireInputFieldRow.vue";
 import SaveChangesButton from "../../../../core/components/SaveChangesButton.vue";
+import { RequireField } from "../../Index.model";
 
 const emitter = inject("emitter");
 
@@ -26,6 +27,14 @@ const props = defineProps({
 });
 
 defineEmits(["update:modelValue"]);
+
+const nameInputRef = ref(null);
+
+onMounted(() => {
+  if(nameInputRef.value) {
+    nameInputRef.value.focus();
+  }
+})
 
 function getModelValue() {
   return (
@@ -106,6 +115,13 @@ function inputEnterKeyFired() {
   });
 }
 
+function deleteInputFieldRow() {
+  emitter.emit("peComponentDeleted", {
+    type: RequireField.Input,
+    name: val.value.name,
+  })
+}
+
 const deleteConfirm = ref(false);
 </script>
 
@@ -125,6 +141,7 @@ const deleteConfirm = ref(false);
     <div class="row">
       <div class="col-xs-12 col-sm-6">
         <q-input
+          ref="nameInputRef"
           v-model="val.name"
           outlined
           dense
@@ -202,7 +219,7 @@ const deleteConfirm = ref(false);
 
     <q-card-actions align="right">
       <q-btn flat label="Cancel" color="primary" v-close-popup />
-      <q-btn flat label="Delete" color="primary" v-close-popup />
+      <q-btn flat label="Delete" color="primary" v-close-popup @click="deleteInputFieldRow" />
     </q-card-actions>
   </q-card>
 </q-dialog>

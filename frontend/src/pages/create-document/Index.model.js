@@ -10,14 +10,15 @@ import RequireFileRow from "./components/File/RequireFileRow.vue";
 import RequireFileRowGrey from "./components/File/RequireFileRowGrey.vue";
 import { useQuasar } from "quasar";
 
+// require Field names (add here if you need more)
+export const RequireField = {
+  Input: "Input",
+  Text: "Text",
+  Radio: "Radio",
+  File: "File",
+};
+
 export function useModel() {
-  // require Field names (add here if you need more)
-  const requireField = {
-    Input: "Input",
-    Text: "Text",
-    Radio: "Radio",
-    File: "File",
-  };
   // document header ref
   const documentHeader = ref("");
 
@@ -96,22 +97,22 @@ export function useModel() {
 
   // helper functions
   function addButtonsRowClicked(buttonType) {
-    if (buttonType === requireField.Input) {
+    if (buttonType === RequireField.Input) {
       activePeComponent.component = requireInputFieldRow;
       activePeComponent.vModel = inputFieldInput;
-      activePeComponent.name = requireField.Input;
-    } else if (buttonType === requireField.Text) {
+      activePeComponent.name = RequireField.Input;
+    } else if (buttonType === RequireField.Text) {
       activePeComponent.component = requireTextRow;
       activePeComponent.vModel = editorInput;
-      activePeComponent.name = requireField.Text;
-    } else if (buttonType === requireField.Radio) {
+      activePeComponent.name = RequireField.Text;
+    } else if (buttonType === RequireField.Radio) {
       activePeComponent.component = requireRadioChoiceRow;
       activePeComponent.vModel = radioChoiceInput;
-      activePeComponent.name = requireField.Radio;
-    } else if (buttonType === requireField.File) {
+      activePeComponent.name = RequireField.Radio;
+    } else if (buttonType === RequireField.File) {
       activePeComponent.component = requireFileRow;
       activePeComponent.vModel = fileRequireInput;
-      activePeComponent.name = requireField.File;
+      activePeComponent.name = RequireField.File;
     }
   }
 
@@ -132,13 +133,13 @@ export function useModel() {
   }
 
   function resetActivePeComponent() {
-    if (activePeComponent.name === requireField.Input) {
+    if (activePeComponent.name === RequireField.Input) {
       resetInputFieldInput();
-    } else if (activePeComponent.name === requireField.Text) {
+    } else if (activePeComponent.name === RequireField.Text) {
       resetEditorInput();
-    } else if (activePeComponent.name === requireField.Radio) {
+    } else if (activePeComponent.name === RequireField.Radio) {
       resetRadioChoiceInput();
-    } else if (activePeComponent.name === requireField.File) {
+    } else if (activePeComponent.name === RequireField.File) {
       resetFileRequireInput();
     }
     activePeComponent.component = undefined;
@@ -148,7 +149,7 @@ export function useModel() {
 
   const componentPreviewList = ref([]);
   function addComponentToPreviewList(component) {
-    if (component.name === requireField.Input) {
+    if (component.name === RequireField.Input) {
       if(!componentPreviewList.value.map(componentDefinition => componentDefinition.vModel.name).includes(inputFieldInput.name)) {
         componentPreviewList.value.push({
           component: inputFieldRow,
@@ -170,18 +171,30 @@ export function useModel() {
           message: `Row '${inputFieldInput.name}' already exists.`,
         });
       }
-    } else if (component.name === requireField.Text) {
+    } else if (component.name === RequireField.Text) {
       componentPreviewList.value.push(requireTextRow);
-    } else if (component.name === requireField.Radio) {
+    } else if (component.name === RequireField.Radio) {
       componentPreviewList.value.push(requireRadioChoiceRow);
-    } else if (component.name === requireField.File) {
+    } else if (component.name === RequireField.File) {
       componentPreviewList.value.push(requireFileRow);
     }
     resetActivePeComponent();
   }
 
+  function removeComponentFromPreviewList(requireField, name) {
+    if (requireField === RequireField.Input) {
+      componentPreviewList.value.splice(componentPreviewList.value.findIndex(el => el.vModel.name === name),1);
+    } else if (requireField === RequireField.Text) {
+      componentPreviewList.value.push(requireTextRow);
+    } else if (requireField === RequireField.Radio) {
+      componentPreviewList.value.push(requireRadioChoiceRow);
+    } else if (requireField === RequireField.File) {
+      componentPreviewList.value.push(requireFileRow);
+    }
+  }
+
   function changeSavesToComponentPreview(component) {
-    if (component.name === requireField.Input) {
+    if (component.name === RequireField.Input) {
       componentPreviewList.value.push({
         component: inputFieldRow,
         props: {
@@ -194,11 +207,11 @@ export function useModel() {
           maxLength: inputFieldInput.maxLength,
         }),
       });
-    } else if (component.name === requireField.Text) {
+    } else if (component.name === RequireField.Text) {
       componentPreviewList.value.push(requireTextRow);
-    } else if (component.name === requireField.Radio) {
+    } else if (component.name === RequireField.Radio) {
       componentPreviewList.value.push(requireRadioChoiceRow);
-    } else if (component.name === requireField.File) {
+    } else if (component.name === RequireField.File) {
       componentPreviewList.value.push(requireFileRow);
     }
     resetActivePeComponent();
@@ -212,6 +225,7 @@ export function useModel() {
     addButtonsRowHover,
     resetActivePeComponent,
     addComponentToPreviewList,
+    removeComponentFromPreviewList,
     changeSavesToComponentPreview,
   };
 }

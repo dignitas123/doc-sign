@@ -14,6 +14,7 @@ const {
   addButtonsRowHover,
   resetActivePeComponent,
   addComponentToPreviewList,
+  removeComponentFromPreviewList,
   changeSavesToComponentPreview,
 } = useModel();
 
@@ -79,6 +80,10 @@ emitter.on("peComponentAdded", (data) => {
     });
   }
 });
+
+emitter.on("peComponentDeleted", (data) => {
+  removeComponentFromPreviewList(data.type, data.name)
+})
 </script>
 
 <template>
