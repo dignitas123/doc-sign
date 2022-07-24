@@ -44,6 +44,7 @@ module.exports = configure(function (ctx) {
     build: {
       vueRouterMode: "history", // available values: 'hash', 'history'
       sourceMap: true,
+      devtool: "source-map",
       // transpile: false,
       // publicPath: '/',
 
@@ -68,7 +69,7 @@ module.exports = configure(function (ctx) {
           .plugin("eslint-webpack-plugin")
           .use(ESLintPlugin, [{ extensions: ["js", "vue"] }]);
       },
-  },
+    },
 
     // Full list of options: https://qpuasar.dev/quasar-cli/quasar-conf-js#Property%3A-devServer
     devServer: {

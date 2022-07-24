@@ -1,5 +1,4 @@
 import { reactive, ref } from "vue";
-import InputFieldRow from "./components/Input/RequireInputFieldRow.vue";
 import RequireInputFieldRow from "./components/Input/RequireInputFieldRow.vue";
 import RequireInputFieldRowGrey from "./components/Input/RequireInputFieldRowGrey.vue";
 import RequireTextRow from "./components/Text/RequireTextRow.vue";
@@ -33,7 +32,6 @@ export function useModel() {
     name: "",
   });
 
-  const inputFieldRow = Object.freeze(InputFieldRow);
   const requireInputFieldRow = Object.freeze(RequireInputFieldRow);
   const requireInputFieldRowGrey = Object.freeze(RequireInputFieldRowGrey);
   const inputFieldInput = reactive({
@@ -150,9 +148,13 @@ export function useModel() {
   const componentPreviewList = ref([]);
   function addComponentToPreviewList(component) {
     if (component.name === RequireField.Input) {
-      if(!componentPreviewList.value.map(componentDefinition => componentDefinition.vModel.name).includes(inputFieldInput.name)) {
+      if (
+        !componentPreviewList.value
+          .map((componentDefinition) => componentDefinition.vModel.name)
+          .includes(inputFieldInput.name)
+      ) {
         componentPreviewList.value.push({
-          component: inputFieldRow,
+          component: requireInputFieldRow,
           props: {
             preview: true,
           },
@@ -172,7 +174,28 @@ export function useModel() {
         });
       }
     } else if (component.name === RequireField.Text) {
-      componentPreviewList.value.push(requireTextRow);
+      if (
+        !componentPreviewList.value
+          .map((componentDefinition) => componentDefinition.vModel.text)
+          .includes(editorInput.text)
+      ) {
+        componentPreviewList.value.push({
+          component: requireTextRow,
+          props: {
+            preview: true,
+          },
+          vModel: reactive({
+            text: editorInput.text,
+          }),
+        });
+      } else {
+        $q.notify({
+          color: "red-5",
+          textColor: "white",
+          icon: "warning",
+          message: `A Text Row with the same text already exists.`,
+        });
+      }
     } else if (component.name === RequireField.Radio) {
       componentPreviewList.value.push(requireRadioChoiceRow);
     } else if (component.name === RequireField.File) {
@@ -183,9 +206,15 @@ export function useModel() {
 
   function removeComponentFromPreviewList(requireField, name) {
     if (requireField === RequireField.Input) {
-      componentPreviewList.value.splice(componentPreviewList.value.findIndex(el => el.vModel.name === name),1);
+      componentPreviewList.value.splice(
+        componentPreviewList.value.findIndex((el) => el.vModel.name === name),
+        1
+      );
     } else if (requireField === RequireField.Text) {
-      componentPreviewList.value.push(requireTextRow);
+      componentPreviewList.value.splice(
+        componentPreviewList.value.findIndex((el) => el.vModel.text === name),
+        1
+      );
     } else if (requireField === RequireField.Radio) {
       componentPreviewList.value.push(requireRadioChoiceRow);
     } else if (requireField === RequireField.File) {
@@ -196,7 +225,7 @@ export function useModel() {
   function changeSavesToComponentPreview(component) {
     if (component.name === RequireField.Input) {
       componentPreviewList.value.push({
-        component: inputFieldRow,
+        component: requireInputFieldRow,
         props: {
           preview: true,
         },

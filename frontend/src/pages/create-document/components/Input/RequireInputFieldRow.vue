@@ -31,10 +31,11 @@ defineEmits(["update:modelValue"]);
 const nameInputRef = ref(null);
 
 onMounted(() => {
-  if(nameInputRef.value) {
+  if (nameInputRef.value) {
     nameInputRef.value.focus();
   }
-})
+  startValue.value = { ...val.value };
+});
 
 function getModelValue() {
   return (
@@ -53,7 +54,7 @@ function getModelValue() {
 }
 
 const val = ref(getModelValue());
-const startValue = Object.assign({}, val.value);
+const startValue = ref();
 
 const allFalse = (arr) => arr.every((v) => v === false);
 
@@ -104,8 +105,10 @@ emitter.on("editComponentChanged", (data) => {
 });
 
 emitter.on("editComponentClosed", () => {
-  editActiveValue.value = false;
-  val.value = reactive(startValue);
+  if (editActiveValue.value) {
+    val.value = reactive(startValue);
+    editActiveValue.value = false;
+  }
 });
 
 function inputEnterKeyFired() {
@@ -119,7 +122,7 @@ function deleteInputFieldRow() {
   emitter.emit("peComponentDeleted", {
     type: RequireField.Input,
     name: val.value.name,
-  })
+  });
 }
 
 const deleteConfirm = ref(false);
@@ -212,15 +215,21 @@ const deleteConfirm = ref(false);
     <AddButton v-else :validated="validated" :message="validationMessage" />
   </template>
   <q-dialog v-model="deleteConfirm" persistent>
-  <q-card>
-    <q-card-section class="row items-center">
-      <span class="q-ml-sm">Do you really want to delete this row?</span>
-    </q-card-section>
+    <q-card>
+      <q-card-section class="row items-center">
+        <span class="q-ml-sm">Do you really want to delete this row?</span>
+      </q-card-section>
 
-    <q-card-actions align="right">
-      <q-btn flat label="Cancel" color="primary" v-close-popup />
-      <q-btn flat label="Delete" color="primary" v-close-popup @click="deleteInputFieldRow" />
-    </q-card-actions>
-  </q-card>
-</q-dialog>
+      <q-card-actions align="right">
+        <q-btn flat label="Cancel" color="primary" v-close-popup />
+        <q-btn
+          flat
+          label="Delete"
+          color="primary"
+          v-close-popup
+          @click="deleteInputFieldRow"
+        />
+      </q-card-actions>
+    </q-card>
+  </q-dialog>
 </template>

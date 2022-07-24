@@ -22,7 +22,7 @@ const emitClose = () => emitter.emit("editComponentClosed");
 </script>
 
 <template>
-  <div class="row justify-between">
+  <div class="row mt-small justify-between">
     <div class="col">
       <q-btn
         class="no-shadow"
