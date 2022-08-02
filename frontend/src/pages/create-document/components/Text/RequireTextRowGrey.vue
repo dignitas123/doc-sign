@@ -8,7 +8,7 @@ defineProps({
   modelValue: Object,
 });
 
-const emptyString = ref('');
+const emptyString = ref("");
 const toolbarTextDesktopItems = ref([
   ["link"],
   [
@@ -59,7 +59,7 @@ const editorToolBarItems = computed(() => {
       />
     </div>
   </div>
-  <AddButtonGrey />
+  <ConfirmCancelButtonGrey />
 </template>
 
 <style scoped>

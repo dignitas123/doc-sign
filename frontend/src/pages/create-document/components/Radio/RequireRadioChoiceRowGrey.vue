@@ -1,13 +1,14 @@
 <script setup>
 import { useQuasar } from "quasar";
 import { ref } from "vue";
+
 const $q = useQuasar();
 
 defineProps({
   modelValue: Object,
 });
 
-const emptyString = ref('')
+const emptyString = ref("");
 const multipleChoice = ref("multiple_choice");
 const atLeastOneChoice = ref(true);
 </script>
@@ -44,7 +45,13 @@ const atLeastOneChoice = ref(true);
   </div>
   <div class="row">
     <div class="col-xs-12 col-sm-6 mt-small">
-      <q-input v-model="emptyString" outlined disable placeholder="Choice Name" dense />
+      <q-input
+        v-model="emptyString"
+        outlined
+        disable
+        placeholder="Choice Name"
+        dense
+      />
     </div>
     <div
       class="col mt-small text-center ml-small justify-center"
@@ -81,7 +88,7 @@ const atLeastOneChoice = ref(true);
       />
     </div>
   </div>
-  <AddButtonGrey />
+  <ConfirmCancelButtonGrey />
 </template>
 
 <style lang="scss" scoped>

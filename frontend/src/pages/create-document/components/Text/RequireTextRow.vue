@@ -1,13 +1,10 @@
 <script setup>
-import { ref, computed, reactive, watch, inject, onMounted } from "vue";
+import { ref, computed, reactive, watch, onMounted } from "vue";
 import RequireTextRow from "./RequireTextRow.vue";
 import { useQuasar } from "quasar";
 import { RequireField } from "../../Index.model";
-import SaveChangesButton from "../../../../core/components/SaveChangesButton.vue";
 
 const $q = useQuasar();
-
-const emitter = inject("emitter");
 
 const props = defineProps({
   modelValue: {
@@ -29,7 +26,7 @@ watch(editorRef, () => {
   editorRef.value.focus();
 });
 
-defineEmits(["update:modelValue"]);
+const emit = defineEmits(["update:modelValue", "delete"]);
 
 const val = ref(props.modelValue);
 const startValue = ref();
@@ -92,7 +89,7 @@ function setEditActive() {
 }
 
 function deleteTextRow() {
-  emitter.emit("peComponentDeleted", {
+  emit("delete", {
     type: RequireField.Text,
     name: val.value.text,
   });
@@ -100,18 +97,18 @@ function deleteTextRow() {
 
 const deleteConfirm = ref(false);
 
-emitter.on("editComponentChanged", (data) => {
+function editComponentChanged(data) {
   if (data.validated) {
     editActiveValue.value = false;
   }
-});
+}
 
-emitter.on("editComponentClosed", () => {
+function editComponentClosed() {
   if (editActiveValue.value) {
     editActiveValue.value = false;
     val.value = startValue.value;
   }
-});
+}
 </script>
 
 <template>
@@ -136,12 +133,8 @@ emitter.on("editComponentClosed", () => {
         />
       </div>
     </div>
-    <SaveChangesButton
-      v-if="editActive"
-      :validated="validated"
-      :message="validationMessage"
-    />
-    <AddButton v-else :validated="validated" :message="validationMessage" />
+    <ConfirmCancelButton v-if="editActive" confirmText="Save Changes" @change="editComponentChanged" @close="editComponentClosed" />
+    <ConfirmCancelButton v-else confirmText="Add" />
   </template>
   <q-dialog v-model="deleteConfirm" persistent>
     <q-card>

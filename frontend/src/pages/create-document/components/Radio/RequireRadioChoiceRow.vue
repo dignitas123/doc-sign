@@ -1,6 +1,7 @@
 <script setup>
 import { useQuasar } from "quasar";
 import { ref, watch } from "vue";
+
 const $q = useQuasar();
 
 const props = defineProps({
@@ -69,11 +70,14 @@ function unfocusChoiceName() {
 const currentChoice = ref(val.value.radioChoice); // `multiple_choice` or `single_choice`
 watch(val.value, () => {
   const newChoice = val.value.radioChoice;
-  if(currentChoice.value === "multiple_choice" && newChoice === "single_choice")
-    checkBoxValues.value = checkBoxValues.value.map(_ => false);
-  if(currentChoice.value !== val.value.radioChoice)
+  if (
+    currentChoice.value === "multiple_choice" &&
+    newChoice === "single_choice"
+  )
+    checkBoxValues.value = checkBoxValues.value.map((_) => false);
+  if (currentChoice.value !== val.value.radioChoice)
     currentChoice.value = val.value.radioChoice;
-})
+});
 </script>
 
 <template>
@@ -172,7 +176,7 @@ watch(val.value, () => {
       />
     </div>
   </div>
-  <AddButton />
+  <ConfirmCancelButton confirmText="Add" />
 </template>
 
 <style lang="scss" scoped>

@@ -1,6 +1,7 @@
 <script setup>
 import { useQuasar } from "quasar";
 import { ref, watch } from "vue";
+
 const $q = useQuasar();
 
 const props = defineProps({
@@ -183,7 +184,7 @@ function itemRemoved(index) {
       />
     </div>
   </div>
-  <AddButton />
+  <ConfirmCancelButton confirmText="Add" />
 </template>
 
 <style scoped>

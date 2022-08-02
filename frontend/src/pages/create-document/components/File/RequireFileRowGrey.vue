@@ -21,7 +21,8 @@ const allowAllFileEndings = ref(false);
       />
     </div>
     <div
-      class="col text-center ml-small justify-center" :class="{'mt-small': $q.screen.lt.sm }"
+      class="col text-center ml-small justify-center"
+      :class="{ 'mt-small': $q.screen.lt.sm }"
       style="display: inline-flex"
     >
       <q-input
@@ -54,7 +55,7 @@ const allowAllFileEndings = ref(false);
       />
     </div>
   </div>
-  <AddButtonGrey />
+  <ConfirmCancelButtonGrey />
 </template>
 
 <style scoped>

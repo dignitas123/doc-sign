@@ -1,6 +1,6 @@
 <script setup>
 import { useQuasar } from "quasar";
-import { ref, inject } from "vue";
+import { ref } from "vue";
 import MainLayout from "src/layouts/MainLayout.vue";
 import DocumentHeaderRow from "./components/DocumentHeaderRow.vue";
 import AddButtonsRow from "./components/AddButtonsRow.vue";
@@ -28,6 +28,7 @@ function onResize(size) {
 }
 
 const accept = ref(false);
+
 function onSubmit() {
   if (accept.value !== true) {
     $q.notify({
@@ -50,12 +51,11 @@ function onReset() {
   accept.value = false;
 }
 
-const emitter = inject("emitter");
-emitter.on("peComponentClosed", () => {
+function peComponentClosed() {
   resetActivePeComponent();
-});
+}
 
-emitter.on("editComponentChanged", (data) => {
+function peComponentChanged(data) {
   if (data.validated) {
     changeSavesToComponentPreview(activePeComponent);
   } else {
@@ -66,9 +66,9 @@ emitter.on("editComponentChanged", (data) => {
       message: data.message,
     });
   }
-});
+}
 
-emitter.on("peComponentAdded", (data) => {
+function peComponentAdded(data) {
   if (data.validated) {
     addComponentToPreviewList(activePeComponent);
   } else {
@@ -79,11 +79,11 @@ emitter.on("peComponentAdded", (data) => {
       message: data.message,
     });
   }
-});
+}
 
-emitter.on("peComponentDeleted", (data) => {
-  removeComponentFromPreviewList(data.type, data.name)
-})
+function peComponentDeleted(data) {
+  removeComponentFromPreviewList(data.type, data.name);
+}
 </script>
 
 <template>
@@ -108,6 +108,8 @@ emitter.on("peComponentDeleted", (data) => {
               :is="componentDefinition.component"
               v-bind="componentDefinition.props"
               v-model="componentDefinition.vModel"
+              @change="peComponentChanged"
+              @delete="peComponentDeleted"
             />
           </template>
           <HyphenText>Add to Document</HyphenText>
@@ -121,6 +123,8 @@ emitter.on("peComponentDeleted", (data) => {
               <component
                 :is="activePeComponent.component"
                 v-model="activePeComponent.vModel"
+                @add="peComponentAdded"
+                @close="peComponentClosed"
               />
             </div>
           </Transition>

@@ -1,24 +1,12 @@
 <script setup>
-import { inject } from "vue";
-const emitter = inject("emitter");
-
-const props = defineProps({
-  validated: {
-    type: Boolean,
-    required: true,
-  },
-  message: {
+defineProps({
+  confirmText: {
     type: String,
-    default: "",
+    required: true,
   },
 });
 
-const emitAdd = () =>
-  emitter.emit("peComponentAdded", {
-    validated: props.validated,
-    message: props.message,
-  });
-const emitClose = () => emitter.emit("peComponentClosed");
+const emit = defineEmits(["confirm", "cancel"]);
 </script>
 
 <template>
@@ -29,9 +17,9 @@ const emitClose = () => emitter.emit("peComponentClosed");
         unelevated
         color="accent"
         style="width: 100%"
-        @click="emitAdd"
+        @click="emit('confirm')"
       >
-        Add
+        {{ confirmText }}
       </q-btn>
     </div>
     <div class="col- ml-small">
@@ -41,7 +29,7 @@ const emitClose = () => emitter.emit("peComponentClosed");
         outline
         icon="close"
         color="primary"
-        @click="emitClose"
+        @click="emit('cancel')"
       />
     </div>
   </div>

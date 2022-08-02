@@ -1,11 +1,8 @@
 <script setup>
-import { ref, watch, reactive, computed, inject, onMounted } from "vue";
+import { ref, watch, reactive, computed, onMounted } from "vue";
 import InputFieldRow from "./InputFieldRow.vue";
 import RequireInputFieldRow from "./RequireInputFieldRow.vue";
-import SaveChangesButton from "../../../../core/components/SaveChangesButton.vue";
 import { RequireField } from "../../Index.model";
-
-const emitter = inject("emitter");
 
 const props = defineProps({
   modelValue: {
@@ -23,10 +20,10 @@ const props = defineProps({
   editActive: {
     type: Boolean,
     default: false,
-  },
+  }
 });
 
-defineEmits(["update:modelValue"]);
+const emit = defineEmits(["update:modelValue", "add", "delete", "change", "close"]);
 
 const nameInputRef = ref(null);
 
@@ -92,37 +89,48 @@ const validationMessage = computed(() => {
   return validated.value ? "" : "Name of Input Field can't be empty.";
 });
 
-const editActiveValue = ref(props.editActive);
+const editActiveValue = ref(false);
+
+onMounted(() => {
+  editActiveValue.value = props.editActive;
+})
 
 function setEditActive() {
   editActiveValue.value = true;
 }
 
-emitter.on("editComponentChanged", (data) => {
-  if (data.validated) {
+function saveChanges() {
+  if (validated.value) {
     editActiveValue.value = false;
+    emit("close", val.value);
   }
-});
+}
 
-emitter.on("editComponentClosed", () => {
+function closeWindow() {
   if (editActiveValue.value) {
-    val.value = reactive(startValue);
+    val.value = startValue.value;
     editActiveValue.value = false;
+    emit('close', startValue.value);
   }
-});
+}
 
 function inputEnterKeyFired() {
-  emitter.emit("peComponentAdded", {
+  emit("add", {
     validated: validated.value,
     message: validationMessage.value,
   });
 }
 
 function deleteInputFieldRow() {
-  emitter.emit("peComponentDeleted", {
+  emit("delete", {
     type: RequireField.Input,
     name: val.value.name,
   });
+}
+
+function requireInputFieldRowClosed(startValue) {
+  editActiveValue.value = false;
+  val.value = startValue;
 }
 
 const deleteConfirm = ref(false);
@@ -136,7 +144,7 @@ const deleteConfirm = ref(false);
       <q-btn dense flat icon="delete" size="xs" @click="deleteConfirm = true" />
     </div>
     <div v-if="editActiveValue" class="dotted-border">
-      <RequireInputFieldRow v-model="val" editActive />
+      <RequireInputFieldRow v-model="val" @close="requireInputFieldRowClosed" editActive />
     </div>
     <InputFieldRow v-else v-model="val" />
   </template>
@@ -207,12 +215,8 @@ const deleteConfirm = ref(false);
       <HyphenText class="mt-small mb-big">Preview</HyphenText>
       <InputFieldRow v-model="val" preview />
     </template>
-    <SaveChangesButton
-      v-if="editActive"
-      :validated="validated"
-      :message="validationMessage"
-    />
-    <AddButton v-else :validated="validated" :message="validationMessage" />
+    <ConfirmCancelButton v-if="editActiveValue" confirmText="Save Changes" @confirm="saveChanges" @cancel="closeWindow" />
+    <ConfirmCancelButton v-else confirmText="Add" />
   </template>
   <q-dialog v-model="deleteConfirm" persistent>
     <q-card>
