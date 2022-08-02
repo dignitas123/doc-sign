@@ -20,10 +20,16 @@ const props = defineProps({
   editActive: {
     type: Boolean,
     default: false,
-  }
+  },
 });
 
-const emit = defineEmits(["update:modelValue", "add", "delete", "change", "close"]);
+const emit = defineEmits([
+  "update:modelValue",
+  "add",
+  "delete",
+  "change",
+  "close",
+]);
 
 const nameInputRef = ref(null);
 
@@ -32,6 +38,7 @@ onMounted(() => {
     nameInputRef.value.focus();
   }
   startValue.value = { ...val.value };
+  editActiveValue.value = props.editActive;
 });
 
 function getModelValue() {
@@ -91,10 +98,6 @@ const validationMessage = computed(() => {
 
 const editActiveValue = ref(false);
 
-onMounted(() => {
-  editActiveValue.value = props.editActive;
-})
-
 function setEditActive() {
   editActiveValue.value = true;
 }
@@ -110,11 +113,11 @@ function closeWindow() {
   if (editActiveValue.value) {
     val.value = startValue.value;
     editActiveValue.value = false;
-    emit('close', startValue.value);
   }
+  emit("close", startValue.value);
 }
 
-function inputEnterKeyFired() {
+function addPeComponent() {
   emit("add", {
     validated: validated.value,
     message: validationMessage.value,
@@ -144,7 +147,11 @@ const deleteConfirm = ref(false);
       <q-btn dense flat icon="delete" size="xs" @click="deleteConfirm = true" />
     </div>
     <div v-if="editActiveValue" class="dotted-border">
-      <RequireInputFieldRow v-model="val" @close="requireInputFieldRowClosed" editActive />
+      <RequireInputFieldRow
+        v-model="val"
+        @close="requireInputFieldRowClosed"
+        editActive
+      />
     </div>
     <InputFieldRow v-else v-model="val" />
   </template>
@@ -159,7 +166,7 @@ const deleteConfirm = ref(false);
           :placeholder="inputFieldNameFocused ? '' : placeholder"
           @focus="focusInputFieldName"
           @blur="unfocusInputFieldName"
-          @keyup.enter="inputEnterKeyFired"
+          @keyup.enter="addPeComponent"
           :maxlength="
             val.textAreaSize === 'big_input_field'
               ? val.maxLength
@@ -215,8 +222,13 @@ const deleteConfirm = ref(false);
       <HyphenText class="mt-small mb-big">Preview</HyphenText>
       <InputFieldRow v-model="val" preview />
     </template>
-    <ConfirmCancelButton v-if="editActiveValue" confirmText="Save Changes" @confirm="saveChanges" @cancel="closeWindow" />
-    <ConfirmCancelButton v-else confirmText="Add" />
+    <ConfirmCancelButton
+      v-if="editActiveValue"
+      confirmText="Save Changes"
+      @confirm="saveChanges"
+      @cancel="closeWindow"
+    />
+    <ConfirmCancelButton v-else confirmText="Add" @confirm="addPeComponent" @cancel="closeWindow" />
   </template>
   <q-dialog v-model="deleteConfirm" persistent>
     <q-card>

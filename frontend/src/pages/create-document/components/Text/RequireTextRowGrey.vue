@@ -8,6 +8,8 @@ defineProps({
   modelValue: Object,
 });
 
+defineEmits(["add", "delete", "change", "close"]);
+
 const emptyString = ref("");
 const toolbarTextDesktopItems = ref([
   ["link"],

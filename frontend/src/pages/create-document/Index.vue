@@ -51,7 +51,7 @@ function onReset() {
   accept.value = false;
 }
 
-function peComponentClosed() {
+function peComponentClosed(_) {
   resetActivePeComponent();
 }
 

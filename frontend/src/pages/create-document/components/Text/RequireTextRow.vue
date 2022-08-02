@@ -26,13 +26,20 @@ watch(editorRef, () => {
   editorRef.value.focus();
 });
 
-const emit = defineEmits(["update:modelValue", "delete"]);
+const emit = defineEmits([
+  "update:modelValue",
+  "add",
+  "delete",
+  "change",
+  "close",
+]);
 
 const val = ref(props.modelValue);
 const startValue = ref();
 
 onMounted(() => {
   startValue.value = { ...val.value };
+  editActiveValue.value = props.editActive;
 });
 
 const toolbarTextDesktopItems = ref([
@@ -95,19 +102,34 @@ function deleteTextRow() {
   });
 }
 
+function addPeComponent() {
+  emit("add", {
+    validated: validated.value,
+    message: validationMessage.value,
+  });
+}
+
 const deleteConfirm = ref(false);
 
-function editComponentChanged(data) {
-  if (data.validated) {
+function saveChanges() {
+  console.log("save Changes", validated.value, val.value)
+  if (validated.value) {
     editActiveValue.value = false;
+    emit("close", val.value);
   }
 }
 
-function editComponentClosed() {
+function closeWindow() {
   if (editActiveValue.value) {
     editActiveValue.value = false;
     val.value = startValue.value;
   }
+  emit("close", startValue.value);
+}
+
+function requireTextRowClosed(startValue) {
+  editActiveValue.value = false;
+  val.value = startValue;
 }
 </script>
 
@@ -119,7 +141,7 @@ function editComponentClosed() {
       <q-btn dense flat icon="delete" size="xs" @click="deleteConfirm = true" />
     </div>
     <div v-if="editActiveValue" class="dotted-border">
-      <RequireTextRow v-model="val" editActive />
+      <RequireTextRow v-model="val" editActive @close="requireTextRowClosed" />
     </div>
     <div v-else v-html="val.text" />
   </template>
@@ -133,8 +155,13 @@ function editComponentClosed() {
         />
       </div>
     </div>
-    <ConfirmCancelButton v-if="editActive" confirmText="Save Changes" @change="editComponentChanged" @close="editComponentClosed" />
-    <ConfirmCancelButton v-else confirmText="Add" />
+    <ConfirmCancelButton
+      v-if="editActive"
+      confirmText="Save Changes"
+      @confirm="saveChanges"
+      @cancel="closeWindow"
+    />
+    <ConfirmCancelButton v-else confirmText="Add" @confirm="addPeComponent" @cancel="closeWindow" />
   </template>
   <q-dialog v-model="deleteConfirm" persistent>
     <q-card>
