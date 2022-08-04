@@ -110,9 +110,10 @@ function addPeComponent() {
 }
 
 const deleteConfirm = ref(false);
+const saveChangesWithoutSavingConfirm = ref(false);
 
 function saveChanges() {
-  console.log("save Changes", validated.value, val.value)
+  console.log("save Changes", validated.value, val.value);
   if (validated.value) {
     editActiveValue.value = false;
     emit("close", val.value);
@@ -121,9 +122,17 @@ function saveChanges() {
 
 function closeWindow() {
   if (editActiveValue.value) {
-    editActiveValue.value = false;
-    val.value = startValue.value;
+    if (startValue.value.text === val.value.text) {
+      closeEditWindowAndReset();
+    } else {
+      saveChangesWithoutSavingConfirm.value = true;
+    }
   }
+}
+
+function closeEditWindowAndReset() {
+  editActiveValue.value = false;
+  val.value = startValue.value;
   emit("close", startValue.value);
 }
 
@@ -161,7 +170,12 @@ function requireTextRowClosed(startValue) {
       @confirm="saveChanges"
       @cancel="closeWindow"
     />
-    <ConfirmCancelButton v-else confirmText="Add" @confirm="addPeComponent" @cancel="closeWindow" />
+    <ConfirmCancelButton
+      v-else
+      confirmText="Add"
+      @confirm="addPeComponent"
+      @cancel="closeWindow"
+    />
   </template>
   <q-dialog v-model="deleteConfirm" persistent>
     <q-card>
@@ -177,6 +191,26 @@ function requireTextRowClosed(startValue) {
           color="primary"
           v-close-popup
           @click="deleteTextRow"
+        />
+      </q-card-actions>
+    </q-card>
+  </q-dialog>
+  <q-dialog v-model="saveChangesWithoutSavingConfirm" persistent>
+    <q-card>
+      <q-card-section class="row items-center">
+        <span class="q-ml-sm"
+          >Do you really want to close the document? Changes will be lost.</span
+        >
+      </q-card-section>
+
+      <q-card-actions align="right">
+        <q-btn flat label="Cancel" color="primary" v-close-popup />
+        <q-btn
+          flat
+          label="Yes"
+          color="primary"
+          v-close-popup
+          @click="closeEditWindowAndReset"
         />
       </q-card-actions>
     </q-card>
