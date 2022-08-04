@@ -10,7 +10,7 @@ const emit = defineEmits(["confirm", "cancel"]);
 </script>
 
 <template>
-  <div class="row justify-between">
+  <div class="row justify-between mt-small">
     <div class="col">
       <q-btn
         class="no-shadow"
