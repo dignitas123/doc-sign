@@ -161,11 +161,12 @@ export function useModel() {
           }),
         });
       } else {
-        const duplicateComponentVModel = componentVModel;
-        duplicateComponentVModel.name += componentPreviewList.value.filter(
+        const duplicateComponentVModel = {...componentVModel};
+        const duplicates = componentPreviewList.value.filter(
           (componentDefinition) =>
             componentDefinition.vModel.name === componentVModel.name
         ).length;
+        duplicateComponentVModel.name += `(${duplicates})`
         componentPreviewList.value.push({
           component: requireInputFieldRow,
           props: {
