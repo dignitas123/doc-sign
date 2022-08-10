@@ -11,10 +11,13 @@ const routes = [
     path: '/documents/create',
     component: () => import('src/pages/create-document/create-document.vue'),
   },
-  { path: '/signs', component: () => import('src/pages/maintabs/Signs.vue') },
+  {
+    path: '/signs',
+    component: () => import('src/pages/maintabs/sign-tab.vue'),
+  },
   {
     path: '/playground',
-    component: () => import('src/pages/maintabs/Playground.vue'),
+    component: () => import('src/pages/maintabs/playground-tab.vue'),
   },
 
   // Always leave this as last one,
