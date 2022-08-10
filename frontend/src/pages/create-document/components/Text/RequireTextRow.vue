@@ -129,6 +129,7 @@ function closeWindow() {
       saveChangesWithoutSavingConfirm.value = true;
     }
   }
+  emit('close', startValue.value);
 }
 
 function closeEditWindowAndReset() {
