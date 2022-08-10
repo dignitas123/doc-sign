@@ -26,10 +26,10 @@ export function useModel() {
   // BEGIN -- v-Model for components --
 
   // active preview and edit component
-  const activePeComponent = reactive({
+  const activePreviewComponent = reactive({
     component: undefined,
     vModel: {},
-    name: '',
+    type: '',
   });
 
   const requireInputFieldRow = Object.freeze(RequireInputFieldRow);
@@ -94,65 +94,63 @@ export function useModel() {
   // END -- v-Model for components --
 
   // helper functions
-  function addButtonsRowClicked(buttonType) {
-    if (buttonType === RequireField.Input) {
-      activePeComponent.component = requireInputFieldRow;
-      activePeComponent.vModel = inputFieldInput;
-      activePeComponent.name = RequireField.Input;
-    } else if (buttonType === RequireField.Text) {
-      activePeComponent.component = requireTextRow;
-      activePeComponent.vModel = editorInput;
-      activePeComponent.name = RequireField.Text;
-    } else if (buttonType === RequireField.Radio) {
-      activePeComponent.component = requireRadioChoiceRow;
-      activePeComponent.vModel = radioChoiceInput;
-      activePeComponent.name = RequireField.Radio;
-    } else if (buttonType === RequireField.File) {
-      activePeComponent.component = requireFileRow;
-      activePeComponent.vModel = fileRequireInput;
-      activePeComponent.name = RequireField.File;
+  function addButtonsRowClicked(type) {
+    if (type === RequireField.Input) {
+      activePreviewComponent.component = requireInputFieldRow;
+      activePreviewComponent.vModel = inputFieldInput;
+    } else if (type === RequireField.Text) {
+      activePreviewComponent.component = requireTextRow;
+      activePreviewComponent.vModel = editorInput;
+    } else if (type === RequireField.Radio) {
+      activePreviewComponent.component = requireRadioChoiceRow;
+      activePreviewComponent.vModel = radioChoiceInput;
+    } else if (type === RequireField.File) {
+      activePreviewComponent.component = requireFileRow;
+      activePreviewComponent.vModel = fileRequireInput;
     }
   }
 
-  function addButtonsRowHover(buttonType) {
-    if (Object.keys(activePeComponent.vModel).length === 0) {
-      if (buttonType.input) {
-        activePeComponent.component = requireInputFieldRowGrey;
-      } else if (buttonType.text) {
-        activePeComponent.component = requireTextRowGrey;
-      } else if (buttonType.radio) {
-        activePeComponent.component = requireRadioChoiceRowGrey;
-      } else if (buttonType.file) {
-        activePeComponent.component = requireFileRowGrey;
+  function addButtonsRowHover(type) {
+    if (Object.keys(activePreviewComponent.vModel).length === 0) {
+      if (type.input) {
+        activePreviewComponent.component = requireInputFieldRowGrey;
+      } else if (type.text) {
+        activePreviewComponent.component = requireTextRowGrey;
+      } else if (type.radio) {
+        activePreviewComponent.component = requireRadioChoiceRowGrey;
+      } else if (type.file) {
+        activePreviewComponent.component = requireFileRowGrey;
       } else {
-        resetActivePeComponent();
+        resetactivePreviewComponent(type);
       }
     }
   }
 
-  function resetActivePeComponent() {
-    if (activePeComponent.name === RequireField.Input) {
+  function resetactivePreviewComponent(type) {
+    if (type === RequireField.Input) {
       resetInputFieldInput();
-    } else if (activePeComponent.name === RequireField.Text) {
+    } else if (type === RequireField.Text) {
       resetEditorInput();
-    } else if (activePeComponent.name === RequireField.Radio) {
+    } else if (type === RequireField.Radio) {
       resetRadioChoiceInput();
-    } else if (activePeComponent.name === RequireField.File) {
+    } else if (type === RequireField.File) {
       resetFileRequireInput();
     }
-    activePeComponent.component = undefined;
-    activePeComponent.vModel = {};
-    activePeComponent.name = '';
+    activePreviewComponent.component = undefined;
+    activePreviewComponent.vModel = {};
   }
 
   const componentPreviewList = ref([]);
-  function addComponentToPreviewList(component) {
-    if (component.name === RequireField.Input) {
+  function addComponentToPreviewList(type, componentVModel) {
+    console.log('adde die component', componentVModel);
+    if (type === RequireField.Input) {
+      console.log('requirefield input', RequireField.Input);
       if (
         !componentPreviewList.value
           .map((componentDefinition) => componentDefinition.vModel.name)
-          .includes(inputFieldInput.name)
+          .includes(componentVModel.name)
       ) {
+        console.log('includes');
         componentPreviewList.value.push({
           component: requireInputFieldRow,
           props: {
@@ -166,14 +164,20 @@ export function useModel() {
           }),
         });
       } else {
-        $q.notify({
-          color: 'red-5',
-          textColor: 'white',
-          icon: 'warning',
-          message: `Row '${inputFieldInput.name}' already exists.`,
+        const duplicateComponentVModel = componentVModel;
+        duplicateComponentVModel.name += componentPreviewList.value.filter(
+          (componentDefinition) =>
+            componentDefinition.vModel.name === componentVModel.name
+        ).length;
+        componentPreviewList.value.push({
+          component: requireInputFieldRow,
+          props: {
+            preview: true,
+          },
+          vModel: duplicateComponentVModel,
         });
       }
-    } else if (component.name === RequireField.Text) {
+    } else if (type === RequireField.Text) {
       if (
         !componentPreviewList.value
           .map((componentDefinition) => componentDefinition.vModel.text)
@@ -196,65 +200,40 @@ export function useModel() {
           message: `A Text Row with the same text already exists.`,
         });
       }
-    } else if (component.name === RequireField.Radio) {
+    } else if (type === RequireField.Radio) {
       componentPreviewList.value.push(requireRadioChoiceRow);
-    } else if (component.name === RequireField.File) {
+    } else if (type === RequireField.File) {
       componentPreviewList.value.push(requireFileRow);
     }
-    resetActivePeComponent();
+    resetactivePreviewComponent(type);
   }
 
-  function removeComponentFromPreviewList(requireField, name) {
-    if (requireField === RequireField.Input) {
+  function removeComponentFromPreviewList(type, name) {
+    if (type === RequireField.Input) {
       componentPreviewList.value.splice(
         componentPreviewList.value.findIndex((el) => el.vModel.name === name),
         1
       );
-    } else if (requireField === RequireField.Text) {
+    } else if (type === RequireField.Text) {
       componentPreviewList.value.splice(
         componentPreviewList.value.findIndex((el) => el.vModel.text === name),
         1
       );
-    } else if (requireField === RequireField.Radio) {
+    } else if (type === RequireField.Radio) {
       componentPreviewList.value.push(requireRadioChoiceRow);
-    } else if (requireField === RequireField.File) {
+    } else if (type === RequireField.File) {
       componentPreviewList.value.push(requireFileRow);
     }
-  }
-
-  function changeSavesToComponentPreview(component) {
-    if (component.name === RequireField.Input) {
-      componentPreviewList.value.push({
-        component: requireInputFieldRow,
-        props: {
-          preview: true,
-        },
-        vModel: reactive({
-          name: inputFieldInput.name,
-          inputFieldAllowed: { ...inputFieldInput.inputFieldAllowed },
-          textAreaSize: inputFieldInput.textAreaSize,
-          maxLength: inputFieldInput.maxLength,
-        }),
-      });
-    } else if (component.name === RequireField.Text) {
-      componentPreviewList.value.push(requireTextRow);
-    } else if (component.name === RequireField.Radio) {
-      componentPreviewList.value.push(requireRadioChoiceRow);
-    } else if (component.name === RequireField.File) {
-      componentPreviewList.value.push(requireFileRow);
-    }
-    resetActivePeComponent();
   }
 
   return {
     documentHeader,
-    activePeComponent,
+    activePreviewComponent,
     componentPreviewList,
     addButtonsRowClicked,
     addButtonsRowHover,
-    resetActivePeComponent,
+    resetactivePreviewComponent,
     addComponentToPreviewList,
     removeComponentFromPreviewList,
-    changeSavesToComponentPreview,
   };
 }

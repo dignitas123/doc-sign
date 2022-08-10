@@ -9,14 +9,13 @@ import HyphenText from 'src/core/components/hyphen-text.vue';
 
 const {
   documentHeader,
-  activePeComponent,
   componentPreviewList,
   addButtonsRowClicked,
   addButtonsRowHover,
-  resetActivePeComponent,
+  activePreviewComponent,
+  resetactivePreviewComponent,
   addComponentToPreviewList,
   removeComponentFromPreviewList,
-  changeSavesToComponentPreview,
 } = useModel();
 
 const $q = useQuasar();
@@ -52,34 +51,29 @@ function onReset() {
   accept.value = false;
 }
 
-function peComponentClosed(_) {
-  resetActivePeComponent();
+function peComponentClosed() {
+  resetactivePreviewComponent();
 }
 
-function peComponentChanged(data) {
-  if (data.validated) {
-    changeSavesToComponentPreview(activePeComponent);
+function peComponentAdded(type, validationData) {
+  if (validationData.validated) {
+    addComponentToPreviewList(type, activePreviewComponent);
   } else {
     $q.notify({
       color: 'red-5',
       textColor: 'white',
       icon: 'warning',
-      message: data.message,
+      message: validationData.message,
     });
   }
 }
 
-function peComponentAdded(data) {
-  if (data.validated) {
-    addComponentToPreviewList(activePeComponent);
-  } else {
-    $q.notify({
-      color: 'red-5',
-      textColor: 'white',
-      icon: 'warning',
-      message: data.message,
-    });
-  }
+function duplicatePeComponent(type, component) {
+  console.log(
+    'duplicate mal bro die komponente hier, die ja leer ist jo',
+    component
+  );
+  addComponentToPreviewList(type, component);
 }
 
 function peComponentDeleted(data) {
@@ -109,8 +103,8 @@ function peComponentDeleted(data) {
               :is="componentDefinition.component"
               v-bind="componentDefinition.props"
               v-model="componentDefinition.vModel"
-              @change="peComponentChanged"
               @delete="peComponentDeleted"
+              @duplicate="duplicatePeComponent"
             />
           </template>
           <HyphenText>Add to Document</HyphenText>
@@ -120,10 +114,10 @@ function peComponentDeleted(data) {
             @mouseHover="addButtonsRowHover"
           />
           <Transition name="fade">
-            <div v-if="activePeComponent.component" class="q-gutter-xs">
+            <div v-if="activePreviewComponent.component" class="q-gutter-xs">
               <component
-                :is="activePeComponent.component"
-                v-model="activePeComponent.vModel"
+                :is="activePreviewComponent.component"
+                v-model="activePreviewComponent.vModel"
                 @add="peComponentAdded"
                 @close="peComponentClosed"
               />

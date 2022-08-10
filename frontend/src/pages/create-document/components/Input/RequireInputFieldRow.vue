@@ -31,6 +31,7 @@ const emit = defineEmits([
   'delete',
   'change',
   'close',
+  'duplicate',
 ]);
 
 const nameInputRef = ref(null);
@@ -120,7 +121,7 @@ function closeWindow() {
 }
 
 function addPeComponent() {
-  emit('add', {
+  emit('add', RequireField.Input, {
     validated: validated.value,
     message: validationMessage.value,
   });
@@ -138,6 +139,10 @@ function requireInputFieldRowClosed(startValue) {
   val.value = startValue;
 }
 
+function duplicateRow() {
+  emit('duplicate', RequireField.Input, val.value);
+}
+
 const deleteConfirm = ref(false);
 </script>
 
@@ -145,13 +150,19 @@ const deleteConfirm = ref(false);
   <template v-if="preview">
     <div class="row justify-end">
       <q-btn dense flat icon="edit" size="xs" @click="setEditActive"
-        ><q-tooltip :delay="750" :offset="[0, 10]">Edit</q-tooltip></q-btn
+        ><q-tooltip :delay="1500" :offset="[0, 10]">Edit</q-tooltip></q-btn
       >
-      <q-btn dense flat icon="content_copy" size="xs"
-        ><q-tooltip :delay="750" :offset="[0, 10]">Duplicate</q-tooltip></q-btn
+      <q-btn
+        dense
+        flat
+        icon="content_copy"
+        size="xs"
+        @clikc="duplicateRow"
+        @click="duplicateRow"
+        ><q-tooltip :delay="1500" :offset="[0, 10]">Duplicate</q-tooltip></q-btn
       >
       <q-btn dense flat icon="delete" size="xs" @click="deleteConfirm = true"
-        ><q-tooltip :delay="750" :offset="[0, 10]">Delete</q-tooltip></q-btn
+        ><q-tooltip :delay="1500" :offset="[0, 10]">Delete</q-tooltip></q-btn
       >
     </div>
     <div v-if="editActiveValue" class="dotted-border">
