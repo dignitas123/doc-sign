@@ -114,7 +114,6 @@ const deleteConfirm = ref(false);
 const saveChangesWithoutSavingConfirm = ref(false);
 
 function saveChanges() {
-  console.log('save Changes', validated.value, val.value);
   if (validated.value) {
     editActiveValue.value = false;
     emit('close', val.value);

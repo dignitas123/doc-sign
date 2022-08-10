@@ -142,15 +142,12 @@ export function useModel() {
 
   const componentPreviewList = ref([]);
   function addComponentToPreviewList(type, componentVModel) {
-    console.log('adde die component', componentVModel);
     if (type === RequireField.Input) {
-      console.log('requirefield input', RequireField.Input);
       if (
         !componentPreviewList.value
           .map((componentDefinition) => componentDefinition.vModel.name)
           .includes(componentVModel.name)
       ) {
-        console.log('includes');
         componentPreviewList.value.push({
           component: requireInputFieldRow,
           props: {

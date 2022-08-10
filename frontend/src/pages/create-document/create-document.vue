@@ -69,10 +69,6 @@ function peComponentAdded(type, validationData) {
 }
 
 function duplicatePeComponent(type, component) {
-  console.log(
-    'duplicate mal bro die komponente hier, die ja leer ist jo',
-    component
-  );
   addComponentToPreviewList(type, component);
 }
 
