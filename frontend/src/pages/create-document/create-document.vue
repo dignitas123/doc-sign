@@ -1,6 +1,6 @@
 <script setup lang="ts">
+import { ref, watch } from 'vue';
 import { useQuasar } from 'quasar';
-import { ref } from 'vue';
 import MainLayout from 'src/layouts/MainLayout.vue';
 import DocumentHeaderRow from './components/DocumentHeaderRow.vue';
 import AddButtonsRow from './components/AddButtonsRow.vue';
@@ -61,7 +61,7 @@ function peComponentClosed(type: RequireField) {
 
 function peComponentAdded(type: RequireField, validationData: ValidationData) {
   if (validationData.validated) {
-    addComponentToPreviewList(type, activePreviewComponent.vModel);
+    addComponentToPreviewList(type, activePreviewComponent.vModel, false);
   } else {
     $q.notify({
       color: 'red-5',
@@ -76,12 +76,18 @@ function duplicatePeComponent(
   type: RequireField,
   componentVModel: Record<string, any>
 ) {
-  addComponentToPreviewList(type, componentVModel);
+  addComponentToPreviewList(type, componentVModel, true);
 }
 
 function peComponentDeleted(data: { type: RequireField; name: string }) {
   removeComponentFromPreviewList(data.type, data.name);
 }
+
+const componentPreviewListUpdateKey = ref(0);
+
+watch(componentPreviewList, () => {
+  componentPreviewListUpdateKey.value++;
+});
 </script>
 
 <template>
@@ -98,18 +104,20 @@ function peComponentDeleted(data: { type: RequireField; name: string }) {
           <HyphenText v-if="componentPreviewList.length"
             >Document Preview</HyphenText
           >
-          <template
-            v-for="(componentDefinition, i) in componentPreviewList"
-            :key="i"
-          >
-            <component
-              :is="componentDefinition.component"
-              v-bind="componentDefinition.props"
-              v-model="componentDefinition.vModel"
-              @delete="peComponentDeleted"
-              @duplicate="duplicatePeComponent"
-            />
-          </template>
+          <div :key="componentPreviewList.length">
+            <template
+              v-for="(componentDefinition, i) in componentPreviewList"
+              :key="i"
+            >
+              <component
+                :is="componentDefinition.component"
+                v-bind="componentDefinition.props"
+                v-model="componentDefinition.vModel"
+                @delete="peComponentDeleted"
+                @duplicate="duplicatePeComponent"
+              />
+            </template>
+          </div>
           <HyphenText>Add to Document</HyphenText>
           <AddButtonsRow
             :smallScreen="smallScreen"

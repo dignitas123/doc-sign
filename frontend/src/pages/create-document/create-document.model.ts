@@ -119,7 +119,8 @@ export function useModel() {
   const componentPreviewList = ref<ComponentDefinition[]>([]);
   function addComponentToPreviewList(
     type: RequireField,
-    componentVModel: Record<string, any> | undefined
+    componentVModel: Record<string, any> | undefined,
+    duplication: boolean
   ) {
     if (type === RequireField.Input) {
       const index = componentPreviewList.value.findIndex(
@@ -141,33 +142,39 @@ export function useModel() {
           }),
         });
       } else {
-        const duplicateComponentVModel = { ...componentVModel };
+        const duplicateComponentVModel = { ...componentVModel };  
+        if(duplication && /\(\d\)$/.test(duplicateComponentVModel.name)) {
+          duplicateComponentVModel.name = duplicateComponentVModel.name.split('(')[0];
+        }
         const duplicates = componentPreviewList.value.filter(
           (componentDefinition) =>
-            componentDefinition.vModel?.name === componentVModel?.name ||
+            componentDefinition.vModel?.name === duplicateComponentVModel?.name ||
             (componentDefinition.vModel?.name.split('(').length > 1 &&
               componentDefinition.vModel?.name.split('(')[0] ===
-                componentVModel?.name &&
+              duplicateComponentVModel?.name &&
               /\d\)/.test(componentDefinition.vModel?.name.split('(')[1]))
         ).length;
-
+        
         duplicateComponentVModel.name += `(${duplicates + 1})`;
-        componentPreviewList.value.push({
-          component: requireInputFieldRow,
-          props: {
-            preview: true,
-          },
-          vModel: duplicateComponentVModel,
-        });
-        // TODO: if in duplicate mode should splice not push
-        // componentPreviewList.value.splice(index, 0,
-        //   {
-        //     component: requireInputFieldRow,
-        //     props: {
-        //       preview: true,
-        //     },
-        //     vModel: duplicateComponentVModel,
-        //   });
+
+        if(duplication) {
+          componentPreviewList.value.splice(index + 1, 0,
+            {
+              component: requireInputFieldRow,
+              props: {
+                preview: true,
+              },
+              vModel: duplicateComponentVModel,
+            });
+        } else {
+          componentPreviewList.value.push({
+            component: requireInputFieldRow,
+            props: {
+              preview: true,
+            },
+            vModel: duplicateComponentVModel,
+          });
+        }
       }
     } else if (type === RequireField.Text) {
       if (
