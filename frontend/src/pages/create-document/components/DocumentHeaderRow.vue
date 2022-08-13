@@ -27,11 +27,12 @@ function inputUnfocus() {
 </script>
 
 <template>
-  <div class="row">
-    <div class="col mb-big" style="text-align: center; font-weight: bold">
+  <div class="row document-header-row">
+    <div class="col mb-big">
       <q-input
         v-model="val"
-        input-class="--header-row"
+        outined
+        dense
         :label="label"
         @focus="inputFocus"
         @blur="inputUnfocus"
@@ -41,8 +42,10 @@ function inputUnfocus() {
   </div>
 </template>
 
-<style lang="scss" scoped>
-.--header-row {
-  font-weight: bold !important;
+<style lang="scss">
+.document-header-row {
+  .q-field__native {
+    font-weight: bold !important;
+  }
 }
 </style>

@@ -93,7 +93,7 @@ watch(componentPreviewList, () => {
 <template>
   <main-layout>
     <q-page class="row items-center justify-evenly">
-      <div class="q-pa-md shadow-1 absolute create-document">
+      <div class="q-px-md shadow-1 absolute create-document">
         <q-form
           @submit="onSubmit"
           @reset="onReset"
@@ -148,7 +148,7 @@ watch(componentPreviewList, () => {
           />
         </q-breadcrumbs>
         <div class="text-h6" style="text-align: center; width: 100%">
-          Create a Signable Ethereum Document
+          Create a New Document
         </div>
       </div>
     </template>
