@@ -12,7 +12,7 @@ export enum RequireField {
   Text = 'Text',
   Radio = 'Radio',
   File = 'File',
-};
+}
 
 export function useModel() {
   // document header ref
@@ -25,7 +25,7 @@ export function useModel() {
   // active preview and edit component
   const activePreviewComponent = reactive<ComponentDefinition>({
     component: undefined,
-    vModel: {},
+    vModel: undefined,
   });
 
   const requireInputFieldRow = Object.freeze(RequireInputFieldRow);
@@ -113,17 +113,21 @@ export function useModel() {
       resetFileRequireInput();
     }
     activePreviewComponent.component = undefined;
-    activePreviewComponent.vModel = {};
+    activePreviewComponent.vModel = undefined;
   }
 
   const componentPreviewList = ref<ComponentDefinition[]>([]);
-  function addComponentToPreviewList(type: RequireField, componentVModel: Record<string, any>) {
+  function addComponentToPreviewList(
+    type: RequireField,
+    componentVModel: Record<string, any> | undefined
+  ) {
     if (type === RequireField.Input) {
-      if (
-        !componentPreviewList.value
-          .map((componentDefinition) => componentDefinition.vModel?.name ?? "")
-          .includes(componentVModel.name)
-      ) {
+      const index = componentPreviewList.value.findIndex(
+        (component) =>
+          component.vModel?.name &&
+          component.vModel?.name === componentVModel?.name
+      );
+      if (index === -1) {
         componentPreviewList.value.push({
           component: requireInputFieldRow,
           props: {
@@ -137,12 +141,17 @@ export function useModel() {
           }),
         });
       } else {
-        const duplicateComponentVModel = {...componentVModel};
+        const duplicateComponentVModel = { ...componentVModel };
         const duplicates = componentPreviewList.value.filter(
           (componentDefinition) =>
-            componentDefinition.vModel?.name === componentVModel.name
+            componentDefinition.vModel?.name === componentVModel?.name ||
+            (componentDefinition.vModel?.name.split('(').length > 1 &&
+              componentDefinition.vModel?.name.split('(')[0] ===
+                componentVModel?.name &&
+              /\d\)/.test(componentDefinition.vModel?.name.split('(')[1]))
         ).length;
-        duplicateComponentVModel.name += `(${duplicates})`
+
+        duplicateComponentVModel.name += `(${duplicates + 1})`;
         componentPreviewList.value.push({
           component: requireInputFieldRow,
           props: {
@@ -150,11 +159,20 @@ export function useModel() {
           },
           vModel: duplicateComponentVModel,
         });
+        // TODO: if in duplicate mode should splice not push
+        // componentPreviewList.value.splice(index, 0,
+        //   {
+        //     component: requireInputFieldRow,
+        //     props: {
+        //       preview: true,
+        //     },
+        //     vModel: duplicateComponentVModel,
+        //   });
       }
     } else if (type === RequireField.Text) {
       if (
         !componentPreviewList.value
-          .map((componentDefinition) => componentDefinition.vModel?.text ?? "")
+          .map((componentDefinition) => componentDefinition.vModel?.text ?? '')
           .includes(editorInput.text)
       ) {
         componentPreviewList.value.push({
@@ -175,9 +193,9 @@ export function useModel() {
         });
       }
     } else if (type === RequireField.Radio) {
-      componentPreviewList.value.push({component: requireRadioChoiceRow});
+      componentPreviewList.value.push({ component: requireRadioChoiceRow });
     } else if (type === RequireField.File) {
-      componentPreviewList.value.push({component: requireFileRow});
+      componentPreviewList.value.push({ component: requireFileRow });
     }
     resetActivePreviewComponent(type);
   }
@@ -194,9 +212,9 @@ export function useModel() {
         1
       );
     } else if (type === RequireField.Radio) {
-      componentPreviewList.value.push({component: requireRadioChoiceRow});
+      componentPreviewList.value.push({ component: requireRadioChoiceRow });
     } else if (type === RequireField.File) {
-      componentPreviewList.value.push({component: requireFileRow});
+      componentPreviewList.value.push({ component: requireFileRow });
     }
   }
 

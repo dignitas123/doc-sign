@@ -61,7 +61,7 @@ function peComponentClosed(type: RequireField) {
 
 function peComponentAdded(type: RequireField, validationData: ValidationData) {
   if (validationData.validated) {
-    addComponentToPreviewList(type, activePreviewComponent);
+    addComponentToPreviewList(type, activePreviewComponent.vModel);
   } else {
     $q.notify({
       color: 'red-5',
@@ -72,11 +72,14 @@ function peComponentAdded(type: RequireField, validationData: ValidationData) {
   }
 }
 
-function duplicatePeComponent(type: RequireField, componentVModel: Record<string, any>) {
+function duplicatePeComponent(
+  type: RequireField,
+  componentVModel: Record<string, any>
+) {
   addComponentToPreviewList(type, componentVModel);
 }
 
-function peComponentDeleted(data: { type: RequireField; name: string; }) {
+function peComponentDeleted(data: { type: RequireField; name: string }) {
   removeComponentFromPreviewList(data.type, data.name);
 }
 </script>
