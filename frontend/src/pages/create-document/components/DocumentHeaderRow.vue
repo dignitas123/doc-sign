@@ -6,7 +6,7 @@ const props = defineProps({
     type: String,
     default: '',
   },
-  placeholder: {
+  label: {
     type: String,
     default: 'Document Title',
   },
@@ -24,10 +24,6 @@ function inputFocus() {
 function inputUnfocus() {
   inputFocused.value = false;
 }
-
-const placeholderText = computed(() => {
-  return inputFocused.value ? '' : props.placeholder;
-});
 </script>
 
 <template>
@@ -35,9 +31,8 @@ const placeholderText = computed(() => {
     <div class="col mb-big" style="text-align: center; font-weight: bold">
       <q-input
         v-model="val"
-        dense
-        input-class="text-center --header-row"
-        :placeholder="placeholderText"
+        input-class="--header-row"
+        :label="label"
         @focus="inputFocus"
         @blur="inputUnfocus"
         maxlength="63"

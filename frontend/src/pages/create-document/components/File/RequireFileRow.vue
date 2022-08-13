@@ -125,8 +125,7 @@ function itemRemoved(index) {
       <q-input
         v-model="val.name"
         outlined
-        dense
-        :placeholder="fileDescriptionFocused ? '' : 'File Description'"
+        label="File Description"
         @focus="focusFileDescription"
         @blur="unFocusFileDescription"
         @keydown.enter.prevent="$refs.endingNameInput.$el.focus()"
@@ -142,8 +141,7 @@ function itemRemoved(index) {
         ref="endingNameInput"
         v-model="endingName"
         outlined
-        dense
-        :placeholder="fileEndingFocused ? '' : '(.png, .pdf, ...)'"
+        :label="fileEndingFocused ? '' : '(.png, .pdf, ...)'"
         @focus="focusFileEnding"
         @blur="unfocusFileEnding"
         @keydown.enter.prevent="addEnding"

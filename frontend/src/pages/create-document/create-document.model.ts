@@ -1,20 +1,17 @@
 import { reactive, ref } from 'vue';
 import RequireInputFieldRow from './components/Input/RequireInputFieldRow.vue';
-import RequireInputFieldRowGrey from './components/Input/RequireInputFieldRowGrey.vue';
 import RequireTextRow from './components/Text/RequireTextRow.vue';
-import RequireTextRowGrey from './components/Text/RequireTextRowGrey.vue';
 import RequireRadioChoiceRow from './components/Radio/RequireRadioChoiceRow.vue';
-import RequireRadioChoiceRowGrey from './components/Radio/RequireRadioChoiceRowGrey.vue';
 import RequireFileRow from './components/File/RequireFileRow.vue';
-import RequireFileRowGrey from './components/File/RequireFileRowGrey.vue';
 import { useQuasar } from 'quasar';
+import { ComponentDefinition } from 'src/core/interfaces/component-definition';
 
 // require Field names (add here if you need more)
-export const RequireField = {
-  Input: 'Input',
-  Text: 'Text',
-  Radio: 'Radio',
-  File: 'File',
+export enum RequireField {
+  Input = 'Input',
+  Text = 'Text',
+  Radio = 'Radio',
+  File = 'File',
 };
 
 export function useModel() {
@@ -26,14 +23,12 @@ export function useModel() {
   // BEGIN -- v-Model for components --
 
   // active preview and edit component
-  const activePreviewComponent = reactive({
+  const activePreviewComponent = reactive<ComponentDefinition>({
     component: undefined,
     vModel: {},
-    type: '',
   });
 
   const requireInputFieldRow = Object.freeze(RequireInputFieldRow);
-  const requireInputFieldRowGrey = Object.freeze(RequireInputFieldRowGrey);
   const inputFieldInput = reactive({
     name: '',
     inputFieldAllowed: reactive({
@@ -56,7 +51,6 @@ export function useModel() {
   }
 
   const requireTextRow = Object.freeze(RequireTextRow);
-  const requireTextRowGrey = Object.freeze(RequireTextRowGrey);
   const editorInput = reactive({
     text: '',
   });
@@ -65,7 +59,6 @@ export function useModel() {
   }
 
   const requireRadioChoiceRow = Object.freeze(RequireRadioChoiceRow);
-  const requireRadioChoiceRowGrey = Object.freeze(RequireRadioChoiceRowGrey);
   const radioChoiceInput = reactive({
     name: '',
     radioChoice: 'multiple_choice',
@@ -80,7 +73,6 @@ export function useModel() {
   }
 
   const requireFileRow = Object.freeze(RequireFileRow);
-  const requireFileRowGrey = Object.freeze(RequireFileRowGrey);
   const fileRequireInput = reactive({
     name: '',
     allowAllEndings: false,
@@ -94,7 +86,7 @@ export function useModel() {
   // END -- v-Model for components --
 
   // helper functions
-  function addButtonsRowClicked(type) {
+  function addButtonsRowClicked(type: RequireField) {
     if (type === RequireField.Input) {
       activePreviewComponent.component = requireInputFieldRow;
       activePreviewComponent.vModel = inputFieldInput;
@@ -110,23 +102,7 @@ export function useModel() {
     }
   }
 
-  function addButtonsRowHover(type) {
-    if (Object.keys(activePreviewComponent.vModel).length === 0) {
-      if (type.input) {
-        activePreviewComponent.component = requireInputFieldRowGrey;
-      } else if (type.text) {
-        activePreviewComponent.component = requireTextRowGrey;
-      } else if (type.radio) {
-        activePreviewComponent.component = requireRadioChoiceRowGrey;
-      } else if (type.file) {
-        activePreviewComponent.component = requireFileRowGrey;
-      } else {
-        resetactivePreviewComponent(type);
-      }
-    }
-  }
-
-  function resetactivePreviewComponent(type) {
+  function resetactivePreviewComponent(type: RequireField) {
     if (type === RequireField.Input) {
       resetInputFieldInput();
     } else if (type === RequireField.Text) {
@@ -140,12 +116,12 @@ export function useModel() {
     activePreviewComponent.vModel = {};
   }
 
-  const componentPreviewList = ref([]);
-  function addComponentToPreviewList(type, componentVModel) {
+  const componentPreviewList = ref<ComponentDefinition[]>([]);
+  function addComponentToPreviewList(type: RequireField, componentVModel: Record<string, any>) {
     if (type === RequireField.Input) {
       if (
         !componentPreviewList.value
-          .map((componentDefinition) => componentDefinition.vModel.name)
+          .map((componentDefinition) => componentDefinition.vModel?.name)
           .includes(componentVModel.name)
       ) {
         componentPreviewList.value.push({
@@ -164,7 +140,7 @@ export function useModel() {
         const duplicateComponentVModel = {...componentVModel};
         const duplicates = componentPreviewList.value.filter(
           (componentDefinition) =>
-            componentDefinition.vModel.name === componentVModel.name
+            componentDefinition.vModel?.name === componentVModel.name
         ).length;
         duplicateComponentVModel.name += `(${duplicates})`
         componentPreviewList.value.push({
@@ -178,7 +154,7 @@ export function useModel() {
     } else if (type === RequireField.Text) {
       if (
         !componentPreviewList.value
-          .map((componentDefinition) => componentDefinition.vModel.text)
+          .map((componentDefinition) => componentDefinition.vModel?.text)
           .includes(editorInput.text)
       ) {
         componentPreviewList.value.push({
@@ -199,28 +175,28 @@ export function useModel() {
         });
       }
     } else if (type === RequireField.Radio) {
-      componentPreviewList.value.push(requireRadioChoiceRow);
+      componentPreviewList.value.push({component: requireRadioChoiceRow});
     } else if (type === RequireField.File) {
-      componentPreviewList.value.push(requireFileRow);
+      componentPreviewList.value.push({component: requireFileRow});
     }
     resetactivePreviewComponent(type);
   }
 
-  function removeComponentFromPreviewList(type, name) {
+  function removeComponentFromPreviewList(type: RequireField, name: string) {
     if (type === RequireField.Input) {
       componentPreviewList.value.splice(
-        componentPreviewList.value.findIndex((el) => el.vModel.name === name),
+        componentPreviewList.value.findIndex((el) => el.vModel?.name === name),
         1
       );
     } else if (type === RequireField.Text) {
       componentPreviewList.value.splice(
-        componentPreviewList.value.findIndex((el) => el.vModel.text === name),
+        componentPreviewList.value.findIndex((el) => el.vModel?.text === name),
         1
       );
     } else if (type === RequireField.Radio) {
-      componentPreviewList.value.push(requireRadioChoiceRow);
+      componentPreviewList.value.push({component: requireRadioChoiceRow});
     } else if (type === RequireField.File) {
-      componentPreviewList.value.push(requireFileRow);
+      componentPreviewList.value.push({component: requireFileRow});
     }
   }
 
@@ -229,7 +205,6 @@ export function useModel() {
     activePreviewComponent,
     componentPreviewList,
     addButtonsRowClicked,
-    addButtonsRowHover,
     resetactivePreviewComponent,
     addComponentToPreviewList,
     removeComponentFromPreviewList,

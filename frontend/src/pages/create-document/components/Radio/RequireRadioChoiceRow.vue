@@ -87,8 +87,7 @@ watch(val.value, () => {
       <q-input
         v-model="val.name"
         outlined
-        dense
-        :placeholder="radioChoiceTitleFocused ? '' : 'Radio Choice Title'"
+        label="Radio Choice Title"
         @focus="focusRadioChoiceTitle"
         @blur="unfocusRadioChoiceTitle"
         @keydown.enter.prevent="$refs.choiceNameInput.$el.focus()"
@@ -119,9 +118,8 @@ watch(val.value, () => {
         ref="choiceNameInput"
         v-model="choiceName"
         outlined
-        dense
         :disable="val.name ? false : true"
-        :placeholder="choiceNameFocused ? '' : 'Choice Name'"
+        label="Choice Name"
         @focus="focusChoiceName"
         @blur="unfocusChoiceName"
         @keydown.enter.prevent="addRadioChoice"

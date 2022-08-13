@@ -11,7 +11,6 @@ const {
   documentHeader,
   componentPreviewList,
   addButtonsRowClicked,
-  addButtonsRowHover,
   activePreviewComponent,
   resetactivePreviewComponent,
   addComponentToPreviewList,
@@ -107,7 +106,6 @@ function peComponentDeleted(data) {
           <AddButtonsRow
             :smallScreen="smallScreen"
             @buttonClicked="addButtonsRowClicked"
-            @mouseHover="addButtonsRowHover"
           />
           <Transition name="fade">
             <div v-if="activePreviewComponent.component" class="q-gutter-xs">

@@ -69,16 +69,6 @@ const descriptionRowClass = computed(() => {
     ? ['col-xs-12', 'col-sm-6', 'text-center']
     : ['col-xs-12', 'col-sm-6', 'text-center'];
 });
-
-const placeHolder = computed(() => {
-  if (props.preview) {
-    return val.value.textAreaSize === 'big_input_field'
-      ? '63 characters allowed'
-      : val.value.textAreaSize === 'small_input_field'
-      ? '26 characters allowed'
-      : 'Autogrow Textarea\n300 Characters allowed';
-  } else return '';
-});
 </script>
 
 <template>
@@ -94,7 +84,6 @@ const placeHolder = computed(() => {
         outlined
         dense
         :autogrow="val.textAreaSize === 'textarea'"
-        :placeholder="placeHolder"
         :maxlength="
           val.textAreaSize === 'big_input_field'
             ? val.maxLength

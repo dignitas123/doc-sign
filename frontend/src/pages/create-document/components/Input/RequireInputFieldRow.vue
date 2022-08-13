@@ -15,9 +15,13 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  label: {
+    type: String,
+    default: 'Input Label',
+  },
   placeholder: {
     type: String,
-    default: 'Input Label (Name, Address, ...)',
+    default: '(Name, Address, ...)',
   },
   editActive: {
     type: Boolean,
@@ -148,7 +152,7 @@ const deleteConfirm = ref(false);
 
 <template>
   <template v-if="preview">
-    <div class="row justify-end">
+    <div class="row justify-end items-center">
       <q-btn dense flat icon="edit" size="xs" @click="setEditActive"
         ><q-tooltip :delay="1500" :offset="[0, 10]">Edit</q-tooltip></q-btn
       >
@@ -175,14 +179,14 @@ const deleteConfirm = ref(false);
     <InputFieldRow v-else v-model="val" />
   </template>
   <template v-else>
-    <div class="row">
+    <div class="row items-center">
       <div class="col-xs-12 col-sm-6">
         <q-input
           ref="nameInputRef"
           v-model="val.name"
           outlined
-          dense
-          :placeholder="inputFieldNameFocused ? '' : placeholder"
+          :label="label"
+          :placeholder="placeholder"
           @focus="focusInputFieldName"
           @blur="unfocusInputFieldName"
           @keyup.enter="addPeComponent"
