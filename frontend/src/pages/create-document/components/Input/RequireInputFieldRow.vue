@@ -112,7 +112,7 @@ function setEditActive() {
 function saveChanges() {
   if (validated.value) {
     editActiveValue.value = false;
-    emit('close', val.value);
+    emit('close', RequireField.Input, val.value);
   }
 }
 
@@ -121,7 +121,7 @@ function closeWindow() {
     val.value = startValue.value;
     editActiveValue.value = false;
   }
-  emit('close', startValue.value);
+  emit('close', RequireField.Input, startValue.value);
 }
 
 function addPeComponent() {
@@ -138,7 +138,7 @@ function deleteInputFieldRow() {
   });
 }
 
-function requireInputFieldRowClosed(startValue) {
+function requireInputFieldRowClosed(_, startValue) {
   editActiveValue.value = false;
   val.value = startValue;
 }

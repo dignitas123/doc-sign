@@ -33,6 +33,7 @@ const emit = defineEmits([
   'delete',
   'change',
   'close',
+  'duplicate',
 ]);
 
 const val = ref(props.modelValue);
@@ -116,7 +117,7 @@ const saveChangesWithoutSavingConfirm = ref(false);
 function saveChanges() {
   if (validated.value) {
     editActiveValue.value = false;
-    emit('close', val.value);
+    emit('close', RequireField.Text, val.value);
   }
 }
 
@@ -128,16 +129,16 @@ function closeWindow() {
       saveChangesWithoutSavingConfirm.value = true;
     }
   }
-  emit('close', startValue.value);
+  emit('close', RequireField.Text, startValue.value);
 }
 
 function closeEditWindowAndReset() {
   editActiveValue.value = false;
   val.value = startValue.value;
-  emit('close', startValue.value);
+  emit('close', RequireField.Text, startValue.value);
 }
 
-function requireTextRowClosed(startValue) {
+function requireTextRowClosed(_, startValue) {
   editActiveValue.value = false;
   val.value = startValue;
 }

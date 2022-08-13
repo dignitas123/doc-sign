@@ -1,18 +1,23 @@
-<script setup>
+<script setup lang="ts">
 import { useQuasar } from 'quasar';
 import { ref } from 'vue';
 import MainLayout from 'src/layouts/MainLayout.vue';
 import DocumentHeaderRow from './components/DocumentHeaderRow.vue';
 import AddButtonsRow from './components/AddButtonsRow.vue';
-import { useModel } from './create-document.model';
+import { RequireField, useModel } from './create-document.model';
 import HyphenText from 'src/core/components/hyphen-text.vue';
+
+interface ValidationData {
+  validated: boolean;
+  message: string;
+}
 
 const {
   documentHeader,
   componentPreviewList,
   addButtonsRowClicked,
   activePreviewComponent,
-  resetactivePreviewComponent,
+  resetActivePreviewComponent,
   addComponentToPreviewList,
   removeComponentFromPreviewList,
 } = useModel();
@@ -20,7 +25,7 @@ const {
 const $q = useQuasar();
 
 const smallScreen = ref(false);
-function onResize(size) {
+function onResize(size: { width: number }) {
   if (size.width < 461) {
     smallScreen.value = true;
   } else smallScreen.value = false;
@@ -50,11 +55,11 @@ function onReset() {
   accept.value = false;
 }
 
-function peComponentClosed() {
-  resetactivePreviewComponent();
+function peComponentClosed(type: RequireField) {
+  resetActivePreviewComponent(type);
 }
 
-function peComponentAdded(type, validationData) {
+function peComponentAdded(type: RequireField, validationData: ValidationData) {
   if (validationData.validated) {
     addComponentToPreviewList(type, activePreviewComponent);
   } else {

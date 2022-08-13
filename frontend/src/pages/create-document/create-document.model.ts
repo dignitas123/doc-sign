@@ -102,7 +102,7 @@ export function useModel() {
     }
   }
 
-  function resetactivePreviewComponent(type: RequireField) {
+  function resetActivePreviewComponent(type: RequireField) {
     if (type === RequireField.Input) {
       resetInputFieldInput();
     } else if (type === RequireField.Text) {
@@ -121,7 +121,7 @@ export function useModel() {
     if (type === RequireField.Input) {
       if (
         !componentPreviewList.value
-          .map((componentDefinition) => componentDefinition.vModel?.name)
+          .map((componentDefinition) => componentDefinition.vModel?.name ?? "")
           .includes(componentVModel.name)
       ) {
         componentPreviewList.value.push({
@@ -154,7 +154,7 @@ export function useModel() {
     } else if (type === RequireField.Text) {
       if (
         !componentPreviewList.value
-          .map((componentDefinition) => componentDefinition.vModel?.text)
+          .map((componentDefinition) => componentDefinition.vModel?.text ?? "")
           .includes(editorInput.text)
       ) {
         componentPreviewList.value.push({
@@ -179,7 +179,7 @@ export function useModel() {
     } else if (type === RequireField.File) {
       componentPreviewList.value.push({component: requireFileRow});
     }
-    resetactivePreviewComponent(type);
+    resetActivePreviewComponent(type);
   }
 
   function removeComponentFromPreviewList(type: RequireField, name: string) {
@@ -205,7 +205,7 @@ export function useModel() {
     activePreviewComponent,
     componentPreviewList,
     addButtonsRowClicked,
-    resetactivePreviewComponent,
+    resetActivePreviewComponent,
     addComponentToPreviewList,
     removeComponentFromPreviewList,
   };
