@@ -177,10 +177,13 @@ export function useModel() {
         }
       }
     } else if (type === RequireField.Text) {
+      const index = componentPreviewList.value.findIndex(
+        (component) =>
+          component.vModel?.text &&
+          component.vModel?.text === componentVModel?.text
+      );
       if (
-        !componentPreviewList.value
-          .map((componentDefinition) => componentDefinition.vModel?.text ?? '')
-          .includes(editorInput.text)
+        index === -1
       ) {
         componentPreviewList.value.push({
           component: requireTextRow,
@@ -192,12 +195,24 @@ export function useModel() {
           }),
         });
       } else {
-        $q.notify({
-          color: 'red-5',
-          textColor: 'white',
-          icon: 'warning',
-          message: `A Text Row with the same text already exists.`,
-        });
+        if(duplication) {
+          const duplicateComponentVModel = { ...componentVModel }; 
+          componentPreviewList.value.splice(index + 1, 0,
+            {
+              component: requireTextRow,
+              props: {
+                preview: true,
+              },
+              vModel: duplicateComponentVModel,
+            });
+        } else {
+          $q.notify({
+            color: 'red-5',
+            textColor: 'white',
+            icon: 'warning',
+            message: `A Text Row with the same text already exists.`,
+          });
+        }
       }
     } else if (type === RequireField.Radio) {
       componentPreviewList.value.push({ component: requireRadioChoiceRow });

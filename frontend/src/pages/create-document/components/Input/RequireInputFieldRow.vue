@@ -156,13 +156,7 @@ const deleteConfirm = ref(false);
       <q-btn dense flat icon="edit" size="xs" @click="setEditActive"
         ><q-tooltip :delay="1500" :offset="[0, 10]">Edit</q-tooltip></q-btn
       >
-      <q-btn
-        dense
-        flat
-        icon="content_copy"
-        size="xs"
-        @clikc="duplicateRow"
-        @click="duplicateRow"
+      <q-btn dense flat icon="content_copy" size="xs" @click="duplicateRow"
         ><q-tooltip :delay="1500" :offset="[0, 10]">Duplicate</q-tooltip></q-btn
       >
       <q-btn dense flat icon="delete" size="xs" @click="deleteConfirm = true"

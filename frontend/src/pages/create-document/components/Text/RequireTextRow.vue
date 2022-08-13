@@ -142,6 +142,10 @@ function requireTextRowClosed(_, startValue) {
   editActiveValue.value = false;
   val.value = startValue;
 }
+
+function duplicateRow() {
+  emit('duplicate', RequireField.Text, val.value);
+}
 </script>
 
 <template>
@@ -150,7 +154,7 @@ function requireTextRowClosed(_, startValue) {
       <q-btn dense flat icon="edit" size="xs" @click="setEditActive"
         ><q-tooltip :delay="1500" :offset="[0, 10]">Edit</q-tooltip></q-btn
       >
-      <q-btn dense flat icon="content_copy" size="xs"
+      <q-btn dense flat icon="content_copy" size="xs" @click="duplicateRow"
         ><q-tooltip :delay="1500" :offset="[0, 10]">Duplicate</q-tooltip></q-btn
       >
       <q-btn dense flat icon="delete" size="xs" @click="deleteConfirm = true"
