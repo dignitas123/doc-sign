@@ -72,11 +72,11 @@ function peComponentAdded(type: RequireField, validationData: ValidationData) {
   }
 }
 
-function duplicatePeComponent(type, component) {
-  addComponentToPreviewList(type, component);
+function duplicatePeComponent(type: RequireField, componentVModel: Record<string, any>) {
+  addComponentToPreviewList(type, componentVModel);
 }
 
-function peComponentDeleted(data) {
+function peComponentDeleted(data: { type: RequireField; name: string; }) {
   removeComponentFromPreviewList(data.type, data.name);
 }
 </script>
