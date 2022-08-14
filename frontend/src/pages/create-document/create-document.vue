@@ -104,7 +104,7 @@ watch(componentPreviewList, () => {
         >
           <DocumentHeaderRow v-model="documentHeader" />
           <q-scroll-area
-            class="preview-wrapper q-pa-md"
+            class="preview-wrapper q-px-md"
             :key="componentPreviewList.length"
           >
             <template
