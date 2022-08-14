@@ -148,11 +148,13 @@ export function useModel() {
         }
         const duplicates = componentPreviewList.value.filter(
           (componentDefinition) =>
-            componentDefinition.vModel?.name === duplicateComponentVModel?.name ||
+            componentDefinition.vModel?.name &&
+            (componentDefinition.vModel?.name === duplicateComponentVModel?.name ||
             (componentDefinition.vModel?.name.split('(').length > 1 &&
               componentDefinition.vModel?.name.split('(')[0] ===
               duplicateComponentVModel?.name &&
               /\d\)/.test(componentDefinition.vModel?.name.split('(')[1]))
+            )
         ).length;
         
         duplicateComponentVModel.name += `(${duplicates + 1})`;

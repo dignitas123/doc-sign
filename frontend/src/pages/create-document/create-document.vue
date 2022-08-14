@@ -99,11 +99,14 @@ watch(componentPreviewList, () => {
         <q-form
           @submit="onSubmit"
           @reset="onReset"
-          class="q-gutter-md-top-bottom"
+          class="q-gutter-md-top-bottom full-height"
           spellcheck="false"
         >
           <DocumentHeaderRow v-model="documentHeader" />
-          <div :key="componentPreviewList.length" class="preview-wrapper">
+          <q-scroll-area
+            class="preview-wrapper q-pa-md"
+            :key="componentPreviewList.length"
+          >
             <template
               v-for="(componentDefinition, i) in componentPreviewList"
               :key="i"
@@ -116,7 +119,7 @@ watch(componentPreviewList, () => {
                 @duplicate="duplicatePeComponent"
               />
             </template>
-          </div>
+          </q-scroll-area>
         </q-form>
         <div class="absolute-bottom">
           <Transition name="fade">
@@ -172,9 +175,8 @@ watch(componentPreviewList, () => {
   max-width: 610px;
   height: 98.5%;
   .preview-wrapper {
-    height: 60vh;
+    height: calc(100% - 130px);
     max-width: 572px;
-    overflow: scroll;
     word-break: break-word;
   }
 }

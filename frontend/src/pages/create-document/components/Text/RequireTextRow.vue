@@ -151,25 +151,13 @@ function duplicateRow() {
 <template>
   <template v-if="preview">
     <div class="row justify-end">
-      <q-btn rounded dense flat icon="edit" size="xs" @click="setEditActive"
+      <q-btn dense flat icon="edit" size="xs" @click="setEditActive"
         ><q-tooltip :delay="1500" :offset="[0, 10]">Edit</q-tooltip></q-btn
       >
-      <q-btn
-        rounded
-        dense
-        flat
-        icon="content_copy"
-        size="xs"
-        @click="duplicateRow"
+      <q-btn dense flat icon="content_copy" size="xs" @click="duplicateRow"
         ><q-tooltip :delay="1500" :offset="[0, 10]">Duplicate</q-tooltip></q-btn
       >
-      <q-btn
-        rounded
-        dense
-        flat
-        icon="delete"
-        size="xs"
-        @click="deleteConfirm = true"
+      <q-btn dense flat icon="delete" size="xs" @click="deleteConfirm = true"
         ><q-tooltip :delay="1500" :offset="[0, 10]">Delete</q-tooltip></q-btn
       >
     </div>
