@@ -149,6 +149,7 @@ function itemRemoved(index) {
       />
       <q-btn
         class="ml-small"
+        rounded
         unelevated
         outline
         icon="add"

@@ -8,6 +8,7 @@ import Tabs from '../main-tabs.vue';
     <q-page class="row items-center justify-evenly">
       <q-btn
         class="absolute"
+        rounded
         style="top: 20px"
         to="/documents/create"
         unelevated

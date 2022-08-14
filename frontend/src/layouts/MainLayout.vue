@@ -23,19 +23,19 @@ const accountCut = computed(() => {
           </router-link>
         </q-toolbar-title>
 
-        <q-btn flat round dense icon="notifications" class="q-mr-xs">
+        <q-btn flat rounded round dense icon="notifications" class="q-mr-xs">
           <q-badge color="accent" floating>4</q-badge>
         </q-btn>
-        <q-btn flat round dense icon="settings" class="q-mr-xs" />
-        <q-btn v-if="account" :label="accountCut" color="primary">
+        <q-btn flat rounded round dense icon="settings" class="q-mr-xs" />
+        <q-btn v-if="account" rounded :label="accountCut" color="primary">
           <q-tooltip>
             {{ account }}
           </q-tooltip>
         </q-btn>
         <q-btn
           v-else
-          unelevated
           rounded
+          unelevated
           label="Connect Wallet"
           class="q-mx-xs bg-secondary text-primary"
           @click="getProviderAndSigner()"

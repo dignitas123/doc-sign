@@ -133,6 +133,7 @@ watch(val.value, () => {
       <q-btn
         unelevated
         outline
+        rounded
         color="accent"
         label="Add Choice"
         icon="add"
@@ -147,6 +148,7 @@ watch(val.value, () => {
         class="ml-small"
         unelevated
         outline
+        rounded
         :color="val.radioChoiceNames.length ? 'primary' : 'info'"
         icon="remove"
         :disabled="val.radioChoiceNames.length ? false : true"

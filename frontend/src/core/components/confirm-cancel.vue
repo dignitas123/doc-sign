@@ -13,8 +13,8 @@ const emit = defineEmits(['confirm', 'cancel']);
   <div class="row justify-between mt-small">
     <div class="col">
       <q-btn
-        class="no-shadow"
         unelevated
+        rounded
         color="accent"
         style="width: 100%"
         @click="emit('confirm')"
@@ -24,8 +24,8 @@ const emit = defineEmits(['confirm', 'cancel']);
     </div>
     <div class="col- ml-small">
       <q-btn
-        class="no-shadow"
         unelevated
+        rounded
         outline
         icon="close"
         color="primary"

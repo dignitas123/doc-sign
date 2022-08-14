@@ -151,13 +151,25 @@ function duplicateRow() {
 <template>
   <template v-if="preview">
     <div class="row justify-end">
-      <q-btn dense flat icon="edit" size="xs" @click="setEditActive"
+      <q-btn rounded dense flat icon="edit" size="xs" @click="setEditActive"
         ><q-tooltip :delay="1500" :offset="[0, 10]">Edit</q-tooltip></q-btn
       >
-      <q-btn dense flat icon="content_copy" size="xs" @click="duplicateRow"
+      <q-btn
+        rounded
+        dense
+        flat
+        icon="content_copy"
+        size="xs"
+        @click="duplicateRow"
         ><q-tooltip :delay="1500" :offset="[0, 10]">Duplicate</q-tooltip></q-btn
       >
-      <q-btn dense flat icon="delete" size="xs" @click="deleteConfirm = true"
+      <q-btn
+        rounded
+        dense
+        flat
+        icon="delete"
+        size="xs"
+        @click="deleteConfirm = true"
         ><q-tooltip :delay="1500" :offset="[0, 10]">Delete</q-tooltip></q-btn
       >
     </div>
@@ -199,6 +211,7 @@ function duplicateRow() {
         <q-btn flat label="Cancel" color="primary" v-close-popup />
         <q-btn
           outline
+          rounded
           label="Delete"
           color="accent"
           v-close-popup
@@ -219,6 +232,7 @@ function duplicateRow() {
         <q-btn flat label="Cancel" color="primary" v-close-popup />
         <q-btn
           flat
+          rounded
           label="Yes"
           color="primary"
           v-close-popup

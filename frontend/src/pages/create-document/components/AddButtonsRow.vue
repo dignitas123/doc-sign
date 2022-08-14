@@ -30,6 +30,7 @@ watch(hover, () => {
     <div class="col">
       <q-btn
         unelevated
+        rounded
         class="no-shadow"
         icon-right="text_fields"
         color="accent"
@@ -43,6 +44,7 @@ watch(hover, () => {
     <div class="col">
       <q-btn
         unelevated
+        rounded
         icon-right="edit_note"
         color="accent"
         @click="emitButtonClicked('Text')"
@@ -55,6 +57,7 @@ watch(hover, () => {
     <div class="col">
       <q-btn
         unelevated
+        rounded
         icon-right="library_add_check"
         color="accent"
         @click="emitButtonClicked('Radio')"
@@ -67,6 +70,7 @@ watch(hover, () => {
     <div class="col">
       <q-btn
         unelevated
+        rounded
         icon-right="save"
         color="accent"
         @click="emitButtonClicked('File')"
