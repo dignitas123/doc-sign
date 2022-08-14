@@ -92,8 +92,8 @@ watch(componentPreviewList, () => {
 
 <template>
   <main-layout>
-    <q-page class="row items-center justify-evenly">
-      <div class="q-px-md shadow-1 absolute create-document">
+    <q-page class="row items-center justify-evenly column">
+      <div class="q-px-md q-ma-xs shadow-3 absolute create-document">
         <q-form
           @submit="onSubmit"
           @reset="onReset"
@@ -158,9 +158,8 @@ watch(componentPreviewList, () => {
 <style lang="scss" scoped>
 .create-document {
   background: var(--q-secondary);
-  top: 20px;
-  max-width: 552px;
-  min-height: 92%;
+  max-width: 650px;
+  height: 99%;
 }
 .second-toolbar {
   display: flex;
