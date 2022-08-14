@@ -185,6 +185,10 @@ const deleteConfirm = ref(false);
     <InputFieldRow v-else v-model="val" />
   </template>
   <template v-else>
+    <template v-if="val.name">
+      <HyphenText class="mt-small mb-big">Preview</HyphenText>
+      <InputFieldRow v-model="val" preview />
+    </template>
     <div class="row items-center">
       <div class="col-xs-12 col-sm-6">
         <q-input
@@ -247,10 +251,6 @@ const deleteConfirm = ref(false);
         <q-radio v-model="val.textAreaSize" val="textarea" label="Textarea" />
       </div>
     </div>
-    <template v-if="val.name">
-      <HyphenText class="mt-small mb-big">Preview</HyphenText>
-      <InputFieldRow v-model="val" preview />
-    </template>
     <ConfirmCancel
       v-if="editActiveValue"
       confirmText="Save Changes"

@@ -92,8 +92,10 @@ watch(componentPreviewList, () => {
 
 <template>
   <main-layout>
-    <q-page class="row items-center justify-evenly column">
-      <div class="q-px-md q-ma-xs shadow-3 absolute create-document">
+    <q-page
+      class="row items-center justify-evenly column create-document-wrapper"
+    >
+      <div class="q-px-md q-ma-xs shadow-3 full-width absolute create-document">
         <q-form
           @submit="onSubmit"
           @reset="onReset"
@@ -101,10 +103,7 @@ watch(componentPreviewList, () => {
           spellcheck="false"
         >
           <DocumentHeaderRow v-model="documentHeader" />
-          <HyphenText v-if="componentPreviewList.length"
-            >Document Preview</HyphenText
-          >
-          <div :key="componentPreviewList.length">
+          <div :key="componentPreviewList.length" class="preview-wrapper">
             <template
               v-for="(componentDefinition, i) in componentPreviewList"
               :key="i"
@@ -118,13 +117,13 @@ watch(componentPreviewList, () => {
               />
             </template>
           </div>
-          <HyphenText>Add to Document</HyphenText>
-          <AddButtonsRow
-            :smallScreen="smallScreen"
-            @buttonClicked="addButtonsRowClicked"
-          />
+        </q-form>
+        <div class="absolute-bottom">
           <Transition name="fade">
-            <div v-if="activePreviewComponent.component" class="q-gutter-xs">
+            <div
+              class="q-gutter-xs q-ma-lg"
+              v-if="activePreviewComponent.component"
+            >
               <component
                 :is="activePreviewComponent.component"
                 v-model="activePreviewComponent.vModel"
@@ -133,7 +132,16 @@ watch(componentPreviewList, () => {
               />
             </div>
           </Transition>
-        </q-form>
+          <Transition name="fade">
+            <div v-if="!activePreviewComponent.component">
+              <HyphenText>Add to Document</HyphenText>
+              <AddButtonsRow
+                :smallScreen="smallScreen"
+                @buttonClicked="addButtonsRowClicked"
+              />
+            </div>
+          </Transition>
+        </div>
         <q-resize-observer :debounce="0" @resize="onResize" />
       </div>
     </q-page>
@@ -156,10 +164,19 @@ watch(componentPreviewList, () => {
 </template>
 
 <style lang="scss" scoped>
+.create-document-wrapper {
+  margin-bottom: -$small-pixel;
+}
 .create-document {
   background: var(--q-secondary);
-  max-width: 650px;
-  height: 99%;
+  max-width: 610px;
+  height: 98.5%;
+  .preview-wrapper {
+    height: 60vh;
+    max-width: 572px;
+    overflow: scroll;
+    word-break: break-word;
+  }
 }
 .second-toolbar {
   display: flex;
@@ -172,7 +189,7 @@ watch(componentPreviewList, () => {
 }
 
 .fade-enter-active {
-  transition: opacity 0.5s ease;
+  transition: opacity 1.2s ease;
 }
 
 .fade-enter-from,

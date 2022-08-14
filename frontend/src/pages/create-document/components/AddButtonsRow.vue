@@ -24,7 +24,7 @@ watch(hover, () => {
 
 <template>
   <div
-    class="row text-center add-button-row add-button-row-medium-screen"
+    class="row q-pb-sm text-center add-button-row add-button-row-medium-screen"
     :class="{ 'add-button-row-small-screen': smallScreen }"
   >
     <div class="col">

@@ -46,7 +46,7 @@ const accountCut = computed(() => {
       </q-toolbar>
     </q-header>
 
-    <q-page-container>
+    <q-page-container class="q-pa-xs">
       <slot />
     </q-page-container>
   </q-layout>
