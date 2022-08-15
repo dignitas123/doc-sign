@@ -14,7 +14,7 @@ const accountCut = computed(() => {
 <template>
   <q-layout view="lHh Lpr lFf" id="mainLayout">
     <q-header>
-      <q-toolbar id="main-layout-toolbar">
+      <q-toolbar>
         <q-toolbar-title>
           <router-link to="/">
             <q-icon size="lg">
@@ -41,13 +41,13 @@ const accountCut = computed(() => {
           @click="getProviderAndSigner()"
         />
       </q-toolbar>
-      <q-toolbar style="margin-top: 10px">
+      <q-toolbar>
         <slot name="secondToolbar" />
       </q-toolbar>
     </q-header>
 
-    <q-page-container class="q-pa-xs">
-      <slot />
+    <q-page-container>
+        <slot />
     </q-page-container>
   </q-layout>
 </template>
@@ -55,5 +55,9 @@ const accountCut = computed(() => {
 <style>
 #mainLayout {
   background: var(--q-info);
+}
+
+body {
+  font-size: 16px;
 }
 </style>

@@ -199,7 +199,6 @@ function duplicateRow() {
         <q-btn flat label="Cancel" color="primary" v-close-popup />
         <q-btn
           outline
-          rounded
           label="Delete"
           color="accent"
           v-close-popup

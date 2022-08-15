@@ -93,13 +93,13 @@ watch(componentPreviewList, () => {
 <template>
   <main-layout>
     <q-page
-      class="row items-center justify-evenly column create-document-wrapper"
+      class="items-center justify-evenly column"
     >
-      <div class="q-px-md q-ma-xs shadow-3 full-width absolute create-document">
+      <div class="q-px-md shadow-3 absolute create-document">
         <q-form
           @submit="onSubmit"
           @reset="onReset"
-          class="q-gutter-md-top-bottom full-height"
+          class="full-height"
           spellcheck="false"
         >
           <DocumentHeaderRow v-model="documentHeader" />
@@ -167,13 +167,11 @@ watch(componentPreviewList, () => {
 </template>
 
 <style lang="scss" scoped>
-.create-document-wrapper {
-  margin-bottom: -$small-pixel;
-}
 .create-document {
   background: var(--q-secondary);
   max-width: 610px;
-  height: 98.5%;
+  height: 98%;
+  width: 98%;
   .preview-wrapper {
     height: calc(100% - 130px);
     max-width: 572px;
