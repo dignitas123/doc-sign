@@ -92,9 +92,7 @@ watch(componentPreviewList, () => {
 
 <template>
   <main-layout>
-    <q-page
-      class="items-center justify-evenly column"
-    >
+    <q-page class="items-center justify-evenly column">
       <div class="q-px-md shadow-3 absolute create-document">
         <q-form
           @submit="onSubmit"

@@ -69,6 +69,21 @@ const descriptionRowClass = computed(() => {
     ? ['col-xs-12', 'col-sm-6', 'text-center']
     : ['col-xs-12', 'col-sm-6', 'text-center'];
 });
+
+const previewPlaceHolder = computed(() => {
+  if (props.preview) {
+    switch (val.value.textAreaSize) {
+      case 'big_input_field':
+        return 'maximum length of 64 characters';
+      case 'textarea':
+        return 'autogrow input up to 300 characters';
+      case 'small_input_field':
+        return 'maximum length of 26 characters';
+      default:
+        return '';
+    }
+  } else return '';
+});
 </script>
 
 <template>
@@ -91,6 +106,7 @@ const descriptionRowClass = computed(() => {
             ? 26
             : 300
         "
+        :placeholder="preview ? previewPlaceHolder : ''"
         @focus="focusInputFieldName"
         @blur="unfocusInputFieldName"
       />
