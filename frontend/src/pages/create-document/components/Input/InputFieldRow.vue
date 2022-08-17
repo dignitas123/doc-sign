@@ -84,6 +84,14 @@ const previewPlaceHolder = computed(() => {
     }
   } else return '';
 });
+
+const maxLength = computed(() => {
+  return val.value.textAreaSize === 'big_input_field'
+            ? val.value.maxLength
+            : val.value.textAreaSize === 'small_input_field'
+            ? 26
+            : 300
+})
 </script>
 
 <template>
@@ -98,14 +106,8 @@ const previewPlaceHolder = computed(() => {
         v-model="textInput"
         outlined
         dense
+        :rules="[ val => val.length <= maxLength || `Please use maximum ${maxLength} characters`]"
         :autogrow="val.textAreaSize === 'textarea'"
-        :maxlength="
-          val.textAreaSize === 'big_input_field'
-            ? val.maxLength
-            : val.textAreaSize === 'small_input_field'
-            ? 26
-            : 300
-        "
         :placeholder="preview ? previewPlaceHolder : ''"
         @focus="focusInputFieldName"
         @blur="unfocusInputFieldName"
