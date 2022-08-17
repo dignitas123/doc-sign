@@ -122,7 +122,7 @@ watch(componentPreviewList, () => {
         <div class="absolute-bottom">
           <Transition name="fade">
             <div
-              class="q-gutter-xs q-ma-lg"
+              class="q-gutter-xs q-ma-lg input-component"
               v-if="activePreviewComponent.component"
             >
               <component
@@ -133,7 +133,7 @@ watch(componentPreviewList, () => {
               />
             </div>
           </Transition>
-          <Transition name="fade">
+          <Transition name="slide">
             <div v-if="!activePreviewComponent.component">
               <HyphenText>Add to Document</HyphenText>
               <AddButtonsRow
@@ -175,6 +175,10 @@ watch(componentPreviewList, () => {
     max-width: 572px;
     word-break: break-word;
   }
+  .input-component {
+    background: var(--q-secondary);
+    box-shadow: 0px 0px 9px 20px var(--q-secondary);
+  }
 }
 .second-toolbar {
   display: flex;
@@ -186,12 +190,36 @@ watch(componentPreviewList, () => {
   color: transparent !important;
 }
 
-.fade-enter-active {
+.fade-enter-active, .fade-leave-active {
   transition: opacity 1.2s ease;
 }
 
 .fade-enter-from,
 .fade-leave-to {
   opacity: 0;
+}
+
+.slide-enter-from {
+  margin-bottom: -72px;
+}
+
+.slide-enter-active {
+  transition: margin-bottom .8s ease-in;
+}
+
+.slide-enter-to {
+  margin-bottom: 0px;
+}
+
+.slide-leave-from {
+  margin-bottom: 0px;
+}
+
+.slide-leave-active {
+  transition: margin-bottom .8s ease-out;
+}
+
+.slide-leave-to {
+  margin-bottom: -72px;
 }
 </style>

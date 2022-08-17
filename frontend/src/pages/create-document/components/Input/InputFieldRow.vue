@@ -106,6 +106,7 @@ const maxLength = computed(() => {
         v-model="textInput"
         outlined
         dense
+        :maxlength="maxLength + 1"
         :rules="[ val => val.length <= maxLength || `Please use maximum ${maxLength} characters`]"
         :autogrow="val.textAreaSize === 'textarea'"
         :placeholder="preview ? previewPlaceHolder : ''"

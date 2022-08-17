@@ -16,6 +16,7 @@
 
   .plus-text {
     background: var(--q-secondary);
+    border-radius: 28px;
     display: block;
     margin: 0 auto;
     margin-top: -11px;
