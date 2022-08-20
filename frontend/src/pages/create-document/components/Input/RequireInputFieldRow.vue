@@ -147,7 +147,21 @@ function duplicateRow() {
   emit('duplicate', RequireField.Input, val.value);
 }
 
-// const inputType;
+enum InputTypes {
+  manual = 'manual',
+  mail = 'mail',
+  telephone = 'telephone',
+  link = 'link',
+  password = 'password',
+  date = 'date',
+  time = 'time',
+}
+
+const selectedInput = ref(InputTypes.manual);
+
+function setActiveSelectedInputType(inputType: InputTypes) {
+  selectedInput.value = inputType;
+}
 
 const deleteConfirm = ref(false);
 </script>
@@ -243,13 +257,13 @@ const deleteConfirm = ref(false);
     </div>
     <div class="col q-my-md">
       <q-btn-group unelevated spread>
-        <q-btn color="accent" icon-right="tune" />
-        <q-btn outline color="accent" icon-right="mail" />
-        <q-btn outline color="accent" icon-right="call" />
-        <q-btn outline color="accent" icon-right="link" />
-        <q-btn outline color="accent" icon-right="visibility" />
-        <q-btn outline color="accent" icon-right="calendar_month" />
-        <q-btn outline color="accent" icon-right="schedule" />
+        <q-btn :outline="selectedInput !== InputTypes.manual" color="accent" icon-right="tune" @click="setActiveSelectedInputType(InputTypes.manual)" />
+        <q-btn :outline="selectedInput !== InputTypes.mail" color="accent" icon-right="mail" @click="setActiveSelectedInputType(InputTypes.mail)" />
+        <q-btn :outline="selectedInput !== InputTypes.telephone" color="accent" icon-right="call" @click="setActiveSelectedInputType(InputTypes.telephone)" />
+        <q-btn :outline="selectedInput !== InputTypes.link" color="accent" icon-right="link" @click="setActiveSelectedInputType(InputTypes.link)" />
+        <q-btn :outline="selectedInput !== InputTypes.password" color="accent" icon-right="visibility" @click="setActiveSelectedInputType(InputTypes.password)" />
+        <q-btn :outline="selectedInput !== InputTypes.date" color="accent" icon-right="calendar_month" @click="setActiveSelectedInputType(InputTypes.date)" />
+        <q-btn :outline="selectedInput !== InputTypes.time" color="accent" icon-right="schedule" @click="setActiveSelectedInputType(InputTypes.time)" />
       </q-btn-group>
     </div>
     <ConfirmCancel
