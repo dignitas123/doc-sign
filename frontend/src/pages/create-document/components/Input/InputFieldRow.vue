@@ -95,6 +95,38 @@ const maxLength = computed(() => {
     ? 26
     : 300;
 });
+
+const specialCharacters = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/;
+
+const allowedHint = computed(() => {
+  let allowed = '';
+  const and = 'and';
+  if (val.value.inputFieldAllowed.Numbers) {
+    allowed += 'numbers';
+  }
+  if (val.value.inputFieldAllowed.Text) {
+    const alphabetical_letters = 'alphabetical letters';
+    if (allowed) {
+      allowed += ` ${and} ${alphabetical_letters}`;
+    } else {
+      allowed += alphabetical_letters;
+    }
+  }
+  if (val.value.inputFieldAllowed.SpecialCharacters) {
+    const special_characters = 'special characters';
+    if (allowed) {
+      allowed += ` ${and} ${special_characters}`;
+    } else {
+      allowed += special_characters;
+    }
+  }
+  const hint = `Only ${allowed} allowed`;
+  return val.value.inputFieldAllowed.Numbers &&
+    val.value.inputFieldAllowed.Text &&
+    val.value.inputFieldAllowed.SpecialCharacters
+    ? ''
+    : hint;
+});
 </script>
 
 <template>
@@ -112,12 +144,26 @@ const maxLength = computed(() => {
         :type="val.inputType"
         :maxlength="maxLength + 1"
         :rules="[
-          (val) =>
-            val.length <= maxLength ||
+          (inputValue) =>
+            inputValue.length <= maxLength ||
             `Please use maximum ${maxLength} characters`,
+          (inputValue) =>
+            val.inputFieldAllowed.Numbers ||
+            (!val.inputFieldAllowed.Numbers && !/\d/.test(inputValue)) ||
+            'Numbers are not allowed',
+          (inputValue) =>
+            val.inputFieldAllowed.SpecialCharacters ||
+            (!val.inputFieldAllowed.SpecialCharacters &&
+              !specialCharacters.test(inputValue)) ||
+            'Special characters are not allowed',
+          (inputValue) =>
+            val.inputFieldAllowed.Text ||
+            (!val.inputFieldAllowed.Text && !/^[a-zA-Z]+$/.test(inputValue)) ||
+            'Alphabetical letters are not allowed',
         ]"
         :autogrow="val.textAreaSize === 'textarea'"
         :placeholder="preview ? previewPlaceHolder : ''"
+        :hint="allowedHint"
         @focus="focusInputFieldName"
         @blur="unfocusInputFieldName"
       />

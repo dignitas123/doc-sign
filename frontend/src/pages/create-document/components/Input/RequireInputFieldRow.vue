@@ -224,7 +224,7 @@ const deleteConfirm = ref(false);
       <div class="col-xs-12 col-sm-6 text-center">
         <q-checkbox
           v-model="val.inputFieldAllowed.Text"
-          label="A,b,c"
+          label="Abc"
           color="primary"
           ><q-tooltip :delay="750" :offset="[0, 10]"
             >Allow alphabetical letters.</q-tooltip
@@ -232,7 +232,7 @@ const deleteConfirm = ref(false);
         >
         <q-checkbox
           v-model="val.inputFieldAllowed.Numbers"
-          label="0,1,2"
+          label="012"
           color="primary"
           ><q-tooltip :delay="750" :offset="[0, 10]"
             >Allow numbers.</q-tooltip
@@ -240,7 +240,7 @@ const deleteConfirm = ref(false);
         >
         <q-checkbox
           v-model="val.inputFieldAllowed.SpecialCharacters"
-          label="*,$,%"
+          label=".,$%"
           color="primary"
           ><q-tooltip :delay="750" :offset="[0, 10]"
             >Allow special characters.</q-tooltip
