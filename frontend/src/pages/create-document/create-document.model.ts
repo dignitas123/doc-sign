@@ -5,6 +5,7 @@ import RequireRadioChoiceRow from './components/Radio/RequireRadioChoiceRow.vue'
 import RequireFileRow from './components/File/RequireFileRow.vue';
 import { useQuasar } from 'quasar';
 import { ComponentDefinition } from 'src/core/interfaces/component-definition';
+import { InputTypes } from './components/Input/RequireInputFieldRow.model';
 
 // require Field names (add here if you need more)
 export enum RequireField {
@@ -37,6 +38,7 @@ export function useModel() {
       SpecialCharacters: false,
     }),
     textAreaSize: 'small_input_field',
+    inputType: InputTypes.manual,
     maxLength: 64,
   });
   function resetInputFieldInput() {
@@ -142,32 +144,32 @@ export function useModel() {
           }),
         });
       } else {
-        const duplicateComponentVModel = { ...componentVModel };  
-        if(duplication && /\(\d\)$/.test(duplicateComponentVModel.name)) {
-          duplicateComponentVModel.name = duplicateComponentVModel.name.split('(')[0];
+        const duplicateComponentVModel = { ...componentVModel };
+        if (duplication && /\(\d\)$/.test(duplicateComponentVModel.name)) {
+          duplicateComponentVModel.name =
+            duplicateComponentVModel.name.split('(')[0];
         }
         const duplicates = componentPreviewList.value.filter(
           (componentDefinition) =>
             componentDefinition.vModel?.name &&
-            (componentDefinition.vModel?.name === duplicateComponentVModel?.name ||
-            (componentDefinition.vModel?.name.split('(').length > 1 &&
-              componentDefinition.vModel?.name.split('(')[0] ===
-              duplicateComponentVModel?.name &&
-              /\d\)/.test(componentDefinition.vModel?.name.split('(')[1]))
-            )
+            (componentDefinition.vModel?.name ===
+              duplicateComponentVModel?.name ||
+              (componentDefinition.vModel?.name.split('(').length > 1 &&
+                componentDefinition.vModel?.name.split('(')[0] ===
+                  duplicateComponentVModel?.name &&
+                /\d\)/.test(componentDefinition.vModel?.name.split('(')[1])))
         ).length;
-        
+
         duplicateComponentVModel.name += `(${duplicates + 1})`;
 
-        if(duplication) {
-          componentPreviewList.value.splice(index + 1, 0,
-            {
-              component: requireInputFieldRow,
-              props: {
-                preview: true,
-              },
-              vModel: duplicateComponentVModel,
-            });
+        if (duplication) {
+          componentPreviewList.value.splice(index + 1, 0, {
+            component: requireInputFieldRow,
+            props: {
+              preview: true,
+            },
+            vModel: duplicateComponentVModel,
+          });
         } else {
           componentPreviewList.value.push({
             component: requireInputFieldRow,
@@ -184,9 +186,7 @@ export function useModel() {
           component.vModel?.text &&
           component.vModel?.text === componentVModel?.text
       );
-      if (
-        index === -1
-      ) {
+      if (index === -1) {
         componentPreviewList.value.push({
           component: requireTextRow,
           props: {
@@ -197,16 +197,15 @@ export function useModel() {
           }),
         });
       } else {
-        if(duplication) {
-          const duplicateComponentVModel = { ...componentVModel }; 
-          componentPreviewList.value.splice(index + 1, 0,
-            {
-              component: requireTextRow,
-              props: {
-                preview: true,
-              },
-              vModel: duplicateComponentVModel,
-            });
+        if (duplication) {
+          const duplicateComponentVModel = { ...componentVModel };
+          componentPreviewList.value.splice(index + 1, 0, {
+            component: requireTextRow,
+            props: {
+              preview: true,
+            },
+            vModel: duplicateComponentVModel,
+          });
         } else {
           $q.notify({
             color: 'red-5',

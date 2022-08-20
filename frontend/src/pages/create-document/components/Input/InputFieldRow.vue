@@ -1,16 +1,18 @@
-<script setup>
-import { ref, watch, reactive, computed } from 'vue';
+<script setup lang="ts">
+import { ref, watch, reactive, computed, withDefaults } from 'vue';
+import { InputFieldModel, InputTypes } from './RequireInputFieldRow.model';
 
-const props = defineProps({
-  modelValue: {
-    type: Object,
-    default: () => {},
-  },
-  preview: {
-    type: Boolean,
-    default: false,
-  },
-});
+const props = withDefaults(
+  defineProps<{
+    modelValue?: InputFieldModel | undefined;
+    preview?: boolean;
+  }>(),
+  {
+    modelValue: undefined,
+    preview: false,
+  }
+);
+
 defineEmits(['update:modelValue']);
 
 function getModelValue() {
@@ -24,6 +26,7 @@ function getModelValue() {
         SpecialCharacters: false,
       }),
       textAreaSize: 'small_input_field',
+      inputType: InputTypes.manual,
       maxLength: 64,
     })
   );
@@ -34,7 +37,7 @@ const val = ref(getModelValue());
 const textInput = ref('');
 
 watch(val.value.inputFieldAllowed, () => {
-  let allFalse = (arr) => arr.every((v) => v === false);
+  let allFalse = (arr: boolean[]) => arr.every((v) => v === false);
   if (
     allFalse(
       Object.values(val.value.inputFieldAllowed).map((val) => {
@@ -106,6 +109,7 @@ const maxLength = computed(() => {
         v-model="textInput"
         outlined
         dense
+        :type="val.inputType"
         :maxlength="maxLength + 1"
         :rules="[
           (val) =>

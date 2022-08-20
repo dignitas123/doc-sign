@@ -4,7 +4,11 @@ import InputFieldRow from './InputFieldRow.vue';
 import { RequireField } from '../../create-document.model';
 import ConfirmCancel from 'src/core/components/confirm-cancel.vue';
 import HyphenText from 'src/core/components/hyphen-text.vue';
-import { InputFieldModel, InputFieldType } from './RequireInputFieldRow.model';
+import {
+  InputFieldModel,
+  InputFieldType,
+  InputTypes,
+} from './RequireInputFieldRow.model';
 
 const props = withDefaults(
   defineProps<{
@@ -53,6 +57,7 @@ function getModelValue() {
         SpecialCharacters: false,
       }),
       textAreaSize: 'small_input_field',
+      inputType: InputTypes.manual,
       maxLength: 64,
     })
   );
@@ -61,7 +66,7 @@ function getModelValue() {
 const val = ref(getModelValue());
 const startValue = ref();
 
-const allFalse = (arr: boolean[]) => arr.every((v: boolean) => v === false);
+const allFalse = (arr: boolean[]) => arr.every((v) => v === false);
 
 watch(val.value.inputFieldAllowed, () => {
   if (allFalse(Object.values(val.value.inputFieldAllowed).map((val) => val))) {
@@ -147,20 +152,8 @@ function duplicateRow() {
   emit('duplicate', RequireField.Input, val.value);
 }
 
-enum InputTypes {
-  manual = 'manual',
-  mail = 'mail',
-  telephone = 'telephone',
-  link = 'link',
-  password = 'password',
-  date = 'date',
-  time = 'time',
-}
-
-const selectedInput = ref(InputTypes.manual);
-
 function setActiveSelectedInputType(inputType: InputTypes) {
-  selectedInput.value = inputType;
+  val.value.inputType = inputType;
 }
 
 const deleteConfirm = ref(false);
@@ -258,43 +251,43 @@ const deleteConfirm = ref(false);
     <div class="col q-my-md">
       <q-btn-group unelevated spread>
         <q-btn
-          :outline="selectedInput !== InputTypes.manual"
+          :outline="val.inputType !== InputTypes.manual"
           color="accent"
           icon-right="tune"
           @click="setActiveSelectedInputType(InputTypes.manual)"
         />
         <q-btn
-          :outline="selectedInput !== InputTypes.mail"
+          :outline="val.inputType !== InputTypes.mail"
           color="accent"
           icon-right="mail"
           @click="setActiveSelectedInputType(InputTypes.mail)"
         />
         <q-btn
-          :outline="selectedInput !== InputTypes.telephone"
+          :outline="val.inputType !== InputTypes.telephone"
           color="accent"
           icon-right="call"
           @click="setActiveSelectedInputType(InputTypes.telephone)"
         />
         <q-btn
-          :outline="selectedInput !== InputTypes.link"
+          :outline="val.inputType !== InputTypes.link"
           color="accent"
           icon-right="link"
           @click="setActiveSelectedInputType(InputTypes.link)"
         />
         <q-btn
-          :outline="selectedInput !== InputTypes.password"
+          :outline="val.inputType !== InputTypes.password"
           color="accent"
           icon-right="visibility"
           @click="setActiveSelectedInputType(InputTypes.password)"
         />
         <q-btn
-          :outline="selectedInput !== InputTypes.date"
+          :outline="val.inputType !== InputTypes.date"
           color="accent"
           icon-right="calendar_month"
           @click="setActiveSelectedInputType(InputTypes.date)"
         />
         <q-btn
-          :outline="selectedInput !== InputTypes.time"
+          :outline="val.inputType !== InputTypes.time"
           color="accent"
           icon-right="schedule"
           @click="setActiveSelectedInputType(InputTypes.time)"
