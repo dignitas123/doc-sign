@@ -257,13 +257,48 @@ const deleteConfirm = ref(false);
     </div>
     <div class="col q-my-md">
       <q-btn-group unelevated spread>
-        <q-btn :outline="selectedInput !== InputTypes.manual" color="accent" icon-right="tune" @click="setActiveSelectedInputType(InputTypes.manual)" />
-        <q-btn :outline="selectedInput !== InputTypes.mail" color="accent" icon-right="mail" @click="setActiveSelectedInputType(InputTypes.mail)" />
-        <q-btn :outline="selectedInput !== InputTypes.telephone" color="accent" icon-right="call" @click="setActiveSelectedInputType(InputTypes.telephone)" />
-        <q-btn :outline="selectedInput !== InputTypes.link" color="accent" icon-right="link" @click="setActiveSelectedInputType(InputTypes.link)" />
-        <q-btn :outline="selectedInput !== InputTypes.password" color="accent" icon-right="visibility" @click="setActiveSelectedInputType(InputTypes.password)" />
-        <q-btn :outline="selectedInput !== InputTypes.date" color="accent" icon-right="calendar_month" @click="setActiveSelectedInputType(InputTypes.date)" />
-        <q-btn :outline="selectedInput !== InputTypes.time" color="accent" icon-right="schedule" @click="setActiveSelectedInputType(InputTypes.time)" />
+        <q-btn
+          :outline="selectedInput !== InputTypes.manual"
+          color="accent"
+          icon-right="tune"
+          @click="setActiveSelectedInputType(InputTypes.manual)"
+        />
+        <q-btn
+          :outline="selectedInput !== InputTypes.mail"
+          color="accent"
+          icon-right="mail"
+          @click="setActiveSelectedInputType(InputTypes.mail)"
+        />
+        <q-btn
+          :outline="selectedInput !== InputTypes.telephone"
+          color="accent"
+          icon-right="call"
+          @click="setActiveSelectedInputType(InputTypes.telephone)"
+        />
+        <q-btn
+          :outline="selectedInput !== InputTypes.link"
+          color="accent"
+          icon-right="link"
+          @click="setActiveSelectedInputType(InputTypes.link)"
+        />
+        <q-btn
+          :outline="selectedInput !== InputTypes.password"
+          color="accent"
+          icon-right="visibility"
+          @click="setActiveSelectedInputType(InputTypes.password)"
+        />
+        <q-btn
+          :outline="selectedInput !== InputTypes.date"
+          color="accent"
+          icon-right="calendar_month"
+          @click="setActiveSelectedInputType(InputTypes.date)"
+        />
+        <q-btn
+          :outline="selectedInput !== InputTypes.time"
+          color="accent"
+          icon-right="schedule"
+          @click="setActiveSelectedInputType(InputTypes.time)"
+        />
       </q-btn-group>
     </div>
     <ConfirmCancel
