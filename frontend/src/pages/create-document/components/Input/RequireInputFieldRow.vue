@@ -1,33 +1,27 @@
-<script setup>
-import { ref, watch, reactive, computed, onMounted } from 'vue';
+<script setup lang="ts">
+import { ref, watch, withDefaults, reactive, computed, onMounted } from 'vue';
 import InputFieldRow from './InputFieldRow.vue';
-import RequireInputFieldRow from './RequireInputFieldRow.vue';
 import { RequireField } from '../../create-document.model';
 import ConfirmCancel from 'src/core/components/confirm-cancel.vue';
 import HyphenText from 'src/core/components/hyphen-text.vue';
+import { InputFieldModel, InputFieldType } from './RequireInputFieldRow.model';
 
-const props = defineProps({
-  modelValue: {
-    type: Object,
-    default: () => {},
-  },
-  preview: {
-    type: Boolean,
-    default: false,
-  },
-  label: {
-    type: String,
-    default: 'Input Label',
-  },
-  placeholder: {
-    type: String,
-    default: 'Name, Address, ..',
-  },
-  editActive: {
-    type: Boolean,
-    default: false,
-  },
-});
+const props = withDefaults(
+  defineProps<{
+    modelValue?: InputFieldModel | undefined;
+    preview?: boolean;
+    label?: string;
+    placeholder?: string;
+    editActive?: boolean;
+  }>(),
+  {
+    modelValue: undefined,
+    preview: false,
+    label: 'Input Label',
+    placeholder: 'Name, Address ..',
+    editActive: false,
+  }
+);
 
 const emit = defineEmits([
   'update:modelValue',
@@ -38,7 +32,7 @@ const emit = defineEmits([
   'duplicate',
 ]);
 
-const nameInputRef = ref(null);
+const nameInputRef = ref<HTMLElement | null>(null);
 
 onMounted(() => {
   if (nameInputRef.value) {
@@ -67,7 +61,7 @@ function getModelValue() {
 const val = ref(getModelValue());
 const startValue = ref();
 
-const allFalse = (arr) => arr.every((v) => v === false);
+const allFalse = (arr: boolean[]) => arr.every((v: boolean) => v === false);
 
 watch(val.value.inputFieldAllowed, () => {
   if (allFalse(Object.values(val.value.inputFieldAllowed).map((val) => val))) {
@@ -78,7 +72,10 @@ watch(val.value.inputFieldAllowed, () => {
 watch(
   () => val.value.textAreaSize,
   (textAreaSize) => {
-    if (textAreaSize === 'small_input_field' || textAreaSize === 'textarea') {
+    if (
+      textAreaSize === InputFieldType.small_input_field ||
+      textAreaSize === InputFieldType.textarea
+    ) {
       const currentName = val.value.name;
       if (currentName.length > 26) {
         val.value.name = currentName.slice(0, val.value.name.length - 26);
@@ -112,7 +109,7 @@ function setEditActive() {
 function saveChanges() {
   if (validated.value) {
     editActiveValue.value = false;
-    emit('close', RequireField.Input, val.value);
+    emit('close', { type: RequireField.Input, value: val.value });
   }
 }
 
@@ -121,7 +118,7 @@ function closeWindow() {
     val.value = startValue.value;
     editActiveValue.value = false;
   }
-  emit('close', RequireField.Input, startValue.value);
+  emit('close', { type: RequireField.Input, value: startValue.value });
 }
 
 function addPeComponent() {
@@ -138,14 +135,19 @@ function deleteInputFieldRow() {
   });
 }
 
-function requireInputFieldRowClosed(_, startValue) {
+function requireInputFieldRowClosed(data: {
+  type: RequireField;
+  value: InputFieldModel;
+}) {
   editActiveValue.value = false;
-  val.value = startValue;
+  val.value = data.value;
 }
 
 function duplicateRow() {
   emit('duplicate', RequireField.Input, val.value);
 }
+
+// const inputType;
 
 const deleteConfirm = ref(false);
 </script>
@@ -177,6 +179,21 @@ const deleteConfirm = ref(false);
       <HyphenText class="mt-small mb-big">Preview</HyphenText>
       <InputFieldRow v-model="val" preview />
     </template>
+    <div class="row justify-center">
+      <div class="col-xs-12 col-sm-10 text-center">
+        <q-radio
+          v-model="val.textAreaSize"
+          val="small_input_field"
+          label="Small Input Field"
+        />
+        <q-radio
+          v-model="val.textAreaSize"
+          val="big_input_field"
+          label="Big Input Field"
+        />
+        <q-radio v-model="val.textAreaSize" val="textarea" label="Textarea" />
+      </div>
+    </div>
     <div class="row items-center">
       <div class="col-xs-12 col-sm-6">
         <q-input
@@ -189,9 +206,9 @@ const deleteConfirm = ref(false);
           @blur="unfocusInputFieldName"
           @keyup.enter="addPeComponent"
           :maxlength="
-            val.textAreaSize === 'big_input_field'
+            val.textAreaSize === InputFieldType.big_input_field
               ? val.maxLength
-              : val.textAreaSize === 'small_input_field'
+              : val.textAreaSize === InputFieldType.small_input_field
               ? 26
               : 26
           "
@@ -224,20 +241,16 @@ const deleteConfirm = ref(false);
         >
       </div>
     </div>
-    <div class="row justify-center">
-      <div class="col-xs-12 col-sm-10 text-center">
-        <q-radio
-          v-model="val.textAreaSize"
-          val="small_input_field"
-          label="Small Input Field"
-        />
-        <q-radio
-          v-model="val.textAreaSize"
-          val="big_input_field"
-          label="Big Input Field"
-        />
-        <q-radio v-model="val.textAreaSize" val="textarea" label="Textarea" />
-      </div>
+    <div class="col q-my-md">
+      <q-btn-group unelevated spread>
+        <q-btn color="accent" icon-right="tune" />
+        <q-btn outline color="accent" icon-right="mail" />
+        <q-btn outline color="accent" icon-right="call" />
+        <q-btn outline color="accent" icon-right="link" />
+        <q-btn outline color="accent" icon-right="visibility" />
+        <q-btn outline color="accent" icon-right="calendar_month" />
+        <q-btn outline color="accent" icon-right="schedule" />
+      </q-btn-group>
     </div>
     <ConfirmCancel
       v-if="editActiveValue"

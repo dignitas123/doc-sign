@@ -1,28 +1,27 @@
-<script setup>
-import { ref, computed, reactive, watch, onMounted } from 'vue';
-import RequireTextRow from './RequireTextRow.vue';
+<script setup lang="ts">
+import { ref, computed, reactive, watch, withDefaults, onMounted } from 'vue';
 import { useQuasar } from 'quasar';
 import { RequireField } from '../../create-document.model';
 import ConfirmCancel from 'src/core/components/confirm-cancel.vue';
+import { TextRowModel } from './RequireTextRow.model';
 
 const $q = useQuasar();
 
-const props = defineProps({
-  modelValue: {
-    type: Object,
-    default: () => {},
-  },
-  preview: {
-    type: Boolean,
+const props = withDefaults(
+  defineProps<{
+    modelValue?: TextRowModel | undefined;
+    preview?: boolean;
+    editActive?: boolean;
+  }>(),
+  {
+    modelValue: undefined,
+    preview: false,
     default: false,
-  },
-  editActive: {
-    type: Boolean,
-    default: false,
-  },
-});
+  }
+);
 
 const editorRef = ref();
+
 watch(editorRef, () => {
   editorRef.value.focus();
 });

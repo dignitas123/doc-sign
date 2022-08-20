@@ -87,11 +87,11 @@ const previewPlaceHolder = computed(() => {
 
 const maxLength = computed(() => {
   return val.value.textAreaSize === 'big_input_field'
-            ? val.value.maxLength
-            : val.value.textAreaSize === 'small_input_field'
-            ? 26
-            : 300
-})
+    ? val.value.maxLength
+    : val.value.textAreaSize === 'small_input_field'
+    ? 26
+    : 300;
+});
 </script>
 
 <template>
@@ -107,7 +107,11 @@ const maxLength = computed(() => {
         outlined
         dense
         :maxlength="maxLength + 1"
-        :rules="[ val => val.length <= maxLength || `Please use maximum ${maxLength} characters`]"
+        :rules="[
+          (val) =>
+            val.length <= maxLength ||
+            `Please use maximum ${maxLength} characters`,
+        ]"
         :autogrow="val.textAreaSize === 'textarea'"
         :placeholder="preview ? previewPlaceHolder : ''"
         @focus="focusInputFieldName"

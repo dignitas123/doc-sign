@@ -6,6 +6,7 @@ import DocumentHeaderRow from './components/DocumentHeaderRow.vue';
 import AddButtonsRow from './components/AddButtonsRow.vue';
 import { RequireField, useModel } from './create-document.model';
 import HyphenText from 'src/core/components/hyphen-text.vue';
+import { InputFieldModel } from './components/Input/RequireInputFieldRow.model';
 
 interface ValidationData {
   validated: boolean;
@@ -55,8 +56,11 @@ function onReset() {
   accept.value = false;
 }
 
-function peComponentClosed(type: RequireField) {
-  resetActivePreviewComponent(type);
+function peComponentClosed(data: {
+  type: RequireField;
+  value: InputFieldModel;
+}) {
+  resetActivePreviewComponent(data.type);
 }
 
 function peComponentAdded(type: RequireField, validationData: ValidationData) {
@@ -190,7 +194,8 @@ watch(componentPreviewList, () => {
   color: transparent !important;
 }
 
-.fade-enter-active, .fade-leave-active {
+.fade-enter-active,
+.fade-leave-active {
   transition: opacity 1.2s ease;
 }
 
@@ -204,7 +209,7 @@ watch(componentPreviewList, () => {
 }
 
 .slide-enter-active {
-  transition: margin-bottom .8s ease-in;
+  transition: margin-bottom 0.8s ease-in;
 }
 
 .slide-enter-to {
@@ -216,7 +221,7 @@ watch(componentPreviewList, () => {
 }
 
 .slide-leave-active {
-  transition: margin-bottom .8s ease-out;
+  transition: margin-bottom 0.8s ease-out;
 }
 
 .slide-leave-to {
