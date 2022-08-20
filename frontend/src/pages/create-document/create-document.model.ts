@@ -49,6 +49,7 @@ export function useModel() {
       SpecialCharacters: false,
     });
     inputFieldInput.textAreaSize = 'small_input_field';
+    inputFieldInput.inputType = InputTypes.manual;
     inputFieldInput.maxLength = 64;
   }
 
@@ -140,6 +141,7 @@ export function useModel() {
             name: inputFieldInput.name,
             inputFieldAllowed: { ...inputFieldInput.inputFieldAllowed },
             textAreaSize: inputFieldInput.textAreaSize,
+            inputType: inputFieldInput.inputType,
             maxLength: inputFieldInput.maxLength,
           }),
         });
