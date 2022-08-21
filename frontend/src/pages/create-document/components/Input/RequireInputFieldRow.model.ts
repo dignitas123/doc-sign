@@ -5,6 +5,7 @@ interface InputFieldAllowed {
 }
 
 export enum InputFieldType {
+  default = 'default',
   small_input_field = 'small_input_field',
   big_input_field = 'big_input_field',
   textarea = 'textarea',

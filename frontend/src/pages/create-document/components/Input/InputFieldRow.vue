@@ -27,7 +27,7 @@ function getModelValue() {
       }),
       inputLength: 'small_input_field',
       inputType: InputTypes.manual,
-      maxLength: 64,
+      maxLength: 26,
     })
   );
 }
@@ -76,12 +76,12 @@ const descriptionRowClass = computed(() => {
 const previewPlaceHolder = computed(() => {
   if (props.preview) {
     switch (val.value.inputLength) {
+      case 'small_input_field':
+        return 'maximum length of 26 characters';
       case 'big_input_field':
         return 'maximum length of 64 characters';
       case 'textarea':
-        return 'autogrow input up to 300 characters';
-      case 'small_input_field':
-        return 'maximum length of 26 characters';
+        return 'autogrow input up to 2500 characters';
       default:
         return '';
     }
@@ -93,7 +93,7 @@ const maxLength = computed(() => {
     ? val.value.maxLength
     : val.value.inputLength === 'small_input_field'
     ? 26
-    : 300;
+    : 2500;
 });
 
 const specialCharacters = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/;

@@ -42,6 +42,7 @@ onMounted(() => {
   if (nameInputRef.value) {
     nameInputRef.value.focus();
   }
+
   startValue.value = { ...val.value };
   editActiveValue.value = props.editActive;
 });
@@ -58,7 +59,7 @@ function getModelValue() {
       }),
       inputLength: 'small_input_field',
       inputType: InputTypes.manual,
-      maxLength: 64,
+      maxLength: 26,
     })
   );
 }
@@ -67,6 +68,30 @@ const val = ref(getModelValue());
 const startValue = ref();
 
 const allFalse = (arr: boolean[]) => arr.every((v) => v === false);
+
+watch(
+  () => val.value.inputType,
+  () => {
+    if (val.value.inputType === InputTypes.mail) {
+      val.value.name = 'Email';
+      val.value.inputFieldAllowed.Text = true;
+      val.value.inputFieldAllowed.Numbers = true;
+      val.value.inputFieldAllowed.SpecialCharacters = true;
+      val.value.maxLength = 320;
+      val.value.inputLength = InputFieldType.default;
+    } else if (val.value.inputType === InputTypes.manual) {
+      val.value.name = '';
+      val.value.inputFieldAllowed.Text = true;
+      val.value.inputFieldAllowed.Numbers = false;
+      val.value.inputFieldAllowed.SpecialCharacters = false;
+      val.value.maxLength = 26;
+      val.value.inputLength = InputFieldType.small_input_field;
+    }
+  },
+  {
+    deep: true,
+  }
+);
 
 watch(val.value.inputFieldAllowed, () => {
   if (allFalse(Object.values(val.value.inputFieldAllowed).map((val) => val))) {
@@ -156,6 +181,22 @@ function setActiveSelectedInputType(inputType: InputTypes) {
   val.value.inputType = inputType;
 }
 
+const inputLengthRadioShow = computed(() => {
+  if (val.value.inputType === InputTypes.mail) {
+    return false;
+  } else {
+    return true;
+  }
+});
+
+const inputTypeSelectionShow = computed(() => {
+  if (val.value.inputType === InputTypes.mail) {
+    return false;
+  } else {
+    return true;
+  }
+});
+
 const deleteConfirm = ref(false);
 </script>
 
@@ -185,23 +226,23 @@ const deleteConfirm = ref(false);
     <template v-if="val.name">
       <HyphenText class="mt-small mb-big">Preview</HyphenText>
       <InputFieldRow v-model="val" preview />
-    </template>
-    <div v-if="val.name" class="row justify-center">
-      <div class="col-xs-12 col-sm-10 text-center">
-        <q-radio
-          v-model="val.inputLength"
-          val="small_input_field"
-          label="Small Input Field"
-        />
-        <q-radio
-          v-model="val.inputLength"
-          val="big_input_field"
-          label="Big Input Field"
-        />
-        <q-radio v-model="val.inputLength" val="textarea" label="Autogrow" />
+      <div v-if="val.name && inputLengthRadioShow" class="row justify-center">
+        <div class="col-xs-12 col-sm-10 text-center">
+          <q-radio
+            v-model="val.inputLength"
+            val="small_input_field"
+            label="Small Input Field"
+          />
+          <q-radio
+            v-model="val.inputLength"
+            val="big_input_field"
+            label="Big Input Field"
+          />
+          <q-radio v-model="val.inputLength" val="textarea" label="Autogrow" />
+        </div>
       </div>
-    </div>
-    <div class="row items-center">
+    </template>
+    <div class="row items-center text-center">
       <div class="col-xs-12 col-sm-6">
         <q-input
           ref="nameInputRef"
@@ -221,7 +262,7 @@ const deleteConfirm = ref(false);
           "
         />
       </div>
-      <div class="col-xs-12 col-sm-6 text-center">
+      <div v-if="inputTypeSelectionShow" class="col-xs-12 col-sm-6 text-center">
         <q-checkbox
           v-model="val.inputFieldAllowed.Text"
           label="Abc"

@@ -39,7 +39,7 @@ export function useModel() {
     }),
     inputLength: 'small_input_field',
     inputType: InputTypes.manual,
-    maxLength: 64,
+    maxLength: 26,
   });
   function resetInputFieldInput() {
     inputFieldInput.name = '';
@@ -50,7 +50,7 @@ export function useModel() {
     });
     inputFieldInput.inputLength = 'small_input_field';
     inputFieldInput.inputType = InputTypes.manual;
-    inputFieldInput.maxLength = 64;
+    inputFieldInput.maxLength = 26;
   }
 
   const requireTextRow = Object.freeze(RequireTextRow);
