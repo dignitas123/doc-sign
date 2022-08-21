@@ -8,6 +8,7 @@ import {
   InputFieldModel,
   InputFieldType,
   InputTypes,
+  getInputTypeIcon,
 } from './RequireInputFieldRow.model';
 
 const props = withDefaults(
@@ -307,43 +308,43 @@ const deleteConfirm = ref(false);
         <q-btn
           :outline="val.inputType !== InputTypes.manual"
           color="accent"
-          :icon-right="InputTypes.manual"
+          :icon-right="getInputTypeIcon(InputTypes.manual)"
           @click="setActiveSelectedInputType(InputTypes.manual)"
         />
         <q-btn
           :outline="val.inputType !== InputTypes.mail"
           color="accent"
-          :icon-right="InputTypes.mail"
+          :icon-right="getInputTypeIcon(InputTypes.mail)"
           @click="setActiveSelectedInputType(InputTypes.mail)"
         />
         <q-btn
           :outline="val.inputType !== InputTypes.telephone"
           color="accent"
-          :icon-right="InputTypes.telephone"
+          :icon-right="getInputTypeIcon(InputTypes.telephone)"
           @click="setActiveSelectedInputType(InputTypes.telephone)"
         />
         <q-btn
           :outline="val.inputType !== InputTypes.link"
           color="accent"
-          :icon-right="InputTypes.link"
+          :icon-right="getInputTypeIcon(InputTypes.link)"
           @click="setActiveSelectedInputType(InputTypes.link)"
         />
         <q-btn
           :outline="val.inputType !== InputTypes.password"
           color="accent"
-          :icon-right="InputTypes.password"
+          :icon-right="getInputTypeIcon(InputTypes.password)"
           @click="setActiveSelectedInputType(InputTypes.password)"
         />
         <q-btn
           :outline="val.inputType !== InputTypes.date"
           color="accent"
-          :icon-right="InputTypes.date"
+          :icon-right="getInputTypeIcon(InputTypes.date)"
           @click="setActiveSelectedInputType(InputTypes.date)"
         />
         <q-btn
           :outline="val.inputType !== InputTypes.time"
           color="accent"
-          :icon-right="InputTypes.time"
+          :icon-right="getInputTypeIcon(InputTypes.time)"
           @click="setActiveSelectedInputType(InputTypes.time)"
         />
       </q-btn-group>

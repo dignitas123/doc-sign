@@ -11,18 +11,14 @@ export enum InputFieldType {
   textarea = 'textarea',
 }
 
-/**
- * links to material icon names
- * manual = 'tune' <- tune is the material icon name
- */
 export enum InputTypes {
-  manual = 'tune',
-  mail = 'mail',
-  telephone = 'call',
-  link = 'link',
-  password = 'visibility',
-  date = 'calendar_month',
-  time = 'schedule',
+  manual = 'text',
+  mail = 'email',
+  telephone = 'tel',
+  link = 'url',
+  password = 'password',
+  date = 'date',
+  time = 'time',
 }
 
 export interface InputFieldModel {
@@ -31,4 +27,25 @@ export interface InputFieldModel {
   inputType: InputTypes;
   inputLength: InputFieldType;
   maxLength: number;
+}
+
+export function getInputTypeIcon(inputType: InputTypes) {
+  switch(inputType) {
+    case InputTypes.manual:
+      return 'tune';
+    case InputTypes.mail:
+      return 'mail';
+    case InputTypes.telephone:
+      return 'call';
+    case InputTypes.link:
+      return 'link';
+    case InputTypes.password:
+      return 'visibility';
+    case InputTypes.date:
+      return 'calendar_month';
+    case InputTypes.time:
+      return 'schedule';
+    default:
+      return '';
+  }
 }

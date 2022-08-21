@@ -1,6 +1,10 @@
 <script setup lang="ts">
 import { ref, watch, reactive, computed, withDefaults } from 'vue';
-import { InputFieldModel, InputTypes } from './RequireInputFieldRow.model';
+import {
+  InputFieldModel,
+  InputTypes,
+  getInputTypeIcon,
+} from './RequireInputFieldRow.model';
 
 const props = withDefaults(
   defineProps<{
@@ -180,7 +184,7 @@ const inputPrependShow = computed(() => {
         @blur="unfocusInputFieldName"
       >
         <template v-if="inputPrependShow" #prepend>
-          <q-icon :name="val.inputType" />
+          <q-icon :name="getInputTypeIcon(val.inputType)" />
         </template>
       </q-input>
     </div>
