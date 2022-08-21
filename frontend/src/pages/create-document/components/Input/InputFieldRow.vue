@@ -99,33 +99,45 @@ const maxLength = computed(() => {
 const specialCharacters = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/;
 
 const allowedHint = computed(() => {
-  let allowed = '';
-  const and = 'and';
-  if (val.value.inputFieldAllowed.Numbers) {
-    allowed += 'numbers';
-  }
-  if (val.value.inputFieldAllowed.Text) {
-    const alphabetical_letters = 'alphabetical letters';
-    if (allowed) {
-      allowed += ` ${and} ${alphabetical_letters}`;
-    } else {
-      allowed += alphabetical_letters;
+  if (![InputTypes.mail, InputTypes.telephone].includes(val.value.inputType)) {
+    let allowed = '';
+    const and = 'and';
+    if (val.value.inputFieldAllowed.Numbers) {
+      allowed += 'numbers';
     }
-  }
-  if (val.value.inputFieldAllowed.SpecialCharacters) {
-    const special_characters = 'special characters';
-    if (allowed) {
-      allowed += ` ${and} ${special_characters}`;
-    } else {
-      allowed += special_characters;
+    if (val.value.inputFieldAllowed.Text) {
+      const alphabetical_letters = 'alphabetical letters';
+      if (allowed) {
+        allowed += ` ${and} ${alphabetical_letters}`;
+      } else {
+        allowed += alphabetical_letters;
+      }
     }
+    if (val.value.inputFieldAllowed.SpecialCharacters) {
+      const special_characters = 'special characters';
+      if (allowed) {
+        allowed += ` ${and} ${special_characters}`;
+      } else {
+        allowed += special_characters;
+      }
+    }
+    const hint = `Only ${allowed} allowed`;
+    return val.value.inputFieldAllowed.Numbers &&
+      val.value.inputFieldAllowed.Text &&
+      val.value.inputFieldAllowed.SpecialCharacters
+      ? ''
+      : hint;
+  } else {
+    return '';
   }
-  const hint = `Only ${allowed} allowed`;
-  return val.value.inputFieldAllowed.Numbers &&
-    val.value.inputFieldAllowed.Text &&
-    val.value.inputFieldAllowed.SpecialCharacters
-    ? ''
-    : hint;
+});
+
+const inputPrependShow = computed(() => {
+  if (val.value.inputType === InputTypes.manual) {
+    return false;
+  } else {
+    return true;
+  }
 });
 </script>
 
@@ -166,7 +178,11 @@ const allowedHint = computed(() => {
         :hint="allowedHint"
         @focus="focusInputFieldName"
         @blur="unfocusInputFieldName"
-      />
+      >
+        <template v-if="inputPrependShow" #prepend>
+          <q-icon :name="val.inputType" />
+        </template>
+      </q-input>
     </div>
   </div>
 </template>

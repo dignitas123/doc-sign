@@ -11,14 +11,18 @@ export enum InputFieldType {
   textarea = 'textarea',
 }
 
+/**
+ * links to material icon names
+ * manual = 'tune' <- tune is the material icon name
+ */
 export enum InputTypes {
-  manual = 'text',
-  mail = 'email',
-  telephone = 'tel',
-  link = 'url',
-  password = 'password',
-  date = 'date',
-  time = 'time',
+  manual = 'tune',
+  mail = 'mail',
+  telephone = 'call',
+  link = 'link',
+  password = 'visibility',
+  date = 'calendar_month',
+  time = 'schedule',
 }
 
 export interface InputFieldModel {

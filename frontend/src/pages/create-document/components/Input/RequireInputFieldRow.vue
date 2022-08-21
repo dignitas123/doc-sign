@@ -79,6 +79,13 @@ watch(
       val.value.inputFieldAllowed.SpecialCharacters = true;
       val.value.maxLength = 320;
       val.value.inputLength = InputFieldType.default;
+    } else if (val.value.inputType === InputTypes.telephone) {
+      val.value.name = 'Telephone';
+      val.value.inputFieldAllowed.Text = false;
+      val.value.inputFieldAllowed.Numbers = true;
+      val.value.inputFieldAllowed.SpecialCharacters = true;
+      val.value.maxLength = 320;
+      val.value.inputLength = InputFieldType.default;
     } else if (val.value.inputType === InputTypes.manual) {
       val.value.name = '';
       val.value.inputFieldAllowed.Text = true;
@@ -182,7 +189,10 @@ function setActiveSelectedInputType(inputType: InputTypes) {
 }
 
 const inputLengthRadioShow = computed(() => {
-  if (val.value.inputType === InputTypes.mail) {
+  if (
+    val.value.inputType === InputTypes.mail ||
+    val.value.inputType === InputTypes.telephone
+  ) {
     return false;
   } else {
     return true;
@@ -190,7 +200,10 @@ const inputLengthRadioShow = computed(() => {
 });
 
 const inputTypeSelectionShow = computed(() => {
-  if (val.value.inputType === InputTypes.mail) {
+  if (
+    val.value.inputType === InputTypes.mail ||
+    val.value.inputType === InputTypes.telephone
+  ) {
     return false;
   } else {
     return true;
@@ -294,43 +307,43 @@ const deleteConfirm = ref(false);
         <q-btn
           :outline="val.inputType !== InputTypes.manual"
           color="accent"
-          icon-right="tune"
+          :icon-right="InputTypes.manual"
           @click="setActiveSelectedInputType(InputTypes.manual)"
         />
         <q-btn
           :outline="val.inputType !== InputTypes.mail"
           color="accent"
-          icon-right="mail"
+          :icon-right="InputTypes.mail"
           @click="setActiveSelectedInputType(InputTypes.mail)"
         />
         <q-btn
           :outline="val.inputType !== InputTypes.telephone"
           color="accent"
-          icon-right="call"
+          :icon-right="InputTypes.telephone"
           @click="setActiveSelectedInputType(InputTypes.telephone)"
         />
         <q-btn
           :outline="val.inputType !== InputTypes.link"
           color="accent"
-          icon-right="link"
+          :icon-right="InputTypes.link"
           @click="setActiveSelectedInputType(InputTypes.link)"
         />
         <q-btn
           :outline="val.inputType !== InputTypes.password"
           color="accent"
-          icon-right="visibility"
+          :icon-right="InputTypes.password"
           @click="setActiveSelectedInputType(InputTypes.password)"
         />
         <q-btn
           :outline="val.inputType !== InputTypes.date"
           color="accent"
-          icon-right="calendar_month"
+          :icon-right="InputTypes.date"
           @click="setActiveSelectedInputType(InputTypes.date)"
         />
         <q-btn
           :outline="val.inputType !== InputTypes.time"
           color="accent"
-          icon-right="schedule"
+          :icon-right="InputTypes.time"
           @click="setActiveSelectedInputType(InputTypes.time)"
         />
       </q-btn-group>
