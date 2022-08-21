@@ -4,6 +4,7 @@ import {
   InputFieldModel,
   InputTypes,
   getInputTypeIcon,
+  InputLength,
 } from './RequireInputFieldRow.model';
 
 const props = withDefaults(
@@ -29,9 +30,8 @@ function getModelValue() {
         Numbers: false,
         SpecialCharacters: false,
       }),
-      inputLength: 'small_input_field',
+      inputLength: InputLength.small_input_field,
       inputType: InputTypes.manual,
-      maxLength: 26,
     })
   );
 }
@@ -62,17 +62,17 @@ function unfocusInputFieldName() {
 }
 
 const textRowClass = computed(() => {
-  return val.value.inputLength === 'big_input_field'
+  return val.value.inputLength === InputLength.big_input_field
     ? ['col-grow', 'text-center']
-    : val.value.inputLength === 'small_input_field'
+    : val.value.inputLength === InputLength.small_input_field
     ? ['col-xs-12 col-sm-6 mb-small']
     : ['col-xs-12 col-sm-6 mb-small'];
 });
 
 const descriptionRowClass = computed(() => {
-  return val.value.inputLength === 'big_input_field'
+  return val.value.inputLength === InputLength.big_input_field
     ? 'col-aut'
-    : val.value.inputLength === 'small_input_field'
+    : val.value.inputLength === InputLength.small_input_field
     ? ['col-xs-12', 'col-sm-6', 'text-center']
     : ['col-xs-12', 'col-sm-6', 'text-center'];
 });
@@ -80,24 +80,16 @@ const descriptionRowClass = computed(() => {
 const previewPlaceHolder = computed(() => {
   if (props.preview) {
     switch (val.value.inputLength) {
-      case 'small_input_field':
+      case InputLength.small_input_field:
         return 'maximum length of 26 characters';
-      case 'big_input_field':
+      case InputLength.big_input_field:
         return 'maximum length of 64 characters';
-      case 'textarea':
+      case InputLength.textarea:
         return 'autogrow input up to 2500 characters';
       default:
         return '';
     }
   } else return '';
-});
-
-const maxLength = computed(() => {
-  return val.value.inputLength === 'big_input_field'
-    ? val.value.maxLength
-    : val.value.inputLength === 'small_input_field'
-    ? 26
-    : 2500;
 });
 
 const specialCharacters = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/;
@@ -157,12 +149,13 @@ const inputPrependShow = computed(() => {
         v-model="textInput"
         outlined
         dense
+        hide-hint
         :type="val.inputType"
-        :maxlength="maxLength + 1"
+        :maxlength="val.inputLength + 1"
         :rules="[
           (inputValue) =>
-            inputValue.length <= maxLength ||
-            `Please use maximum ${maxLength} characters`,
+            inputValue.length <= val.inputLength ||
+            `Please use maximum ${val.inputLength} characters`,
           (inputValue) =>
             val.inputFieldAllowed.Numbers ||
             (!val.inputFieldAllowed.Numbers && !/\d/.test(inputValue)) ||
@@ -177,7 +170,7 @@ const inputPrependShow = computed(() => {
             (!val.inputFieldAllowed.Text && !/^[a-zA-Z]+$/.test(inputValue)) ||
             'Alphabetical letters are not allowed',
         ]"
-        :autogrow="val.inputLength === 'textarea'"
+        :autogrow="val.inputLength === InputLength.textarea"
         :placeholder="preview ? previewPlaceHolder : ''"
         :hint="allowedHint"
         @focus="focusInputFieldName"

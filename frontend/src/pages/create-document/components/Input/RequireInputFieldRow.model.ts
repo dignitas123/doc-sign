@@ -4,11 +4,13 @@ interface InputFieldAllowed {
   SpecialCharacters: boolean;
 }
 
-export enum InputFieldType {
-  default = 'default',
-  small_input_field = 'small_input_field',
-  big_input_field = 'big_input_field',
-  textarea = 'textarea',
+export enum InputLength {
+  default = 1000,
+  small_input_field = 26,
+  big_input_field = 64,
+  email = 320,
+  textarea = 2500,
+  url_input = 2048,
 }
 
 export enum InputTypes {
@@ -25,12 +27,11 @@ export interface InputFieldModel {
   name: string;
   inputFieldAllowed: InputFieldAllowed;
   inputType: InputTypes;
-  inputLength: InputFieldType;
-  maxLength: number;
+  inputLength: InputLength;
 }
 
 export function getInputTypeIcon(inputType: InputTypes) {
-  switch(inputType) {
+  switch (inputType) {
     case InputTypes.manual:
       return 'tune';
     case InputTypes.mail:

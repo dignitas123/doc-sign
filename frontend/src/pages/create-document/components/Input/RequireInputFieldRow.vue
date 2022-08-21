@@ -6,7 +6,7 @@ import ConfirmCancel from 'src/core/components/confirm-cancel.vue';
 import HyphenText from 'src/core/components/hyphen-text.vue';
 import {
   InputFieldModel,
-  InputFieldType,
+  InputLength,
   InputTypes,
   getInputTypeIcon,
 } from './RequireInputFieldRow.model';
@@ -58,9 +58,8 @@ function getModelValue() {
         Numbers: false,
         SpecialCharacters: false,
       }),
-      inputLength: 'small_input_field',
+      inputLength: InputLength.small_input_field,
       inputType: InputTypes.manual,
-      maxLength: 26,
     })
   );
 }
@@ -73,27 +72,26 @@ const allFalse = (arr: boolean[]) => arr.every((v) => v === false);
 watch(
   () => val.value.inputType,
   () => {
-    if (val.value.inputType === InputTypes.mail) {
-      val.value.name = 'Email';
-      val.value.inputFieldAllowed.Text = true;
-      val.value.inputFieldAllowed.Numbers = true;
-      val.value.inputFieldAllowed.SpecialCharacters = true;
-      val.value.maxLength = 320;
-      val.value.inputLength = InputFieldType.default;
-    } else if (val.value.inputType === InputTypes.telephone) {
-      val.value.name = 'Telephone';
-      val.value.inputFieldAllowed.Text = false;
-      val.value.inputFieldAllowed.Numbers = true;
-      val.value.inputFieldAllowed.SpecialCharacters = true;
-      val.value.maxLength = 320;
-      val.value.inputLength = InputFieldType.default;
-    } else if (val.value.inputType === InputTypes.manual) {
-      val.value.name = '';
-      val.value.inputFieldAllowed.Text = true;
-      val.value.inputFieldAllowed.Numbers = false;
-      val.value.inputFieldAllowed.SpecialCharacters = false;
-      val.value.maxLength = 26;
-      val.value.inputLength = InputFieldType.small_input_field;
+    if (val.value.name !== startValue.value.name) {
+      if (val.value.inputType === InputTypes.mail) {
+        val.value.name = 'Email';
+        val.value.inputFieldAllowed.Text = true;
+        val.value.inputFieldAllowed.Numbers = true;
+        val.value.inputFieldAllowed.SpecialCharacters = true;
+        val.value.inputLength = InputLength.email;
+      } else if (val.value.inputType === InputTypes.telephone) {
+        val.value.name = 'Telephone';
+        val.value.inputFieldAllowed.Text = false;
+        val.value.inputFieldAllowed.Numbers = true;
+        val.value.inputFieldAllowed.SpecialCharacters = true;
+        val.value.inputLength = InputLength.email;
+      } else if (val.value.inputType === InputTypes.manual) {
+        val.value.name = '';
+        val.value.inputFieldAllowed.Text = true;
+        val.value.inputFieldAllowed.Numbers = false;
+        val.value.inputFieldAllowed.SpecialCharacters = false;
+        val.value.inputLength = InputLength.small_input_field;
+      }
     }
   },
   {
@@ -111,8 +109,8 @@ watch(
   () => val.value.inputLength,
   (inputLength) => {
     if (
-      inputLength === InputFieldType.small_input_field ||
-      inputLength === InputFieldType.textarea
+      inputLength === InputLength.small_input_field ||
+      inputLength === InputLength.textarea
     ) {
       const currentName = val.value.name;
       if (currentName.length > 26) {
@@ -158,6 +156,10 @@ function closeWindow() {
   }
   emit('close', { type: RequireField.Input, value: startValue.value });
 }
+
+watch(startValue, () => {
+  console.log('startValue set to', startValue.value);
+});
 
 function addPeComponent() {
   emit('add', RequireField.Input, {
@@ -244,15 +246,19 @@ const deleteConfirm = ref(false);
         <div class="col-xs-12 col-sm-10 text-center">
           <q-radio
             v-model="val.inputLength"
-            val="small_input_field"
+            :val="InputLength.small_input_field"
             label="Small Input Field"
           />
           <q-radio
             v-model="val.inputLength"
-            val="big_input_field"
+            :val="InputLength.big_input_field"
             label="Big Input Field"
           />
-          <q-radio v-model="val.inputLength" val="textarea" label="Autogrow" />
+          <q-radio
+            v-model="val.inputLength"
+            :val="InputLength.textarea"
+            label="Autogrow"
+          />
         </div>
       </div>
     </template>
@@ -267,13 +273,7 @@ const deleteConfirm = ref(false);
           @focus="focusInputFieldName"
           @blur="unfocusInputFieldName"
           @keyup.enter="addPeComponent"
-          :maxlength="
-            val.inputLength === InputFieldType.big_input_field
-              ? val.maxLength
-              : val.inputLength === InputFieldType.small_input_field
-              ? 26
-              : 26
-          "
+          :maxlength="val.inputLength"
         />
       </div>
       <div v-if="inputTypeSelectionShow" class="col-xs-12 col-sm-6 text-center">

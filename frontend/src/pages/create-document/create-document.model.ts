@@ -5,7 +5,7 @@ import RequireRadioChoiceRow from './components/Radio/RequireRadioChoiceRow.vue'
 import RequireFileRow from './components/File/RequireFileRow.vue';
 import { useQuasar } from 'quasar';
 import { ComponentDefinition } from 'src/core/interfaces/component-definition';
-import { InputTypes } from './components/Input/RequireInputFieldRow.model';
+import { InputLength, InputTypes } from './components/Input/RequireInputFieldRow.model';
 
 // require Field names (add here if you need more)
 export enum RequireField {
@@ -37,20 +37,19 @@ export function useModel() {
       Numbers: false,
       SpecialCharacters: false,
     }),
-    inputLength: 'small_input_field',
+    inputLength: InputLength.small_input_field,
     inputType: InputTypes.manual,
-    maxLength: 26,
   });
   function resetInputFieldInput() {
+    console.log("1")
     inputFieldInput.name = '';
     inputFieldInput.inputFieldAllowed = reactive({
       Text: true,
       Numbers: false,
       SpecialCharacters: false,
     });
-    inputFieldInput.inputLength = 'small_input_field';
+    inputFieldInput.inputLength = InputLength.small_input_field;
     inputFieldInput.inputType = InputTypes.manual;
-    inputFieldInput.maxLength = 26;
   }
 
   const requireTextRow = Object.freeze(RequireTextRow);
@@ -69,6 +68,7 @@ export function useModel() {
     radioChoiceNames: reactive([]),
   });
   function resetRadioChoiceInput() {
+    console.log("2")
     radioChoiceInput.name = '';
     radioChoiceInput.radioChoice = 'multiple_choice';
     radioChoiceInput.radioOneCheck = true;
@@ -82,6 +82,7 @@ export function useModel() {
     allowedEndings: reactive([]),
   });
   function resetFileRequireInput() {
+    console.log("3")
     fileRequireInput.name = '';
     fileRequireInput.allowAllEndings = false;
     fileRequireInput.allowedEndings = reactive([]);
@@ -142,7 +143,6 @@ export function useModel() {
             inputFieldAllowed: { ...inputFieldInput.inputFieldAllowed },
             inputLength: inputFieldInput.inputLength,
             inputType: inputFieldInput.inputType,
-            maxLength: inputFieldInput.maxLength,
           }),
         });
       } else {
