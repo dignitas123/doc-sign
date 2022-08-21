@@ -146,9 +146,9 @@ const inputPrependShow = computed(() => {
 </script>
 
 <template>
-  <div class="row items-baseline">
+  <div class="row">
     <div :class="descriptionRowClass">
-      <p class="mr-small">
+      <p class="mr-small mt-medium">
         <b>{{ val.name }}:</b>
       </p>
     </div>
