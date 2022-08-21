@@ -69,57 +69,6 @@ const startValue = ref();
 
 const allFalse = (arr: boolean[]) => arr.every((v) => v === false);
 
-watch(
-  () => val.value.inputType,
-  () => {
-    if (val.value.name !== startValue.value.name) {
-      if (val.value.inputType === InputTypes.mail) {
-        val.value.name = 'Email';
-        val.value.inputFieldAllowed.Text = true;
-        val.value.inputFieldAllowed.Numbers = true;
-        val.value.inputFieldAllowed.SpecialCharacters = true;
-        val.value.inputLength = InputLength.email;
-      } else if (val.value.inputType === InputTypes.telephone) {
-        val.value.name = 'Telephone';
-        val.value.inputFieldAllowed.Text = false;
-        val.value.inputFieldAllowed.Numbers = true;
-        val.value.inputFieldAllowed.SpecialCharacters = true;
-        val.value.inputLength = InputLength.email;
-      } else if (val.value.inputType === InputTypes.manual) {
-        val.value.name = '';
-        val.value.inputFieldAllowed.Text = true;
-        val.value.inputFieldAllowed.Numbers = false;
-        val.value.inputFieldAllowed.SpecialCharacters = false;
-        val.value.inputLength = InputLength.small_input_field;
-      }
-    }
-  },
-  {
-    deep: true,
-  }
-);
-
-watch(val.value.inputFieldAllowed, () => {
-  if (allFalse(Object.values(val.value.inputFieldAllowed).map((val) => val))) {
-    val.value.inputFieldAllowed.Text = true;
-  }
-});
-
-watch(
-  () => val.value.inputLength,
-  (inputLength) => {
-    if (
-      inputLength === InputLength.small_input_field ||
-      inputLength === InputLength.textarea
-    ) {
-      const currentName = val.value.name;
-      if (currentName.length > 26) {
-        val.value.name = currentName.slice(0, val.value.name.length - 26);
-      }
-    }
-  }
-);
-
 const inputFieldNameFocused = ref(false);
 function focusInputFieldName() {
   inputFieldNameFocused.value = true;
@@ -135,6 +84,8 @@ const validated = computed(() => {
 const validationMessage = computed(() => {
   return validated.value ? '' : "Name of Input Field can't be empty.";
 });
+
+const clickActiveIndexKey = ref(0);
 
 const editActiveValue = ref(false);
 
@@ -156,10 +107,6 @@ function closeWindow() {
   }
   emit('close', { type: RequireField.Input, value: startValue.value });
 }
-
-watch(startValue, () => {
-  console.log('startValue set to', startValue.value);
-});
 
 function addPeComponent() {
   emit('add', RequireField.Input, {
@@ -188,6 +135,7 @@ function duplicateRow() {
 }
 
 function setActiveSelectedInputType(inputType: InputTypes) {
+  clickActiveIndexKey.value++;
   val.value.inputType = inputType;
 }
 
@@ -214,6 +162,55 @@ const inputTypeSelectionShow = computed(() => {
 });
 
 const deleteConfirm = ref(false);
+
+watch(
+  clickActiveIndexKey,
+  () => {
+    if (val.value.inputType === InputTypes.mail) {
+      val.value.name = 'Email';
+      val.value.inputFieldAllowed.Text = true;
+      val.value.inputFieldAllowed.Numbers = true;
+      val.value.inputFieldAllowed.SpecialCharacters = true;
+      val.value.inputLength = InputLength.email;
+    } else if (val.value.inputType === InputTypes.telephone) {
+      val.value.name = 'Telephone';
+      val.value.inputFieldAllowed.Text = false;
+      val.value.inputFieldAllowed.Numbers = true;
+      val.value.inputFieldAllowed.SpecialCharacters = true;
+      val.value.inputLength = InputLength.email;
+    } else if (val.value.inputType === InputTypes.manual) {
+      val.value.name = '';
+      val.value.inputFieldAllowed.Text = true;
+      val.value.inputFieldAllowed.Numbers = false;
+      val.value.inputFieldAllowed.SpecialCharacters = false;
+      val.value.inputLength = InputLength.small_input_field;
+    }
+  },
+  {
+    deep: true,
+  }
+);
+
+watch(val.value.inputFieldAllowed, () => {
+  if (allFalse(Object.values(val.value.inputFieldAllowed).map((val) => val))) {
+    val.value.inputFieldAllowed.Text = true;
+  }
+});
+
+watch(
+  () => val.value.inputLength,
+  (inputLength) => {
+    if (
+      inputLength === InputLength.small_input_field ||
+      inputLength === InputLength.textarea
+    ) {
+      const currentName = val.value.name;
+      if (currentName.length > 26) {
+        val.value.name = currentName.slice(0, val.value.name.length - 26);
+      }
+    }
+  }
+);
 </script>
 
 <template>

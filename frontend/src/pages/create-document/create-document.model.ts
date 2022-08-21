@@ -41,7 +41,6 @@ export function useModel() {
     inputType: InputTypes.manual,
   });
   function resetInputFieldInput() {
-    console.log("1")
     inputFieldInput.name = '';
     inputFieldInput.inputFieldAllowed = reactive({
       Text: true,
@@ -68,7 +67,6 @@ export function useModel() {
     radioChoiceNames: reactive([]),
   });
   function resetRadioChoiceInput() {
-    console.log("2")
     radioChoiceInput.name = '';
     radioChoiceInput.radioChoice = 'multiple_choice';
     radioChoiceInput.radioOneCheck = true;
@@ -82,7 +80,6 @@ export function useModel() {
     allowedEndings: reactive([]),
   });
   function resetFileRequireInput() {
-    console.log("3")
     fileRequireInput.name = '';
     fileRequireInput.allowAllEndings = false;
     fileRequireInput.allowedEndings = reactive([]);
