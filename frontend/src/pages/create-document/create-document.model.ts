@@ -37,7 +37,7 @@ export function useModel() {
       Numbers: false,
       SpecialCharacters: false,
     }),
-    textAreaSize: 'small_input_field',
+    inputLength: 'small_input_field',
     inputType: InputTypes.manual,
     maxLength: 64,
   });
@@ -48,7 +48,7 @@ export function useModel() {
       Numbers: false,
       SpecialCharacters: false,
     });
-    inputFieldInput.textAreaSize = 'small_input_field';
+    inputFieldInput.inputLength = 'small_input_field';
     inputFieldInput.inputType = InputTypes.manual;
     inputFieldInput.maxLength = 64;
   }
@@ -140,7 +140,7 @@ export function useModel() {
           vModel: reactive({
             name: inputFieldInput.name,
             inputFieldAllowed: { ...inputFieldInput.inputFieldAllowed },
-            textAreaSize: inputFieldInput.textAreaSize,
+            inputLength: inputFieldInput.inputLength,
             inputType: inputFieldInput.inputType,
             maxLength: inputFieldInput.maxLength,
           }),

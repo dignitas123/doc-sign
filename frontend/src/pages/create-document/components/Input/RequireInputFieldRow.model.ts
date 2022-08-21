@@ -7,7 +7,7 @@ interface InputFieldAllowed {
 export enum InputFieldType {
   small_input_field = 'small_input_field',
   big_input_field = 'big_input_field',
-  textarea = 'textarea'
+  textarea = 'textarea',
 }
 
 export enum InputTypes {
@@ -24,6 +24,6 @@ export interface InputFieldModel {
   name: string;
   inputFieldAllowed: InputFieldAllowed;
   inputType: InputTypes;
-  textAreaSize: InputFieldType;
+  inputLength: InputFieldType;
   maxLength: number;
 }

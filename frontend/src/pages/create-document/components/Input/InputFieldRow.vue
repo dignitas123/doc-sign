@@ -25,7 +25,7 @@ function getModelValue() {
         Numbers: false,
         SpecialCharacters: false,
       }),
-      textAreaSize: 'small_input_field',
+      inputLength: 'small_input_field',
       inputType: InputTypes.manual,
       maxLength: 64,
     })
@@ -58,24 +58,24 @@ function unfocusInputFieldName() {
 }
 
 const textRowClass = computed(() => {
-  return val.value.textAreaSize === 'big_input_field'
+  return val.value.inputLength === 'big_input_field'
     ? ['col-grow', 'text-center']
-    : val.value.textAreaSize === 'small_input_field'
+    : val.value.inputLength === 'small_input_field'
     ? ['col-xs-12 col-sm-6 mb-small']
     : ['col-xs-12 col-sm-6 mb-small'];
 });
 
 const descriptionRowClass = computed(() => {
-  return val.value.textAreaSize === 'big_input_field'
+  return val.value.inputLength === 'big_input_field'
     ? 'col-aut'
-    : val.value.textAreaSize === 'small_input_field'
+    : val.value.inputLength === 'small_input_field'
     ? ['col-xs-12', 'col-sm-6', 'text-center']
     : ['col-xs-12', 'col-sm-6', 'text-center'];
 });
 
 const previewPlaceHolder = computed(() => {
   if (props.preview) {
-    switch (val.value.textAreaSize) {
+    switch (val.value.inputLength) {
       case 'big_input_field':
         return 'maximum length of 64 characters';
       case 'textarea':
@@ -89,9 +89,9 @@ const previewPlaceHolder = computed(() => {
 });
 
 const maxLength = computed(() => {
-  return val.value.textAreaSize === 'big_input_field'
+  return val.value.inputLength === 'big_input_field'
     ? val.value.maxLength
-    : val.value.textAreaSize === 'small_input_field'
+    : val.value.inputLength === 'small_input_field'
     ? 26
     : 300;
 });
@@ -161,7 +161,7 @@ const allowedHint = computed(() => {
             (!val.inputFieldAllowed.Text && !/^[a-zA-Z]+$/.test(inputValue)) ||
             'Alphabetical letters are not allowed',
         ]"
-        :autogrow="val.textAreaSize === 'textarea'"
+        :autogrow="val.inputLength === 'textarea'"
         :placeholder="preview ? previewPlaceHolder : ''"
         :hint="allowedHint"
         @focus="focusInputFieldName"

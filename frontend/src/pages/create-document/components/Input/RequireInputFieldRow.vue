@@ -56,7 +56,7 @@ function getModelValue() {
         Numbers: false,
         SpecialCharacters: false,
       }),
-      textAreaSize: 'small_input_field',
+      inputLength: 'small_input_field',
       inputType: InputTypes.manual,
       maxLength: 64,
     })
@@ -75,11 +75,11 @@ watch(val.value.inputFieldAllowed, () => {
 });
 
 watch(
-  () => val.value.textAreaSize,
-  (textAreaSize) => {
+  () => val.value.inputLength,
+  (inputLength) => {
     if (
-      textAreaSize === InputFieldType.small_input_field ||
-      textAreaSize === InputFieldType.textarea
+      inputLength === InputFieldType.small_input_field ||
+      inputLength === InputFieldType.textarea
     ) {
       const currentName = val.value.name;
       if (currentName.length > 26) {
@@ -186,19 +186,19 @@ const deleteConfirm = ref(false);
       <HyphenText class="mt-small mb-big">Preview</HyphenText>
       <InputFieldRow v-model="val" preview />
     </template>
-    <div class="row justify-center">
+    <div v-if="val.name" class="row justify-center">
       <div class="col-xs-12 col-sm-10 text-center">
         <q-radio
-          v-model="val.textAreaSize"
+          v-model="val.inputLength"
           val="small_input_field"
           label="Small Input Field"
         />
         <q-radio
-          v-model="val.textAreaSize"
+          v-model="val.inputLength"
           val="big_input_field"
           label="Big Input Field"
         />
-        <q-radio v-model="val.textAreaSize" val="textarea" label="Textarea" />
+        <q-radio v-model="val.inputLength" val="textarea" label="Autogrow" />
       </div>
     </div>
     <div class="row items-center">
@@ -213,9 +213,9 @@ const deleteConfirm = ref(false);
           @blur="unfocusInputFieldName"
           @keyup.enter="addPeComponent"
           :maxlength="
-            val.textAreaSize === InputFieldType.big_input_field
+            val.inputLength === InputFieldType.big_input_field
               ? val.maxLength
-              : val.textAreaSize === InputFieldType.small_input_field
+              : val.inputLength === InputFieldType.small_input_field
               ? 26
               : 26
           "
