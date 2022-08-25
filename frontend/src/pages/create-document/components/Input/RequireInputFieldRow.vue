@@ -139,27 +139,11 @@ function setActiveSelectedInputType(inputType: InputTypes) {
   val.value.inputType = inputType;
 }
 
-const inputLengthRadioShow = computed(() => {
-  if (
-    val.value.inputType === InputTypes.mail ||
-    val.value.inputType === InputTypes.telephone ||
-    val.value.inputType === InputTypes.link
-  ) {
-    return false;
-  } else {
+const inputLengthAndInputRadioShow = computed(() => {
+  if (val.value.inputType === InputTypes.manual) {
     return true;
-  }
-});
-
-const inputTypeSelectionShow = computed(() => {
-  if (
-    val.value.inputType === InputTypes.mail ||
-    val.value.inputType === InputTypes.telephone ||
-    val.value.inputType === InputTypes.link
-  ) {
-    return false;
   } else {
-    return true;
+    return false;
   }
 });
 
@@ -192,6 +176,24 @@ watch(
       val.value.inputFieldAllowed.Numbers = true;
       val.value.inputFieldAllowed.SpecialCharacters = true;
       val.value.inputLength = InputLength.url_input;
+    } else if (val.value.inputType === InputTypes.password) {
+      val.value.name = 'Password';
+      val.value.inputFieldAllowed.Text = true;
+      val.value.inputFieldAllowed.Numbers = true;
+      val.value.inputFieldAllowed.SpecialCharacters = true;
+      val.value.inputLength = InputLength.default;
+    } else if (val.value.inputType === InputTypes.date) {
+      val.value.name = 'Date';
+      val.value.inputFieldAllowed.Text = true;
+      val.value.inputFieldAllowed.Numbers = true;
+      val.value.inputFieldAllowed.SpecialCharacters = true;
+      val.value.inputLength = InputLength.default;
+    } else if (val.value.inputType === InputTypes.time) {
+      val.value.name = 'Time';
+      val.value.inputFieldAllowed.Text = true;
+      val.value.inputFieldAllowed.Numbers = true;
+      val.value.inputFieldAllowed.SpecialCharacters = true;
+      val.value.inputLength = InputLength.default;
     }
   },
   {
@@ -247,7 +249,10 @@ watch(
     <template v-if="val.name">
       <HyphenText class="mt-small mb-big">Preview</HyphenText>
       <InputFieldRow v-model="val" preview />
-      <div v-if="val.name && inputLengthRadioShow" class="row justify-center">
+      <div
+        v-if="val.name && inputLengthAndInputRadioShow"
+        class="row justify-center"
+      >
         <div class="col-xs-12 col-sm-10 text-center">
           <q-radio
             v-model="val.inputLength"
@@ -281,7 +286,10 @@ watch(
           :maxlength="val.inputLength"
         />
       </div>
-      <div v-if="inputTypeSelectionShow" class="col-xs-12 col-sm-6 text-center">
+      <div
+        v-if="inputLengthAndInputRadioShow"
+        class="col-xs-12 col-sm-6 text-center"
+      >
         <q-checkbox
           v-model="val.inputFieldAllowed.Text"
           label="Abc"

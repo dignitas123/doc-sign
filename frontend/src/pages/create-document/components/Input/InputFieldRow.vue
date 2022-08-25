@@ -3,7 +3,7 @@ import { ref, watch, reactive, computed, withDefaults } from 'vue';
 import {
   InputFieldModel,
   InputTypes,
-  getInputTypeIcon,
+  getInputTypeIconForInputField,
   InputLength,
 } from './RequireInputFieldRow.model';
 
@@ -177,7 +177,7 @@ const inputPrependShow = computed(() => {
         @blur="unfocusInputFieldName"
       >
         <template v-if="inputPrependShow" #prepend>
-          <q-icon :name="getInputTypeIcon(val.inputType)" />
+          <q-icon :name="getInputTypeIconForInputField(val.inputType)" />
         </template>
       </q-input>
     </div>

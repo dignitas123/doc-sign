@@ -50,3 +50,20 @@ export function getInputTypeIcon(inputType: InputTypes) {
       return '';
   }
 }
+
+export function getInputTypeIconForInputField(inputType: InputTypes) {
+  switch (inputType) {
+    case InputTypes.manual:
+      return 'tune';
+    case InputTypes.mail:
+      return 'mail';
+    case InputTypes.telephone:
+      return 'call';
+    case InputTypes.link:
+      return 'link';
+    case InputTypes.password:
+      return 'visibility';
+    default:
+      return '';
+  }
+}
