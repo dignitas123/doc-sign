@@ -137,7 +137,7 @@ function closeEditWindowAndReset() {
   emit('close', RequireField.Text, startValue.value);
 }
 
-function requireTextRowClosed(_, startValue) {
+function requireTextRowClosed(_: unknown, startValue: TextRowModel) {
   editActiveValue.value = false;
   val.value = startValue;
 }
@@ -149,7 +149,7 @@ function duplicateRow() {
 
 <template>
   <template v-if="preview">
-    <div class="row justify-end">
+    <div class="row justify-end" style="margin-bottom: 2px">
       <q-btn dense flat icon="edit" size="xs" @click="setEditActive"
         ><q-tooltip :delay="1500" :offset="[0, 10]">Edit</q-tooltip></q-btn
       >

@@ -51,73 +51,7 @@ body.desktop {
   margin: 0;
 }
 
-// pseudo classes
-.flex-50 {
-  flex: 50%;
-}
-
-// margin classes
-.ml-small {
-  margin-left: $small-pixel;
-}
-
-.mr-small {
-  margin-right: $small-pixel;
-}
-
-.mt-small {
-  margin-top: $small-pixel;
-}
-
-.mb-small {
-  margin-bottom: $small-pixel;
-}
-
-.m-small {
-  margin: $small-pixel;
-}
-
-.ml-medium {
-  margin-left: $medium-pixel;
-}
-
-.mr-medium {
-  margin-right: $medium-pixel;
-}
-
-.mt-medium {
-  margin-top: $medium-pixel;
-}
-
-.mb-medium {
-  margin-bottom: $medium-pixel;
-}
-
-.m-medium {
-  margin: $medium-pixel;
-}
-
-.ml-big {
-  margin-left: $big-pixel;
-}
-
-.mr-big {
-  margin-right: $big-pixel;
-}
-
-.mt-big {
-  margin-top: $big-pixel;
-}
-
-.mb-big {
-  margin-bottom: $big-pixel;
-}
-
-.m-big {
-  margin: $big-pixel;
-}
-
 .dotted-border {
-  border: $small-pixel dashed $info;
-  padding: $small-pixel;
+  border: 4px dashed $info;
+  padding: 4px;
 }

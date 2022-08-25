@@ -225,7 +225,7 @@ watch(
 
 <template>
   <template v-if="preview">
-    <div class="row justify-end items-center">
+    <div class="row justify-end" style="margin-bottom: 2px">
       <q-btn dense flat icon="edit" size="xs" @click="setEditActive"
         ><q-tooltip :delay="1500" :offset="[0, 10]">Edit</q-tooltip></q-btn
       >
@@ -247,7 +247,7 @@ watch(
   </template>
   <template v-else>
     <template v-if="val.name">
-      <HyphenText class="mt-small mb-big">Preview</HyphenText>
+      <HyphenText class="q-mt-xs q-mb-md">Preview</HyphenText>
       <InputFieldRow v-model="val" preview />
       <div
         v-if="val.name && inputLengthAndInputRadioShow"

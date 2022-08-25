@@ -133,8 +133,8 @@ function itemRemoved(index) {
       />
     </div>
     <div
-      class="col text-center ml-small justify-center"
-      :class="{ 'mt-small': $q.screen.lt.sm }"
+      class="col text-center q-ml-xs justify-center"
+      :class="{ 'q-mt-xs': $q.screen.lt.sm }"
       style="display: inline-flex"
     >
       <q-input
@@ -148,7 +148,7 @@ function itemRemoved(index) {
         maxlength="6"
       />
       <q-btn
-        class="ml-small"
+        class="q-ml-xs"
         rounded
         unelevated
         outline

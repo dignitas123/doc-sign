@@ -10,7 +10,7 @@ const emit = defineEmits(['confirm', 'cancel']);
 </script>
 
 <template>
-  <div class="row justify-between mt-small">
+  <div class="row justify-between q-mt-xs">
     <div class="col">
       <q-btn
         class="no-shadow"
@@ -22,7 +22,7 @@ const emit = defineEmits(['confirm', 'cancel']);
         {{ confirmText }}
       </q-btn>
     </div>
-    <div class="col- ml-small">
+    <div class="col- q-ml-xs">
       <q-btn
         class="no-shadow"
         unelevated

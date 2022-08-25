@@ -1,16 +1,17 @@
-<script setup>
-import { ref, computed } from 'vue';
+<script setup lang="ts">
+import { ref, withDefaults } from 'vue';
 
-const props = defineProps({
-  modelValue: {
-    type: String,
-    default: '',
-  },
-  label: {
-    type: String,
-    default: 'Document Title',
-  },
-});
+const props = withDefaults(
+  defineProps<{
+    modelValue?: string;
+    label?: string;
+  }>(),
+  {
+    modelValue: '',
+    label: 'Document Title',
+  }
+);
+
 defineEmits(['update:modelValue']);
 
 const val = ref(props.modelValue);
@@ -28,7 +29,7 @@ function inputUnfocus() {
 
 <template>
   <div class="row document-header-row">
-    <div class="col mb-big">
+    <div class="col q-mb-md q-mx-md">
       <q-input
         v-model="val"
         outined

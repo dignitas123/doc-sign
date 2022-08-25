@@ -97,7 +97,7 @@ watch(componentPreviewList, () => {
 <template>
   <main-layout>
     <q-page class="items-center justify-evenly column">
-      <div class="q-px-md shadow-3 absolute create-document">
+      <div class="shadow-3 absolute create-document">
         <q-form
           @submit="onSubmit"
           @reset="onReset"
@@ -106,7 +106,7 @@ watch(componentPreviewList, () => {
         >
           <DocumentHeaderRow v-model="documentHeader" />
           <q-scroll-area
-            class="preview-wrapper q-px-md"
+            class="preview-wrapper q-px-md q-mx-xs"
             :key="componentPreviewList.length"
           >
             <template
@@ -176,7 +176,6 @@ watch(componentPreviewList, () => {
   width: 98%;
   .preview-wrapper {
     height: calc(100% - 130px);
-    max-width: 572px;
     word-break: break-word;
   }
   .input-component {

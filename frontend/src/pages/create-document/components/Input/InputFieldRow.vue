@@ -65,8 +65,8 @@ const textRowClass = computed(() => {
   return val.value.inputLength === InputLength.big_input_field
     ? ['col-grow', 'text-center']
     : val.value.inputLength === InputLength.small_input_field
-    ? ['col-xs-12 col-sm-6 mb-small']
-    : ['col-xs-12 col-sm-6 mb-small'];
+    ? ['col-xs-12 col-sm-6 q-mb-xs']
+    : ['col-xs-12 col-sm-6 q-mb-xs'];
 });
 
 const descriptionRowClass = computed(() => {
@@ -140,7 +140,7 @@ const inputPrependShow = computed(() => {
 <template>
   <div class="row">
     <div :class="descriptionRowClass">
-      <p class="mr-small mt-medium">
+      <p class="q-mr-xs q-mt-sm">
         <b>{{ val.name }}:</b>
       </p>
     </div>

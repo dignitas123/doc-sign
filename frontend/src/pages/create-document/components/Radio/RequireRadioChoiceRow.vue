@@ -75,7 +75,7 @@ watch(val.value, () => {
     currentChoice.value === 'multiple_choice' &&
     newChoice === 'single_choice'
   )
-    checkBoxValues.value = checkBoxValues.value.map((_) => false);
+    checkBoxValues.value = checkBoxValues.value.map(() => false);
   if (currentChoice.value !== val.value.radioChoice)
     currentChoice.value = val.value.radioChoice;
 });
@@ -97,8 +97,8 @@ watch(val.value, () => {
     <div class="col-xs-12 col-sm-6 text-center">
       <q-btn-toggle
         v-model="val.radioChoice"
-        class="radio-choice-toggle ml-small"
-        :class="{ 'mt-small': $q.screen.lt.sm }"
+        class="radio-choice-toggle q-ml-xs"
+        :class="{ 'q-mt-xs': $q.screen.lt.sm }"
         no-caps
         rounded
         unelevated
@@ -113,7 +113,7 @@ watch(val.value, () => {
     </div>
   </div>
   <div class="row">
-    <div class="col-xs-12 col-sm-6 mt-small">
+    <div class="col-xs-12 col-sm-6 q-mt-xs">
       <q-input
         ref="choiceNameInput"
         v-model="choiceName"
@@ -127,7 +127,7 @@ watch(val.value, () => {
       />
     </div>
     <div
-      class="col mt-small text-center ml-small justify-center"
+      class="col q-mt-xs text-center q-ml-xs justify-center"
       style="display: inline-flex"
     >
       <q-btn
@@ -145,7 +145,7 @@ watch(val.value, () => {
         "
       />
       <q-btn
-        class="ml-small"
+        class="q-ml-xs"
         unelevated
         outline
         rounded
@@ -161,7 +161,7 @@ watch(val.value, () => {
     </div>
   </div>
   <template v-if="val.name">
-    <HyphenText class="mt-medium mb-medium">{{ val.name }}</HyphenText>
+    <HyphenText class="q-mt-sm q-mb-sm">{{ val.name }}</HyphenText>
     <div v-if="val.radioChoiceNames.length" class="row">
       <div v-for="(name, i) in val.radioChoiceNames" :key="i">
         <q-checkbox v-model="checkBoxValues[i]" color="primary" :label="name" />
