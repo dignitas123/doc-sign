@@ -142,7 +142,8 @@ function setActiveSelectedInputType(inputType: InputTypes) {
 const inputLengthRadioShow = computed(() => {
   if (
     val.value.inputType === InputTypes.mail ||
-    val.value.inputType === InputTypes.telephone
+    val.value.inputType === InputTypes.telephone ||
+    val.value.inputType === InputTypes.link
   ) {
     return false;
   } else {
@@ -153,7 +154,8 @@ const inputLengthRadioShow = computed(() => {
 const inputTypeSelectionShow = computed(() => {
   if (
     val.value.inputType === InputTypes.mail ||
-    val.value.inputType === InputTypes.telephone
+    val.value.inputType === InputTypes.telephone ||
+    val.value.inputType === InputTypes.link
   ) {
     return false;
   } else {
@@ -184,6 +186,12 @@ watch(
       val.value.inputFieldAllowed.Numbers = false;
       val.value.inputFieldAllowed.SpecialCharacters = false;
       val.value.inputLength = InputLength.small_input_field;
+    } else if (val.value.inputType === InputTypes.link) {
+      val.value.name = 'URL';
+      val.value.inputFieldAllowed.Text = true;
+      val.value.inputFieldAllowed.Numbers = true;
+      val.value.inputFieldAllowed.SpecialCharacters = true;
+      val.value.inputLength = InputLength.url_input;
     }
   },
   {

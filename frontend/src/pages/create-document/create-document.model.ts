@@ -7,7 +7,7 @@ import { useQuasar } from 'quasar';
 import { ComponentDefinition } from 'src/core/interfaces/component-definition';
 import { InputLength, InputTypes } from './components/Input/RequireInputFieldRow.model';
 
-// require Field names (add here if you need more)
+// require Field names
 export enum RequireField {
   Input = 'Input',
   Text = 'Text',
@@ -120,7 +120,7 @@ export function useModel() {
   const componentPreviewList = ref<ComponentDefinition[]>([]);
   function addComponentToPreviewList(
     type: RequireField,
-    componentVModel: Record<string, any> | undefined,
+    componentVModel: Record<string, string> | undefined,
     duplication: boolean
   ) {
     if (type === RequireField.Input) {
@@ -210,7 +210,7 @@ export function useModel() {
             color: 'red-5',
             textColor: 'white',
             icon: 'warning',
-            message: `A Text Row with the same text already exists.`,
+            message: 'A Text Row with the same text already exists.',
           });
         }
       }

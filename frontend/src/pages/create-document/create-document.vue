@@ -78,7 +78,7 @@ function peComponentAdded(type: RequireField, validationData: ValidationData) {
 
 function duplicatePeComponent(
   type: RequireField,
-  componentVModel: Record<string, any>
+  componentVModel: Record<string, string>
 ) {
   addComponentToPreviewList(type, componentVModel, true);
 }
@@ -196,7 +196,7 @@ watch(componentPreviewList, () => {
 
 .fade-enter-active,
 .fade-leave-active {
-  transition: opacity 1.2s ease;
+  transition: opacity 0.75s ease;
 }
 
 .fade-enter-from,

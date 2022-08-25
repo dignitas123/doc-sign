@@ -59,5 +59,6 @@ const accountCut = computed(() => {
 
 body {
   font-size: 16px;
+  overflow-y: hidden;
 }
 </style>
