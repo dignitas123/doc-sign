@@ -86,8 +86,8 @@ const validated = computed(() => {
   return !!val.value.text.length;
 });
 
-const validationMessage = computed(() => {
-  return validated.value ? '' : "Text Field can't be empty.";
+const validationMessages = computed(() => {
+  return validated.value ? '' : ["Text Field can't be empty."];
 });
 
 const editActiveValue = ref(props.editActive);
@@ -106,7 +106,7 @@ function deleteTextRow() {
 function addPeComponent() {
   emit('add', RequireField.Text, {
     validated: validated.value,
-    message: validationMessage.value,
+    message: validationMessages.value,
   });
 }
 

@@ -6,6 +6,7 @@ import RequireFileRow from './components/File/RequireFileRow.vue';
 import { useQuasar } from 'quasar';
 import { ComponentDefinition } from 'src/core/interfaces/component-definition';
 import { InputLength, InputTypes } from './components/Input/RequireInputFieldRow.model';
+import { RadioChoice } from './components/Radio/RequireRadioChoiceRow.model';
 
 // require Field names
 export enum RequireField {
@@ -62,13 +63,13 @@ export function useModel() {
   const requireRadioChoiceRow = Object.freeze(RequireRadioChoiceRow);
   const radioChoiceInput = reactive({
     name: '',
-    radioChoice: 'multiple_choice',
+    radioChoice: RadioChoice.multiple_choice,
     radioOneCheck: true,
     radioChoiceNames: reactive([]),
   });
   function resetRadioChoiceInput() {
     radioChoiceInput.name = '';
-    radioChoiceInput.radioChoice = 'multiple_choice';
+    radioChoiceInput.radioChoice = RadioChoice.multiple_choice;
     radioChoiceInput.radioOneCheck = true;
     radioChoiceInput.radioChoiceNames = reactive([]);
   }
@@ -215,7 +216,61 @@ export function useModel() {
         }
       }
     } else if (type === RequireField.Radio) {
-      componentPreviewList.value.push({ component: requireRadioChoiceRow });
+      const index = componentPreviewList.value.findIndex(
+        (component) =>
+          component.vModel?.name &&
+          component.vModel?.name === componentVModel?.name
+      );
+      if (index === -1) {
+        componentPreviewList.value.push({
+          component: requireRadioChoiceRow,
+          props: {
+            preview: true,
+          },
+          vModel: reactive({
+            name: '',
+            radioChoice: RadioChoice.multiple_choice,
+            radioOneCheck: true,
+            radioChoiceNames: reactive([]),
+          }),
+        });
+      } else {
+        const duplicateComponentVModel = { ...componentVModel };
+        if (duplication && /\(\d\)$/.test(duplicateComponentVModel.name)) {
+          duplicateComponentVModel.name =
+            duplicateComponentVModel.name.split('(')[0];
+        }
+        const duplicates = componentPreviewList.value.filter(
+          (componentDefinition) =>
+            componentDefinition.vModel?.name &&
+            (componentDefinition.vModel?.name ===
+              duplicateComponentVModel?.name ||
+              (componentDefinition.vModel?.name.split('(').length > 1 &&
+                componentDefinition.vModel?.name.split('(')[0] ===
+                  duplicateComponentVModel?.name &&
+                /\d\)/.test(componentDefinition.vModel?.name.split('(')[1])))
+        ).length;
+
+        duplicateComponentVModel.name += `(${duplicates + 1})`;
+
+        if (duplication) {
+          componentPreviewList.value.splice(index + 1, 0, {
+            component: requireRadioChoiceRow,
+            props: {
+              preview: true,
+            },
+            vModel: duplicateComponentVModel,
+          });
+        } else {
+          componentPreviewList.value.push({
+            component: requireRadioChoiceRow,
+            props: {
+              preview: true,
+            },
+            vModel: duplicateComponentVModel,
+          });
+        }
+      }
     } else if (type === RequireField.File) {
       componentPreviewList.value.push({ component: requireFileRow });
     }

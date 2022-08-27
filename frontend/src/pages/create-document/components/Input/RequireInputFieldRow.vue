@@ -81,8 +81,8 @@ const validated = computed(() => {
   return !!val.value.name.length;
 });
 
-const validationMessage = computed(() => {
-  return validated.value ? '' : "Name of Input Field can't be empty.";
+const validationMessages = computed(() => {
+  return validated.value ? [''] : ["Name of Input Field can't be empty."];
 });
 
 const clickActiveIndexKey = ref(0);
@@ -111,7 +111,7 @@ function closeWindow() {
 function addPeComponent() {
   emit('add', RequireField.Input, {
     validated: validated.value,
-    message: validationMessage.value,
+    messages: validationMessages.value,
   });
 }
 

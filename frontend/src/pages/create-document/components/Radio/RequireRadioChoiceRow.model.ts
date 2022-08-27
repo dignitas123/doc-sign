@@ -1,6 +1,6 @@
 export enum RadioChoice {
-  'multiple_choice',
-  'single_choice',
+  multiple_choice = 'multiple_choice',
+  single_choice = 'single_choice',
 }
 
 export interface RadioRowModel {

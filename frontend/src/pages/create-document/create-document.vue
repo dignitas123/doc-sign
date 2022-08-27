@@ -10,7 +10,7 @@ import { InputFieldModel } from './components/Input/RequireInputFieldRow.model';
 
 interface ValidationData {
   validated: boolean;
-  message: string;
+  messages: string[];
 }
 
 const {
@@ -67,11 +67,13 @@ function peComponentAdded(type: RequireField, validationData: ValidationData) {
   if (validationData.validated) {
     addComponentToPreviewList(type, activePreviewComponent.vModel, false);
   } else {
-    $q.notify({
-      color: 'red-5',
-      textColor: 'white',
-      icon: 'warning',
-      message: validationData.message,
+    validationData.messages.forEach((message) => {
+      $q.notify({
+        color: 'red-5',
+        textColor: 'white',
+        icon: 'warning',
+        message: message,
+      });
     });
   }
 }
