@@ -38,7 +38,7 @@ const accountCut = computed(() => {
           unelevated
           label="Connect Wallet"
           class="q-mx-xs bg-secondary text-primary"
-          @click="getProviderAndSigner()"
+          @click="getProviderAndSigner"
         />
       </q-toolbar>
       <q-toolbar>

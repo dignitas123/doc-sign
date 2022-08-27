@@ -13,15 +13,15 @@ onMounted(async () => {
 
   const { ethereum } = window;
   if (typeof ethereum !== 'undefined') {
-    ethereum.on('accountsChanged', function (accounts) {
-      if (!accounts.length) {
+    ethereum.on('accountsChanged', (accounts) => {
+      if (!!accounts.length) {
         account.value = accounts[0];
       } else {
         account.value = '';
       }
     });
 
-    ethereum.on('connect', function (connectInfo) {
+    ethereum.on('connect', (connectInfo) => {
       console.log('connected. Info', connectInfo);
     });
 
