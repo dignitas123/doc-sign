@@ -128,7 +128,7 @@ watch(componentPreviewList, () => {
         <div class="absolute-bottom">
           <Transition name="fade">
             <div
-              class="q-gutter-xs q-ma-lg input-component"
+              class="q-ma-lg input-component"
               v-if="activePreviewComponent.component"
             >
               <component

@@ -203,7 +203,7 @@ const choiceNameInput = ref<HTMLElement>();
     <RadioChoiceRow v-else v-model="val" />
   </template>
   <template v-else>
-    <div class="row">
+    <div class="row items-center">
       <div class="col-xs-12 col-sm-6 q-my-xs">
         <q-input
           ref="nameInputRef"
@@ -216,7 +216,7 @@ const choiceNameInput = ref<HTMLElement>();
           maxlength="63"
         />
       </div>
-      <div class="col-xs-12 col-sm-6 text-center q-m-sm">
+      <div class="col-xs-12 col-sm-6 text-center q-my-xs justify-center">
         <q-btn-toggle
           v-model="val.radioChoice"
           class="radio-choice-toggle"
@@ -234,7 +234,7 @@ const choiceNameInput = ref<HTMLElement>();
       </div>
     </div>
     <div class="row">
-      <div class="col-xs-12 col-sm-6">
+      <div class="col-xs-12 col-sm-6 q-my-xs">
         <q-input
           ref="choiceNameInput"
           v-model="choiceName"
@@ -248,7 +248,7 @@ const choiceNameInput = ref<HTMLElement>();
         />
       </div>
       <div
-        class="col q-mt-xs text-center q-ml-xs justify-center"
+        class="col-xs-12 col-sm-6 q-my-xs text-center justify-center"
         style="display: inline-flex"
       >
         <q-btn
