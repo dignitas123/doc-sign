@@ -138,13 +138,13 @@ const inputPrependShow = computed(() => {
 </script>
 
 <template>
-  <div class="row">
+  <div class="row justify-center">
     <div :class="descriptionRowClass">
-      <p class="q-mr-xs q-mt-sm">
+      <p class="q-my-xs">
         <b>{{ val.name }}:</b>
       </p>
     </div>
-    <div :class="textRowClass">
+    <div :class="textRowClass" :style="$q.screen.xs ? 'max-width: 270px;' : ''">
       <q-input
         v-model="textInput"
         outlined
