@@ -6,7 +6,6 @@ import DocumentHeaderRow from './components/DocumentHeaderRow.vue';
 import AddButtonsRow from './components/AddButtonsRow.vue';
 import { RequireField, useModel } from './create-document.model';
 import HyphenText from 'src/core/components/hyphen-text.vue';
-import { InputFieldModel } from './components/Input/RequireInputFieldRow.model';
 
 interface ValidationData {
   validated: boolean;
@@ -56,10 +55,7 @@ function onReset() {
   accept.value = false;
 }
 
-function peComponentClosed(data: {
-  type: RequireField;
-  value: InputFieldModel;
-}) {
+function peComponentClosed(data: { type: RequireField }) {
   resetActivePreviewComponent(data.type);
 }
 

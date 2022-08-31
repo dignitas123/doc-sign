@@ -6,7 +6,7 @@ import RequireFileRow from './components/File/RequireFileRow.vue';
 import { useQuasar } from 'quasar';
 import { ComponentDefinition } from 'src/core/interfaces/component-definition';
 import { InputLength, InputTypes } from './components/Input/RequireInputFieldRow.model';
-import { RadioChoice } from './components/Radio/RequireRadioChoiceRow.model';
+import { Alignment, RadioChoice } from './components/Radio/RequireRadioChoiceRow.model';
 
 // require Field names
 export enum RequireField {
@@ -66,12 +66,14 @@ export function useModel() {
     radioChoice: RadioChoice.multiple_choice,
     radioOneCheck: true,
     radioChoiceNames: reactive([]),
+    alignment: Alignment.row,
   });
   function resetRadioChoiceInput() {
     radioChoiceInput.name = '';
     radioChoiceInput.radioChoice = RadioChoice.multiple_choice;
     radioChoiceInput.radioOneCheck = true;
     radioChoiceInput.radioChoiceNames = reactive([]);
+    radioChoiceInput.alignment = Alignment.row;
   }
 
   const requireFileRow = Object.freeze(RequireFileRow);
@@ -228,10 +230,11 @@ export function useModel() {
             preview: true,
           },
           vModel: reactive({
-            name: '',
-            radioChoice: RadioChoice.multiple_choice,
-            radioOneCheck: true,
-            radioChoiceNames: reactive([]),
+            name: radioChoiceInput.name,
+            radioChoice: radioChoiceInput.radioChoice,
+            radioOneCheck: radioChoiceInput.radioOneCheck,
+            radioChoiceNames: [...radioChoiceInput.radioChoiceNames],
+            alignment: radioChoiceInput.alignment,
           }),
         });
       } else {
@@ -289,9 +292,15 @@ export function useModel() {
         1
       );
     } else if (type === RequireField.Radio) {
-      componentPreviewList.value.push({ component: requireRadioChoiceRow });
+      componentPreviewList.value.splice(
+        componentPreviewList.value.findIndex((el) => el.vModel?.name === name),
+        1
+      );
     } else if (type === RequireField.File) {
-      componentPreviewList.value.push({ component: requireFileRow });
+      componentPreviewList.value.splice(
+        componentPreviewList.value.findIndex((el) => el.vModel?.name === name),
+        1
+      );
     }
   }
 

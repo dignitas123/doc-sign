@@ -2,7 +2,11 @@
 import { useQuasar } from 'quasar';
 import { computed, onMounted, ref, watch, withDefaults } from 'vue';
 import HyphenText from 'src/core/components/hyphen-text.vue';
-import { RadioChoice, RadioRowModel } from './RequireRadioChoiceRow.model';
+import {
+  RadioChoice,
+  Alignment,
+  RadioRowModel,
+} from './RequireRadioChoiceRow.model';
 import { RequireField } from '../../create-document.model';
 import RadioChoiceRow from './RadioChoiceRow.vue';
 import ConfirmCancel from 'src/core/components/confirm-cancel.vue';
@@ -40,7 +44,6 @@ onMounted(() => {
   if (nameInputRef.value) {
     nameInputRef.value.focus();
   }
-
   startValue.value = { ...val.value };
   editActiveValue.value = props.editActive;
 });
@@ -124,6 +127,18 @@ const validated = computed(() => {
   return !!val.value.name.length && !!val.value.radioChoiceNames.length;
 });
 
+watch(editActiveValue, (editActiveValue) => {
+  if (editActiveValue) {
+    for (let i = 0; i < val.value.radioChoice.length; i++) {
+      checkBoxValues.value.push(false);
+    }
+
+    if (val.value.radioOneCheck) {
+      checkBoxValues.value[0] = true;
+    }
+  }
+});
+
 const validationMessages = computed(() => {
   let messages: string[] = [];
   if (!val.value.name.length) {
@@ -172,7 +187,7 @@ function duplicateRow() {
   emit('duplicate', RequireField.Radio, val.value);
 }
 
-function requireRowClosed(data: { type: RequireField; value: RadioRowModel }) {
+function requireRowClosed(data: { value: RadioRowModel }) {
   editActiveValue.value = false;
   val.value = data.value;
 }
@@ -203,6 +218,46 @@ const choiceNameInput = ref<HTMLElement>();
     <RadioChoiceRow v-else v-model="val" />
   </template>
   <template v-else>
+    <template v-if="val.name">
+      <HyphenText class="q-mt-sm q-mb-sm">Preview</HyphenText>
+      <RadioChoiceRow v-if="val.name" v-model="val" />
+      <div class="row items-center">
+        <div class="col-xs-12 col-sm-6 text-center q-my-xs justify-center">
+          <q-checkbox
+            v-model="val.radioOneCheck"
+            label="One choice must be selected"
+            color="primary"
+          />
+        </div>
+        <div class="col-xs-12 col-sm-6 text-center q-my-xs justify-center">
+          <q-btn-toggle
+            v-model="val.alignment"
+            class="radio-choice-toggle-align"
+            no-caps
+            dense
+            unelevated
+            toggle-color="primary"
+            color="secondary"
+            text-color="primary"
+            :options="[
+              { value: Alignment.row, slot: 'column' },
+              { value: Alignment.column, slot: 'row' },
+              { value: Alignment.select, slot: 'select' },
+            ]"
+          >
+            <template #column>
+              <q-icon name="format_list_bulleted" />
+            </template>
+            <template #row>
+              <q-icon name="more_horiz" />
+            </template>
+            <template #select>
+              <q-icon name="arrow_drop_down" />
+            </template>
+          </q-btn-toggle>
+        </div>
+      </div>
+    </template>
     <div class="row items-center">
       <div class="col-xs-12 col-sm-6 q-my-xs">
         <q-input
@@ -219,16 +274,15 @@ const choiceNameInput = ref<HTMLElement>();
       <div class="col-xs-12 col-sm-6 text-center q-my-xs justify-center">
         <q-btn-toggle
           v-model="val.radioChoice"
-          class="radio-choice-toggle"
+          class="radio-choice-toggle-multi-single-choice"
           no-caps
-          rounded
           unelevated
           toggle-color="accent"
           color="secondary"
           text-color="accent"
           :options="[
-            { label: 'Multiple Choice', value: 'multiple_choice' },
-            { label: 'Single Choice', value: 'single_choice' },
+            { label: 'Multiple Choice', value: RadioChoice.multiple_choice },
+            { label: 'Single Choice', value: RadioChoice.single_choice },
           ]"
         />
       </div>
@@ -241,6 +295,7 @@ const choiceNameInput = ref<HTMLElement>();
           outlined
           :disable="val.name ? false : true"
           label="Choice Name"
+          :placeholder="val.radioChoiceNames.length ? '' : 'Choice1, Choice2'"
           @focus="focusChoiceName"
           @blur="unfocusChoiceName"
           @keydown.enter.prevent="addRadioChoice"
@@ -279,27 +334,6 @@ const choiceNameInput = ref<HTMLElement>();
         />
       </div>
     </div>
-    <template v-if="val.name">
-      <HyphenText class="q-mt-sm q-mb-sm">{{ val.name }}</HyphenText>
-      <div v-if="val.radioChoiceNames.length" class="row justify-center">
-        <div v-for="(name, i) in val.radioChoiceNames" :key="i">
-          <q-checkbox
-            v-model="checkBoxValues[i]"
-            color="primary"
-            :label="name"
-          />
-        </div>
-      </div>
-    </template>
-    <div class="row">
-      <div class="col text-center">
-        <q-checkbox
-          v-model="val.radioOneCheck"
-          label="At least one choice must be selected."
-          color="primary"
-        />
-      </div>
-    </div>
     <ConfirmCancel
       v-if="editActiveValue"
       confirmText="Save Changes"
@@ -334,7 +368,11 @@ const choiceNameInput = ref<HTMLElement>();
 </template>
 
 <style lang="scss" scoped>
-.radio-choice-toggle {
+.radio-choice-toggle-multi-single-choice {
   border: 1px solid var(--q-accent);
+}
+
+.radio-choice-toggle-align {
+  border: 1px solid var(--q-primary);
 }
 </style>

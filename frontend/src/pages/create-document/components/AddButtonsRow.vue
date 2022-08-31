@@ -64,7 +64,7 @@ watch(hover, () => {
         @mouseover="hover.radio = true"
         @mouseleave="hover.radio = false"
       >
-        <span v-if="!smallScreen">Radio</span>
+        <span v-if="!smallScreen">Choice</span>
       </q-btn>
     </div>
     <div class="col">
