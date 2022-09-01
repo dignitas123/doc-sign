@@ -5,7 +5,7 @@ import {
   InputTypes,
   getInputTypeIconForInputField,
   InputLength,
-} from './RequireInputFieldRow.model';
+} from './require-input-field-row.model';
 
 const props = withDefaults(
   defineProps<{

@@ -1,12 +1,12 @@
 import { reactive, ref } from 'vue';
-import RequireInputFieldRow from './components/Input/RequireInputFieldRow.vue';
-import RequireTextRow from './components/Text/RequireTextRow.vue';
-import RequireRadioChoiceRow from './components/Radio/RequireRadioChoiceRow.vue';
-import RequireFileRow from './components/File/RequireFileRow.vue';
 import { useQuasar } from 'quasar';
+import RequireInputFieldRow from './components/Input/require-input-field-row.vue';
+import RequireTextRow from './components/Text/require-text-row.vue';
+import RequireRadioChoiceRow from './components/Radio/require-radio-choice-row.vue';
+import RequireFileRow from './components/File/require-file-row.vue';
 import { ComponentDefinition } from 'src/core/interfaces/component-definition';
-import { InputLength, InputTypes } from './components/Input/RequireInputFieldRow.model';
-import { Alignment, RadioChoice } from './components/Radio/RequireRadioChoiceRow.model';
+import { InputLength, InputTypes } from './components/Input/require-input-field-row.model';
+import { Alignment, RadioChoice } from './components/Radio/require-radio-choice-row.model';
 
 // require Field names
 export enum RequireField {

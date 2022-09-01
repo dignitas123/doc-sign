@@ -4,7 +4,7 @@ import {
   Alignment,
   RadioChoice,
   RadioRowModel,
-} from './RequireRadioChoiceRow.model';
+} from './require-radio-choice-row.model';
 
 const props = withDefaults(
   defineProps<{

@@ -3,7 +3,7 @@ import { ref, computed, reactive, watch, withDefaults, onMounted } from 'vue';
 import { useQuasar } from 'quasar';
 import { RequireField } from '../../create-document.model';
 import ConfirmCancel from 'src/core/components/confirm-cancel.vue';
-import { TextRowModel } from './RequireTextRow.model';
+import { TextRowModel } from './require-text-row.model';
 
 const $q = useQuasar();
 

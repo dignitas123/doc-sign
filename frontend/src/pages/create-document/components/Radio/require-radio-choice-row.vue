@@ -6,9 +6,9 @@ import {
   RadioChoice,
   Alignment,
   RadioRowModel,
-} from './RequireRadioChoiceRow.model';
+} from './require-radio-choice-row.model';
 import { RequireField } from '../../create-document.model';
-import RadioChoiceRow from './RadioChoiceRow.vue';
+import RadioChoiceRow from './radio-choice-row.vue';
 import ConfirmCancel from 'src/core/components/confirm-cancel.vue';
 
 const $q = useQuasar();

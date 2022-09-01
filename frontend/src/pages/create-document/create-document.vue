@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue';
 import { useQuasar } from 'quasar';
-import MainLayout from 'src/layouts/MainLayout.vue';
-import DocumentHeaderRow from './components/DocumentHeaderRow.vue';
-import AddButtonsRow from './components/AddButtonsRow.vue';
+import MainLayout from 'src/layouts/main-layout.vue';
+import DocumentHeaderRow from './components/document-header-row.vue';
+import AddButtonsRow from './components/add-buttons-row.vue';
 import { RequireField, useModel } from './create-document.model';
 import HyphenText from 'src/core/components/hyphen-text.vue';
 

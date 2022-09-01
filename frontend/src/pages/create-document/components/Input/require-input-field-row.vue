@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, watch, withDefaults, reactive, computed, onMounted } from 'vue';
-import InputFieldRow from './InputFieldRow.vue';
+import InputFieldRow from './input-field-row.vue';
 import { RequireField } from '../../create-document.model';
 import ConfirmCancel from 'src/core/components/confirm-cancel.vue';
 import HyphenText from 'src/core/components/hyphen-text.vue';
@@ -9,7 +9,7 @@ import {
   InputLength,
   InputTypes,
   getInputTypeIcon,
-} from './RequireInputFieldRow.model';
+} from './require-input-field-row.model';
 
 const props = withDefaults(
   defineProps<{
