@@ -5,8 +5,14 @@ import RequireTextRow from './components/Text/require-text-row.vue';
 import RequireRadioChoiceRow from './components/Radio/require-radio-choice-row.vue';
 import RequireFileRow from './components/File/require-file-row.vue';
 import { ComponentDefinition } from 'src/core/interfaces/component-definition';
-import { InputLength, InputTypes } from './components/Input/require-input-field-row.model';
-import { Alignment, RadioChoice } from './components/Radio/require-radio-choice-row.model';
+import {
+  InputLength,
+  InputTypes,
+} from './components/Input/require-input-field-row.model';
+import {
+  Alignment,
+  RadioChoice,
+} from './components/Radio/require-radio-choice-row.model';
 
 // require Field names
 export enum RequireField {
@@ -16,7 +22,7 @@ export enum RequireField {
   File = 'File',
 }
 
-export function useModel() {
+export function useCreateDocumentModel() {
   // document header ref
   const documentHeader = ref('');
 

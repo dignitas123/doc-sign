@@ -103,7 +103,7 @@ function deleteTextRow() {
   });
 }
 
-function addPeComponent() {
+function addPreviewComponent() {
   emit('add', RequireField.Text, {
     validated: validated.value,
     message: validationMessages.value,
@@ -184,7 +184,7 @@ function duplicateRow() {
     <ConfirmCancel
       v-else
       confirmText="Add"
-      @confirm="addPeComponent"
+      @confirm="addPreviewComponent"
       @cancel="closeWindow"
     />
   </template>

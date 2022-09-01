@@ -4,7 +4,7 @@ import { useQuasar } from 'quasar';
 import MainLayout from 'src/layouts/main-layout.vue';
 import DocumentHeaderRow from './components/document-header-row.vue';
 import AddButtonsRow from './components/add-buttons-row.vue';
-import { RequireField, useModel } from './create-document.model';
+import { RequireField, useCreateDocumentModel } from './create-document.model';
 import HyphenText from 'src/core/components/hyphen-text.vue';
 
 interface ValidationData {
@@ -20,7 +20,7 @@ const {
   resetActivePreviewComponent,
   addComponentToPreviewList,
   removeComponentFromPreviewList,
-} = useModel();
+} = useCreateDocumentModel();
 
 const $q = useQuasar();
 

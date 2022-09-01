@@ -169,7 +169,7 @@ function closeWindow() {
   emit('close', { type: RequireField.Radio, value: startValue.value });
 }
 
-function addPeComponent() {
+function addPreviewComponent() {
   emit('add', RequireField.Radio, {
     validated: validated.value,
     messages: validationMessages.value,
@@ -343,7 +343,7 @@ const choiceNameInput = ref<HTMLElement>();
     <ConfirmCancel
       v-else
       confirmText="Add"
-      @confirm="addPeComponent"
+      @confirm="addPreviewComponent"
       @cancel="closeWindow"
     />
   </template>

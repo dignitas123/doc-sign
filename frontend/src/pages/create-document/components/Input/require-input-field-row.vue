@@ -108,7 +108,7 @@ function closeWindow() {
   emit('close', { type: RequireField.Input, value: startValue.value });
 }
 
-function addPeComponent() {
+function addPreviewComponent() {
   emit('add', RequireField.Input, {
     validated: validated.value,
     messages: validationMessages.value,
@@ -282,7 +282,7 @@ watch(
           :placeholder="placeholder"
           @focus="focusInputFieldName"
           @blur="unfocusInputFieldName"
-          @keyup.enter="addPeComponent"
+          @keyup.enter="addPreviewComponent"
           :maxlength="val.inputLength"
         />
       </div>
@@ -371,7 +371,7 @@ watch(
     <ConfirmCancel
       v-else
       confirmText="Add"
-      @confirm="addPeComponent"
+      @confirm="addPreviewComponent"
       @cancel="closeWindow"
     />
   </template>
