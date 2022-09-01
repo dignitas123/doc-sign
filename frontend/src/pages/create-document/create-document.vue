@@ -55,11 +55,14 @@ function onReset() {
   accept.value = false;
 }
 
-function peComponentClosed(data: { type: RequireField }) {
+function previewComponentClosed(data: { type: RequireField }) {
   resetActivePreviewComponent(data.type);
 }
 
-function peComponentAdded(type: RequireField, validationData: ValidationData) {
+function previewComponentAdded(
+  type: RequireField,
+  validationData: ValidationData
+) {
   if (validationData.validated) {
     addComponentToPreviewList(type, activePreviewComponent.vModel, false);
   } else {
@@ -74,14 +77,14 @@ function peComponentAdded(type: RequireField, validationData: ValidationData) {
   }
 }
 
-function duplicatePeComponent(
+function duplicatePreviewComponent(
   type: RequireField,
   componentVModel: Record<string, string>
 ) {
   addComponentToPreviewList(type, componentVModel, true);
 }
 
-function peComponentDeleted(data: { type: RequireField; name: string }) {
+function previewComponentDeleted(data: { type: RequireField; name: string }) {
   removeComponentFromPreviewList(data.type, data.name);
 }
 
@@ -115,8 +118,8 @@ watch(componentPreviewList, () => {
                 :is="componentDefinition.component"
                 v-bind="componentDefinition.props"
                 v-model="componentDefinition.vModel"
-                @delete="peComponentDeleted"
-                @duplicate="duplicatePeComponent"
+                @delete="previewComponentDeleted"
+                @duplicate="duplicatePreviewComponent"
               />
             </template>
           </q-scroll-area>
@@ -130,8 +133,8 @@ watch(componentPreviewList, () => {
               <component
                 :is="activePreviewComponent.component"
                 v-model="activePreviewComponent.vModel"
-                @add="peComponentAdded"
-                @close="peComponentClosed"
+                @add="previewComponentAdded"
+                @close="previewComponentClosed"
               />
             </div>
           </Transition>
