@@ -13,6 +13,7 @@ import {
   Alignment,
   RadioChoice,
 } from './components/Radio/require-radio-choice-row.model';
+import { FileRowModel } from './components/File/require-file-row.model';
 
 // require Field names
 export enum RequireField {
@@ -83,15 +84,21 @@ export function useCreateDocumentModel() {
   }
 
   const requireFileRow = Object.freeze(RequireFileRow);
-  const fileRequireInput = reactive({
+  const fileRequireInput = reactive<FileRowModel>({
     name: '',
-    allowAllEndings: false,
-    allowedEndings: reactive([]),
+    allowAllEndings: true,
+    allowOnlyImages: false,
+    allowedEndings: [],
+    maxFileSize: 10_000,
+    uploadMultiple: 1,
   });
   function resetFileRequireInput() {
     fileRequireInput.name = '';
     fileRequireInput.allowAllEndings = false;
-    fileRequireInput.allowedEndings = reactive([]);
+    fileRequireInput.allowOnlyImages = false;
+    fileRequireInput.allowedEndings = [];
+    fileRequireInput.maxFileSize = 10_000;
+    fileRequireInput.uploadMultiple = 1;
   }
   // END -- v-Model for components --
 

@@ -76,7 +76,7 @@ function addRadioChoice() {
     choiceName.value = '';
   } else {
     $q.notify({
-      type: 'info',
+      type: 'negative',
       message: 'You cannot add an empty Choice.',
       timeout: 500,
     });
@@ -303,8 +303,8 @@ const choiceNameInput = ref<HTMLElement>();
         />
       </div>
       <div
-        class="col-xs-12 col-sm-6 q-my-xs text-center justify-center"
-        style="display: inline-flex"
+        class="col-xs-12 col-sm-6 q-my-xs text-center justify-center self-center"
+        style="display: inline-flex; height: 50%"
       >
         <q-btn
           unelevated

@@ -38,8 +38,12 @@ const emit = defineEmits([
 const val = ref(getModelValue());
 const startValue = ref();
 
+const fileDescription = ref<HTMLElement | null>(null);
+
 onMounted(() => {
-  // focussen maybe??
+  if (fileDescription.value) {
+    fileDescription.value.focus();
+  }
 
   startValue.value = { ...val.value };
   editActiveValue.value = props.editActive;
@@ -48,10 +52,13 @@ onMounted(() => {
 function getModelValue() {
   return (
     props.modelValue ??
-    reactive({
+    reactive<FileRowModel>({
       name: '',
-      allowAllEndings: false,
-      allowedEndings: reactive([]),
+      allowAllEndings: true,
+      allowOnlyImages: false,
+      allowedEndings: [],
+      maxFileSize: 10_000,
+      uploadMultiple: 1,
     })
   );
 }
@@ -70,6 +77,17 @@ watch(
   }
 );
 
+watch(
+  () => val.value.allowedEndings,
+  () => {
+    console.log('jo');
+    if (!val.value.allowedEndings.length) {
+      val.value.allowAllEndings = true;
+    }
+  },
+  { deep: true }
+);
+
 function addEnding() {
   if (endingName.value) {
     if (val.value.allowAllEndings) {
@@ -82,7 +100,7 @@ function addEnding() {
       )
     ) {
       $q.notify({
-        type: 'info',
+        type: 'negative',
         message: 'Special characters in file endings are not allowed.',
         timeout: 500,
       });
@@ -95,35 +113,27 @@ function addEnding() {
             endingName.value = '';
           } else {
             $q.notify({
-              type: 'info',
+              type: 'negative',
               message: `${endingName.value} already exists.`,
               timeout: 500,
             });
           }
         } else {
           $q.notify({
-            type: 'info',
+            type: 'negative',
             message: "A file ending can't have more than 5 characters.",
             timeout: 500,
           });
         }
       } else {
-        if (endingName.value.length < 6) {
-          if (!val.value.allowedEndings.includes('.' + endingName.value)) {
-            val.value.allowedEndings.push('.' + endingName.value);
-            endingExistsValues.value.push(true);
-            endingName.value = '';
-          } else {
-            $q.notify({
-              type: 'info',
-              message: `${endingName.value} already exists.`,
-              timeout: 500,
-            });
-          }
+        if (!val.value.allowedEndings.includes('.' + endingName.value)) {
+          val.value.allowedEndings.push('.' + endingName.value);
+          endingExistsValues.value.push(true);
+          endingName.value = '';
         } else {
           $q.notify({
-            type: 'info',
-            message: "A file ending can't have more than 5 characters.",
+            type: 'negative',
+            message: `${endingName.value} already exists.`,
             timeout: 500,
           });
         }
@@ -131,7 +141,7 @@ function addEnding() {
     }
   } else {
     $q.notify({
-      type: 'info',
+      type: 'negative',
       message: 'You cannot add an empty file ending.',
       timeout: 500,
     });
@@ -238,39 +248,56 @@ function deleteInputFieldRow() {
     <FileRow v-else v-model="val" />
   </template>
   <template v-else>
-    <template v-if="val.name">
-      <HyphenText class="q-mt-xs q-mb-md">Preview</HyphenText>
-      <FileRow v-model="val" preview />
-      <template v-if="val.name">
-        <!-- ist row noetig ?? -->
-        <div v-if="val.allowedEndings.length" class="row">
-          <div v-for="(name, i) in val.allowedEndings" :key="i">
-            <q-chip
-              removable
-              outline
-              v-model="endingExistsValues[i]"
-              color="primary"
-              text-color="white"
-              :label="name"
-              :title="name"
-              @remove="itemRemoved(i)"
-            />
-          </div>
-        </div>
-        <div class="row">
-          <div class="col text-center">
-            <q-checkbox
-              v-model="val.allowAllEndings"
-              label="Allow all file endings"
-              color="primary"
-            />
-          </div>
-        </div>
-      </template>
-    </template>
+    <HyphenText class="q-mt-xs q-mb-md">Preview</HyphenText>
+    <FileRow v-model="val" preview />
+    <div v-if="val.allowedEndings.length" class="row justift-center">
+      <div v-for="(name, i) in val.allowedEndings" :key="i">
+        <q-chip
+          removable
+          outline
+          v-model="endingExistsValues[i]"
+          color="primary"
+          text-color="white"
+          :label="name"
+          :title="name"
+          @remove="itemRemoved(i)"
+        />
+      </div>
+    </div>
+    <div class="row">
+      <div class="col text-center">
+        <q-checkbox
+          v-model="val.allowAllEndings"
+          label="Allow all file endings"
+          color="primary"
+        />
+      </div>
+      <div class="col text-center">
+        <q-checkbox
+          v-model="val.allowOnlyImages"
+          label="Allow only images"
+          color="primary"
+        />
+      </div>
+    </div>
+    <div class="row">
+      <div class="col text-center">
+        <q-slider
+          v-model="val.maxFileSize"
+          :min="100"
+          :max="100_000"
+          :step="100"
+          label
+          :label-value="val.maxFileSize + 'mb'"
+          label-always
+          color="primary"
+        />
+      </div>
+    </div>
     <div class="row q-mb-sm">
       <div class="col-xs-12 col-sm-6">
         <q-input
+          ref="fileDescription"
           v-model="val.name"
           outlined
           label="File Description"
@@ -295,7 +322,7 @@ function deleteInputFieldRow() {
           @focus="focusFileEnding"
           @blur="unfocusFileEnding"
           @keydown.enter.prevent="addEnding"
-          maxlength="6"
+          maxlength="5"
         />
         <q-btn
           class="q-ml-xs"

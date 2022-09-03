@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useQuasar } from 'quasar';
+import { useQuasar, QUploader } from 'quasar';
 import { ref, reactive, withDefaults } from 'vue';
 import { FileRowModel } from './require-file-row.model';
 
@@ -19,50 +19,91 @@ defineEmits(['update:modelValue']);
 function getModelValue() {
   return (
     props.modelValue ??
-    reactive({
+    reactive<FileRowModel>({
       name: '',
-      allowAllEndings: false,
-      allowedEndings: reactive([]),
+      allowAllEndings: true,
+      allowOnlyImages: false,
+      allowedEndings: [],
+      maxFileSize: 10_000,
+      uploadMultiple: 1,
     })
   );
 }
 
-const val = ref(getModelValue());
+const val = ref<FileRowModel>(getModelValue());
+
+const fileUploader = ref<QUploader | null>(null);
 
 const $q = useQuasar();
 
 function onRejected(rejectedEntries: any) {
   console.log('rejectedEntries', rejectedEntries);
   console.log('type of rejectedEntries', typeof rejectedEntries);
-  // Notify plugin needs to be installed
-  // https://quasar.dev/quasar-plugins/notify#Installation
   $q.notify({
     type: 'negative',
     message: `${rejectedEntries.length} file(s) did not pass validation constraints`,
   });
 }
+
+const fileUploaded = ref(false);
+
+async function onAdded() {
+  fileUploaded.value = true;
+}
+
+function onRemoved() {
+  fileUploaded.value = false;
+}
+
+function triggerPickFiles() {
+  fileUploader.value?.pickFiles();
+}
 </script>
 
 <template>
   <div class="row justify-center">
-    <div class="col-xs-12 col-sm-6 q-mb-xs">
-      <p class="q-my-xs">
-        <b>{{ val.name }}:</b>
-      </p>
-    </div>
     <div
       class="col-xs-12 col-sm-6 q-mb-xs"
       :style="$q.screen.xs ? 'max-width: 270px;' : ''"
     >
       <q-uploader
+        ref="fileUploader"
         style="max-width: 300px"
-        url="http://localhost:4444/upload"
-        label="Restricted to images"
+        :label="val.name"
         multiple
-        accept=".jpg, image/*"
+        :accept="
+          val.allowedEndings.length
+            ? val.allowedEndings.reduce(
+                (previousValue, currentValue) =>
+                  previousValue + ' ' + currentValue
+              )
+            : ''
+        "
         @rejected="onRejected"
-      />
+        @added="onAdded"
+        @removed="onRemoved"
+      >
+        <template v-if="!fileUploaded" #list>
+          <div class="upload-info" @click="triggerPickFiles">
+            <div class="text-center">
+              <div class="text-caption">Drag and Drop file here.</div>
+              <div class="subtitle-1">Drag and Drop file here.</div>
+            </div>
+          </div>
+        </template>
+      </q-uploader>
     </div>
     {{ val }}
   </div>
 </template>
+
+<style lang="scss" scoped>
+@import 'src/css/quasar.variables.scss';
+.upload-info {
+  min-height: 60px;
+  &:hover {
+    cursor: pointer;
+  }
+  color: $info-gray;
+}
+</style>

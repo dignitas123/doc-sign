@@ -68,10 +68,11 @@ function previewComponentAdded(
   } else {
     validationData.messages.forEach((message) => {
       $q.notify({
-        color: 'red-5',
+        type: 'negative',
         textColor: 'white',
         icon: 'warning',
         message: message,
+        timeout: 500,
       });
     });
   }

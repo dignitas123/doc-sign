@@ -1,7 +1,10 @@
 export interface FileRowModel {
   name: string;
   allowAllEndings: boolean;
+  allowOnlyImages: boolean;
   allowedEndings: string[];
+  maxFileSize: number;
+  uploadMultiple: number;
 }
 
 // - man sollte max file size festlegen können
