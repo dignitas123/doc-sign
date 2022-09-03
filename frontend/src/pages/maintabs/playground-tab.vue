@@ -9,7 +9,7 @@ import {
   readKey,
   readMessage,
 } from 'openpgp';
-import MainLayout from 'src/layouts/MainLayout.vue';
+import MainLayout from 'src/layouts/main-layout.vue';
 import Tabs from '../main-tabs.vue';
 
 const $q = useQuasar();
