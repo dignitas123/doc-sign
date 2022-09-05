@@ -62,38 +62,32 @@ function triggerPickFiles() {
 
 <template>
   <div class="row justify-center">
-    <div
-      class="col-xs-12 col-sm-6 q-mb-xs"
-      :style="$q.screen.xs ? 'max-width: 270px;' : ''"
+    <q-uploader
+      ref="fileUploader"
+      style="max-width: 300px"
+      :label="val.name"
+      multiple
+      :accept="
+        val.allowedEndings.length
+          ? val.allowedEndings.reduce(
+              (previousValue, currentValue) =>
+                previousValue + ' ' + currentValue
+            )
+          : ''
+      "
+      @rejected="onRejected"
+      @added="onAdded"
+      @removed="onRemoved"
     >
-      <q-uploader
-        ref="fileUploader"
-        style="max-width: 300px"
-        :label="val.name"
-        multiple
-        :accept="
-          val.allowedEndings.length
-            ? val.allowedEndings.reduce(
-                (previousValue, currentValue) =>
-                  previousValue + ' ' + currentValue
-              )
-            : ''
-        "
-        @rejected="onRejected"
-        @added="onAdded"
-        @removed="onRemoved"
-      >
-        <template v-if="!fileUploaded" #list>
-          <div class="upload-info" @click="triggerPickFiles">
-            <div class="text-center">
-              <div class="text-caption">Drag and Drop file here.</div>
-              <div class="subtitle-1">Drag and Drop file here.</div>
-            </div>
+      <template v-if="!fileUploaded" #list>
+        <div class="upload-info" @click="triggerPickFiles">
+          <div class="text-center">
+            <div class="text-caption">Drag and Drop file here.</div>
+            <div class="subtitle-1">Drag and Drop file here.</div>
           </div>
-        </template>
-      </q-uploader>
-    </div>
-    {{ val }}
+        </div>
+      </template>
+    </q-uploader>
   </div>
 </template>
 

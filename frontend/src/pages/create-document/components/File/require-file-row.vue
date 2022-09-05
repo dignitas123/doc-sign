@@ -227,6 +227,12 @@ function deleteInputFieldRow() {
     name: val.value.name,
   });
 }
+
+const fileMarkerLabel = {
+  1000: '1mb',
+  50000: { label: '50mb' },
+  100000: '100mb',
+};
 </script>
 
 <template>
@@ -280,18 +286,31 @@ function deleteInputFieldRow() {
         />
       </div>
     </div>
-    <div class="row">
-      <div class="col text-center">
+    <div class="row q-mb-md justify-between">
+      <div class="col-xs-12 col-sm-7 self-center text-center">
         <q-slider
           v-model="val.maxFileSize"
           :min="100"
           :max="100_000"
           :step="100"
+          :marker-labels="fileMarkerLabel"
+          markers
           label
-          :label-value="val.maxFileSize + 'mb'"
-          label-always
+          :label-value="val.maxFileSize + 'kB'"
           color="primary"
         />
+      </div>
+      <div class="col-xs-12 col-sm-3 text-center">
+        <q-input
+          ref="fileDescription"
+          v-model="val.maxFileSize"
+          outlined
+          label="Max File Size"
+          type="number"
+          maxlength="6"
+        >
+          <template #append>kB</template>
+        </q-input>
       </div>
     </div>
     <div class="row q-mb-sm">
