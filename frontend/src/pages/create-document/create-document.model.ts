@@ -89,7 +89,7 @@ export function useCreateDocumentModel() {
     allowAllEndings: true,
     allowOnlyImages: false,
     allowedEndings: [],
-    maxFileSize: 10_000,
+    maxFileSize: 5,
     uploadMultiple: 1,
   });
   function resetFileRequireInput() {

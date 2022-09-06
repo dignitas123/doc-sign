@@ -57,7 +57,7 @@ function getModelValue() {
       allowAllEndings: true,
       allowOnlyImages: false,
       allowedEndings: [],
-      maxFileSize: 10_000,
+      maxFileSize: 5,
       uploadMultiple: 1,
     })
   );
@@ -229,10 +229,18 @@ function deleteInputFieldRow() {
 }
 
 const fileMarkerLabel = {
-  1000: '1mb',
-  50000: { label: '50mb' },
-  100000: '100mb',
+  1: '1',
+  100: '100',
 };
+
+watch(
+  () => val.value.maxFileSize,
+  () => {
+    if (val.value.maxFileSize > 100) {
+      val.value.maxFileSize = 100;
+    }
+  }
+);
 </script>
 
 <template>
@@ -286,30 +294,29 @@ const fileMarkerLabel = {
         />
       </div>
     </div>
-    <div class="row q-mb-md justify-between">
+    <div class="row justify-between q-mb-sm">
       <div class="col-xs-12 col-sm-7 self-center text-center">
         <q-slider
           v-model="val.maxFileSize"
-          :min="100"
-          :max="100_000"
-          :step="100"
+          :min="0"
+          :max="100"
+          :step="5"
           :marker-labels="fileMarkerLabel"
           markers
           label
-          :label-value="val.maxFileSize + 'kB'"
+          :label-value="val.maxFileSize + ' MB'"
           color="primary"
         />
       </div>
-      <div class="col-xs-12 col-sm-3 text-center">
+      <div class="col-xs-12 col-sm-4 text-center">
         <q-input
           ref="fileDescription"
           v-model="val.maxFileSize"
           outlined
           label="Max File Size"
-          type="number"
-          maxlength="6"
+          mask="###"
         >
-          <template #append>kB</template>
+          <template #append>MB</template>
         </q-input>
       </div>
     </div>
@@ -327,7 +334,7 @@ const fileMarkerLabel = {
         />
       </div>
       <div
-        class="col text-center q-ml-xs justify-center"
+        class="col text-center q-ml-xs justify-end"
         :class="{ 'q-mt-xs': $q.screen.lt.sm }"
         style="display: inline-flex"
       >

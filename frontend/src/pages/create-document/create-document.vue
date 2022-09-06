@@ -197,7 +197,7 @@ watch(componentPreviewList, () => {
 
 .fade-enter-active,
 .fade-leave-active {
-  transition: opacity 0.75s ease;
+  transition: opacity 0.4s ease;
 }
 
 .fade-enter-from,
@@ -210,7 +210,7 @@ watch(componentPreviewList, () => {
 }
 
 .slide-enter-active {
-  transition: margin-bottom 0.8s ease-in;
+  transition: margin-bottom 0.4s ease-in;
 }
 
 .slide-enter-to {
@@ -222,7 +222,7 @@ watch(componentPreviewList, () => {
 }
 
 .slide-leave-active {
-  transition: margin-bottom 0.8s ease-out;
+  transition: margin-bottom 0.4s ease-out;
 }
 
 .slide-leave-to {

@@ -24,7 +24,7 @@ function getModelValue() {
       allowAllEndings: true,
       allowOnlyImages: false,
       allowedEndings: [],
-      maxFileSize: 10_000,
+      maxFileSize: 5,
       uploadMultiple: 1,
     })
   );
