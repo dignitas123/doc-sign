@@ -1,6 +1,6 @@
 <template>
   <div class="row text-center">
-    <div class="col items-center --plus-text-col">
+    <div class="col items-center --plus-text-col q-my-sm">
       <span class="plus-text"><slot /></span>
     </div>
   </div>
@@ -11,8 +11,6 @@
   background: $info-gray-line;
   color: $info-gray;
   height: 1px;
-  margin-top: 9px;
-  margin-bottom: 3px;
 
   .plus-text {
     background: var(--q-secondary);

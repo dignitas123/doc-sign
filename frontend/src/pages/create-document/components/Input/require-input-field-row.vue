@@ -316,7 +316,7 @@ watch(
         >
       </div>
     </div>
-    <div class="col q-my-md">
+    <div class="col q-my-sm">
       <q-btn-group unelevated spread>
         <q-btn
           :outline="val.inputType !== InputTypes.manual"
@@ -362,6 +362,7 @@ watch(
         />
       </q-btn-group>
     </div>
+    <HyphenText />
     <ConfirmCancel
       v-if="editActiveValue"
       confirmText="Save Changes"

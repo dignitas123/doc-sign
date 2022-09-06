@@ -166,7 +166,7 @@ function duplicateRow() {
     <div v-else v-html="val.text" />
   </template>
   <template v-else>
-    <div class="row items-center">
+    <div class="row items-center q-mb-sm">
       <div class="col">
         <q-editor
           ref="editorRef"

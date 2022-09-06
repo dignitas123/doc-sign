@@ -362,6 +362,7 @@ watch(
         />
       </div>
     </div>
+    <HyphenText />
     <ConfirmCancel
       v-if="editActiveValue"
       confirmText="Save Changes"
