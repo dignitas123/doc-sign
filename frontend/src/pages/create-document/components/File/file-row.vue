@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useQuasar, QUploader } from 'quasar';
-import { ref, reactive, withDefaults } from 'vue';
+import { ref, reactive, withDefaults, computed } from 'vue';
 import { FileRowModel } from './require-file-row.model';
 
 const props = withDefaults(
@@ -58,6 +58,14 @@ function onRemoved() {
 function triggerPickFiles() {
   fileUploader.value?.pickFiles();
 }
+
+const allFileEndingsText = computed(() => {
+  return val.value.allowedEndings.length
+    ? val.value.allowedEndings.reduce(
+        (previousValue, currentValue) => previousValue + ' ' + currentValue
+      )
+    : '';
+});
 </script>
 
 <template>
@@ -67,14 +75,7 @@ function triggerPickFiles() {
       style="max-width: 300px"
       :label="val.name"
       multiple
-      :accept="
-        val.allowedEndings.length
-          ? val.allowedEndings.reduce(
-              (previousValue, currentValue) =>
-                previousValue + ' ' + currentValue
-            )
-          : ''
-      "
+      :accept="allFileEndingsText"
       @rejected="onRejected"
       @added="onAdded"
       @removed="onRemoved"
@@ -82,8 +83,19 @@ function triggerPickFiles() {
       <template v-if="!fileUploaded" #list>
         <div class="upload-info" @click="triggerPickFiles">
           <div class="text-center">
-            <div class="text-caption">Drag and Drop file here.</div>
-            <div class="subtitle-1">Drag and Drop file here.</div>
+            <div class="text-caption">
+              Drag and Drop
+              {{ val.uploadMultiple > 1 ? 'files' : 'file' }} here.
+            </div>
+            <div class="subtitle-1">
+              Max File Size: {{ val.maxFileSize }} MB
+            </div>
+            <div v-if="val.uploadMultiple > 1" class="subtitle-1">
+              Multiple Uploads: {{ val.uploadMultiple }}
+            </div>
+            <div v-if="val.allowedEndings.length > 0" class="subtilte-2">
+              Allowed files: {{ allFileEndingsText }}
+            </div>
           </div>
         </div>
       </template>

@@ -264,20 +264,6 @@ watch(
   <template v-else>
     <HyphenText class="q-mt-xs q-mb-md">Preview</HyphenText>
     <FileRow v-model="val" preview />
-    <div v-if="val.allowedEndings.length" class="row justift-center">
-      <div v-for="(name, i) in val.allowedEndings" :key="i">
-        <q-chip
-          removable
-          outline
-          v-model="endingExistsValues[i]"
-          color="primary"
-          text-color="white"
-          :label="name"
-          :title="name"
-          @remove="itemRemoved(i)"
-        />
-      </div>
-    </div>
     <div class="row q-my-md justify-between">
       <div class="col-7 self-center">
         <q-checkbox
@@ -323,6 +309,20 @@ watch(
         >
           <template #append>MB</template>
         </q-input>
+      </div>
+    </div>
+    <div v-if="val.allowedEndings.length" class="row justift-center">
+      <div v-for="(name, i) in val.allowedEndings" :key="i">
+        <q-chip
+          removable
+          outline
+          v-model="endingExistsValues[i]"
+          color="primary"
+          text-color="white"
+          :label="name"
+          :title="name"
+          @remove="itemRemoved(i)"
+        />
       </div>
     </div>
     <div class="row q-mb-sm">
