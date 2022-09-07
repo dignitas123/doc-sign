@@ -2,7 +2,7 @@
 import { useQuasar } from 'quasar';
 import { computed, onMounted, reactive, ref, watch, withDefaults } from 'vue';
 import ConfirmCancel from 'src/core/components/confirm-cancel.vue';
-import { FileRowModel } from './require-file-row.model';
+import { FileRowModel, uploadMultipleOptions } from './require-file-row.model';
 import { RequireField } from '../../create-document.model';
 import HyphenText from 'src/core/components/hyphen-text.vue';
 import FileRow from './file-row.vue';
@@ -278,19 +278,24 @@ watch(
         />
       </div>
     </div>
-    <div class="row">
-      <div class="col text-center">
+    <div class="row q-my-md justify-between">
+      <div class="col-7 self-center">
         <q-checkbox
           v-model="val.allowAllEndings"
           label="Allow all file endings"
           color="primary"
         />
-      </div>
-      <div class="col text-center">
         <q-checkbox
           v-model="val.allowOnlyImages"
           label="Allow only images"
           color="primary"
+        />
+      </div>
+      <div class="col-3 self-center">
+        <q-select
+          v-model="val.uploadMultiple"
+          :options="uploadMultipleOptions"
+          label="Multiple Uploads"
         />
       </div>
     </div>
