@@ -97,7 +97,7 @@ export function useCreateDocumentModel() {
     fileRequireInput.allowAllEndings = false;
     fileRequireInput.allowOnlyImages = false;
     fileRequireInput.allowedEndings = [];
-    fileRequireInput.maxFileSize = 10_000;
+    fileRequireInput.maxFileSize = 5;
     fileRequireInput.uploadMultiple = 1;
   }
   // END -- v-Model for components --
