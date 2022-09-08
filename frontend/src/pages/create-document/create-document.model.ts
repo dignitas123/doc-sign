@@ -288,7 +288,63 @@ export function useCreateDocumentModel() {
         }
       }
     } else if (type === RequireField.File) {
-      componentPreviewList.value.push({ component: requireFileRow });
+      const index = componentPreviewList.value.findIndex(
+        (component) =>
+          component.vModel?.name &&
+          component.vModel?.name === componentVModel?.name
+      );
+      if (index === -1) {
+        componentPreviewList.value.push({
+          component: requireFileRow,
+          props: {
+            preview: true,
+          },
+          vModel: reactive({
+            name: fileRequireInput.name,
+            allowAllEndings: fileRequireInput.allowAllEndings,
+            allowOnlyImages: fileRequireInput.allowOnlyImages,
+            allowedEndings: fileRequireInput.allowedEndings,
+            maxFileSize: fileRequireInput.maxFileSize,
+            uploadMultiple: fileRequireInput.uploadMultiple,
+          }),
+        });
+      } else {
+        const duplicateComponentVModel = { ...componentVModel };
+        if (duplication && /\(\d\)$/.test(duplicateComponentVModel.name)) {
+          duplicateComponentVModel.name =
+            duplicateComponentVModel.name.split('(')[0];
+        }
+        const duplicates = componentPreviewList.value.filter(
+          (componentDefinition) =>
+            componentDefinition.vModel?.name &&
+            (componentDefinition.vModel?.name ===
+              duplicateComponentVModel?.name ||
+              (componentDefinition.vModel?.name.split('(').length > 1 &&
+                componentDefinition.vModel?.name.split('(')[0] ===
+                  duplicateComponentVModel?.name &&
+                /\d\)/.test(componentDefinition.vModel?.name.split('(')[1])))
+        ).length;
+
+        duplicateComponentVModel.name += `(${duplicates + 1})`;
+
+        if (duplication) {
+          componentPreviewList.value.splice(index + 1, 0, {
+            component: requireFileRow,
+            props: {
+              preview: true,
+            },
+            vModel: duplicateComponentVModel,
+          });
+        } else {
+          componentPreviewList.value.push({
+            component: requireFileRow,
+            props: {
+              preview: true,
+            },
+            vModel: duplicateComponentVModel,
+          });
+        }
+      }
     }
     resetActivePreviewComponent(type);
   }

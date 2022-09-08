@@ -37,7 +37,6 @@ const fileUploader = ref<QUploader | null>(null);
 const $q = useQuasar();
 
 function onRejected(rejectedEntries: any) {
-  console.log('rejectedEntries', rejectedEntries);
   console.log('type of rejectedEntries', typeof rejectedEntries);
   $q.notify({
     type: 'negative',

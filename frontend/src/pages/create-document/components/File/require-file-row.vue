@@ -80,7 +80,6 @@ watch(
 watch(
   () => val.value.allowedEndings,
   () => {
-    console.log('jo');
     if (!val.value.allowedEndings.length) {
       val.value.allowAllEndings = true;
     }
@@ -178,7 +177,7 @@ function setEditActive() {
 }
 
 function duplicateRow() {
-  emit('duplicate', RequireField.Input, val.value);
+  emit('duplicate', RequireField.File, val.value);
 }
 
 const validated = computed(() => {
@@ -202,7 +201,7 @@ function requireFileRowClosed(data: {
 function saveChanges() {
   if (validated.value) {
     editActiveValue.value = false;
-    emit('close', { type: RequireField.Input, value: val.value });
+    emit('close', { type: RequireField.File, value: val.value });
   }
 }
 
@@ -211,11 +210,11 @@ function closeWindow() {
     val.value = startValue.value;
     editActiveValue.value = false;
   }
-  emit('close', { type: RequireField.Input, value: startValue.value });
+  emit('close', { type: RequireField.File, value: startValue.value });
 }
 
 function addPreviewComponent() {
-  emit('add', RequireField.Input, {
+  emit('add', RequireField.File, {
     validated: validated.value,
     messages: validationMessages.value,
   });
@@ -223,7 +222,7 @@ function addPreviewComponent() {
 
 function deleteInputFieldRow() {
   emit('delete', {
-    type: RequireField.Input,
+    type: RequireField.File,
     name: val.value.name,
   });
 }
