@@ -68,16 +68,6 @@ const endingName = ref('');
 const endingExistsValues = ref<boolean[]>([]);
 
 watch(
-  () => val.value.allowAllEndings,
-  () => {
-    if (val.value.allowAllEndings) {
-      endingExistsValues.value = [];
-      val.value.allowedEndings = [];
-    }
-  }
-);
-
-watch(
   () => val.value.allowedEndings,
   () => {
     if (!val.value.allowedEndings.length) {
@@ -201,6 +191,10 @@ function requireFileRowClosed(data: {
 function saveChanges() {
   if (validated.value) {
     editActiveValue.value = false;
+    if (val.value.allowAllEndings) {
+      endingExistsValues.value = [];
+      val.value.allowedEndings = [];
+    }
     emit('close', { type: RequireField.File, value: val.value });
   }
 }
@@ -214,6 +208,10 @@ function closeWindow() {
 }
 
 function addPreviewComponent() {
+  if (val.value.allowAllEndings) {
+    endingExistsValues.value = [];
+    val.value.allowedEndings = [];
+  }
   emit('add', RequireField.File, {
     validated: validated.value,
     messages: validationMessages.value,
@@ -310,7 +308,10 @@ watch(
         </q-input>
       </div>
     </div>
-    <div v-if="val.allowedEndings.length" class="row justift-center">
+    <div
+      v-if="val.allowedEndings.length && !val.allowAllEndings"
+      class="row justify-center"
+    >
       <div v-for="(name, i) in val.allowedEndings" :key="i">
         <q-chip
           removable

@@ -40,6 +40,15 @@
   );
 }
 
+.bg-accent {
+  background: linear-gradient(
+    45deg,
+    $accent 0%,
+    $accent 44%,
+    rgba(87, 87, 87, 1) 100%
+  ) !important;
+}
+
 // remove checkbox circle when focused
 body.desktop {
   .q-checkbox:not(.disabled):hover .q-checkbox__inner:before,

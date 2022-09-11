@@ -92,7 +92,10 @@ const allFileEndingsText = computed(() => {
             <div v-if="val.uploadMultiple > 1" class="subtitle-1">
               Multiple Uploads: {{ val.uploadMultiple }}
             </div>
-            <div v-if="val.allowedEndings.length > 0" class="subtilte-2">
+            <div
+              v-if="val.allowedEndings.length > 0 && !val.allowAllEndings"
+              class="subtilte-2"
+            >
               Allowed files: {{ allFileEndingsText }}
             </div>
           </div>
