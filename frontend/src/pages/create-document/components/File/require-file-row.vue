@@ -259,127 +259,129 @@ watch(
     <FileRow v-else v-model="val" />
   </template>
   <template v-else>
-    <HyphenText class="q-mt-xs q-mb-md">Preview</HyphenText>
-    <FileRow v-model="val" preview />
-    <div class="row q-my-md justify-between">
-      <div class="col-7 self-center">
-        <q-checkbox
-          v-model="val.allowAllEndings"
-          label="Allow all file endings"
-          color="primary"
-        />
-        <q-checkbox
-          v-model="val.allowOnlyImages"
-          label="Allow only images"
-          color="primary"
-        />
+    <div class="require-file-row">
+      <HyphenText class="q-mt-xs q-mb-md">Preview</HyphenText>
+      <FileRow v-model="val" preview />
+      <div class="row q-my-md justify-between">
+        <div class="col-7 self-center">
+          <q-checkbox
+            v-model="val.allowAllEndings"
+            label="Allow all file endings"
+            color="primary"
+          />
+          <q-checkbox
+            v-model="val.allowOnlyImages"
+            label="Allow only images"
+            color="primary"
+          />
+        </div>
+        <div class="col-3 self-center">
+          <q-select
+            v-model="val.uploadMultiple"
+            :options="uploadMultipleOptions"
+            label="Multiple Uploads"
+          />
+        </div>
       </div>
-      <div class="col-3 self-center">
-        <q-select
-          v-model="val.uploadMultiple"
-          :options="uploadMultipleOptions"
-          label="Multiple Uploads"
-        />
-      </div>
-    </div>
-    <div class="row justify-between q-mb-sm">
-      <div class="col-xs-12 col-sm-7 self-center text-center">
-        <q-slider
-          v-model="val.maxFileSize"
-          :min="0"
-          :max="100"
-          :step="5"
-          :marker-labels="fileMarkerLabel"
-          markers
-          label
-          :label-value="val.maxFileSize + ' MB'"
-          color="primary"
-        />
-      </div>
-      <div class="col-xs-12 col-sm-4 text-center">
-        <q-input
-          ref="fileDescription"
-          v-model="val.maxFileSize"
-          outlined
-          label="Max File Size"
-          mask="###"
-        >
-          <template #append>MB</template>
-        </q-input>
-      </div>
-    </div>
-    <div
-      v-if="val.allowedEndings.length && !val.allowAllEndings"
-      class="row justify-center"
-    >
-      <div v-for="(name, i) in val.allowedEndings" :key="i">
-        <q-chip
-          removable
-          outline
-          v-model="endingExistsValues[i]"
-          color="primary"
-          text-color="white"
-          :label="name"
-          :title="name"
-          @remove="itemRemoved(i)"
-        />
-      </div>
-    </div>
-    <div class="row q-mb-sm">
-      <div class="col-xs-12 col-sm-6">
-        <q-input
-          ref="fileDescription"
-          v-model="val.name"
-          outlined
-          label="File Description"
-          @focus="focusFileDescription"
-          @blur="unFocusFileDescription"
-          @keydown.enter.prevent="endingNameInput?.focus()"
-          maxlength="63"
-        />
+      <div class="row justify-between q-mb-sm">
+        <div class="col-xs-12 col-sm-7 self-center text-center">
+          <q-slider
+            v-model="val.maxFileSize"
+            :min="0"
+            :max="100"
+            :step="5"
+            :marker-labels="fileMarkerLabel"
+            markers
+            label
+            :label-value="val.maxFileSize + ' MB'"
+            color="primary"
+          />
+        </div>
+        <div class="col-xs-12 col-sm-4 text-center">
+          <q-input
+            ref="fileDescription"
+            v-model="val.maxFileSize"
+            outlined
+            label="Max File Size"
+            mask="###"
+          >
+            <template #append>MB</template>
+          </q-input>
+        </div>
       </div>
       <div
-        class="col text-center q-ml-xs justify-end"
-        :class="{ 'q-mt-xs': $q.screen.lt.sm }"
-        style="display: inline-flex"
+        v-if="val.allowedEndings.length && !val.allowAllEndings"
+        class="row justify-center"
       >
-        <q-input
-          ref="endingNameInput"
-          v-model="endingName"
-          outlined
-          :label="
-            fileEndingFocused ? 'Allowed File Type Ending' : 'png, pdf, .. '
-          "
-          @focus="focusFileEnding"
-          @blur="unfocusFileEnding"
-          @keydown.enter.prevent="addEnding"
-          maxlength="5"
-        />
-        <q-btn
-          class="q-ml-xs"
-          unelevated
-          outline
-          icon="add"
-          @click="
-            addEnding();
-            endingNameInput?.focus();
-          "
-        />
+        <div v-for="(name, i) in val.allowedEndings" :key="i">
+          <q-chip
+            removable
+            outline
+            v-model="endingExistsValues[i]"
+            color="primary"
+            text-color="white"
+            :label="name"
+            :title="name"
+            @remove="itemRemoved(i)"
+          />
+        </div>
       </div>
+      <div class="row q-mb-sm">
+        <div class="col-xs-12 col-sm-6">
+          <q-input
+            ref="fileDescription"
+            v-model="val.name"
+            outlined
+            label="File Description"
+            @focus="focusFileDescription"
+            @blur="unFocusFileDescription"
+            @keydown.enter.prevent="endingNameInput?.focus()"
+            maxlength="63"
+          />
+        </div>
+        <div
+          class="col text-center q-ml-xs justify-end"
+          :class="{ 'q-mt-xs': $q.screen.lt.sm }"
+          style="display: inline-flex"
+        >
+          <q-input
+            ref="endingNameInput"
+            v-model="endingName"
+            outlined
+            :label="
+              fileEndingFocused ? 'Allowed File Type Ending' : 'png, pdf, .. '
+            "
+            @focus="focusFileEnding"
+            @blur="unfocusFileEnding"
+            @keydown.enter.prevent="addEnding"
+            maxlength="5"
+          />
+          <q-btn
+            class="q-ml-xs"
+            unelevated
+            outline
+            icon="add"
+            @click="
+              addEnding();
+              endingNameInput?.focus();
+            "
+          />
+        </div>
+      </div>
+      <HyphenText />
+      <ConfirmCancel
+        v-if="editActiveValue"
+        confirmText="Save Changes"
+        @confirm="saveChanges"
+        @cancel="closeWindow"
+      />
+      <ConfirmCancel
+        v-else
+        confirmText="Add"
+        @confirm="addPreviewComponent"
+        @cancel="closeWindow"
+      />
     </div>
-    <HyphenText />
-    <ConfirmCancel
-      v-if="editActiveValue"
-      confirmText="Save Changes"
-      @confirm="saveChanges"
-      @cancel="closeWindow"
-    />
-    <ConfirmCancel
-      v-else
-      confirmText="Add"
-      @confirm="addPreviewComponent"
-      @cancel="closeWindow"
-    />
   </template>
   <q-dialog v-model="deleteConfirm" persistent>
     <q-card>
@@ -407,5 +409,10 @@ watch(
   margin-bottom: 4px;
   margin-left: 2px;
   height: 25px;
+}
+
+.require-file-row {
+  max-height: calc(100vh - 155px);
+  overflow-y: auto;
 }
 </style>

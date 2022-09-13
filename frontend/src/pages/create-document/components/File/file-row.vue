@@ -106,7 +106,6 @@ const allFileEndingsText = computed(() => {
 </template>
 
 <style lang="scss" scoped>
-@import 'src/css/quasar.variables.scss';
 .upload-info {
   min-height: 60px;
   &:hover {
