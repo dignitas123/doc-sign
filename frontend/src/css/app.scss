@@ -47,6 +47,10 @@
     $accent 44%,
     rgba(87, 87, 87, 1) 100%
   ) !important;
+
+  &.q-badge, .add-button-row & {
+    background: var(--q-accent) !important;
+  }
 }
 
 // remove checkbox circle when focused
