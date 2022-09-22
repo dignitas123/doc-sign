@@ -77,6 +77,16 @@ watch(
   { deep: true }
 );
 
+watch(
+  () => val.value.allowOnlyImages,
+  () => {
+    if (!val.value.allowedEndings.length) {
+      val.value.allowOnlyImages = true;
+    }
+  },
+  { deep: true }
+);
+
 function addEnding() {
   if (endingName.value) {
     if (val.value.allowAllEndings) {
