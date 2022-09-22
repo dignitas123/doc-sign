@@ -82,7 +82,9 @@ function addEnding() {
     if (val.value.allowAllEndings) {
       val.value.allowAllEndings = false;
     }
-
+    if (val.value.allowOnlyImages) {
+      val.value.allowOnlyImages = false;
+    }
     if (
       /[$&+,:;=?@#|'<>^*()%!-]|[.](?![a-zA-Z0-9])|([a-zA-Z0-9])(?!==)[.]/.test(
         endingName.value
@@ -235,6 +237,24 @@ watch(
   () => {
     if (val.value.maxFileSize > 100) {
       val.value.maxFileSize = 100;
+    }
+  }
+);
+
+watch(
+  () => val.value.allowOnlyImages,
+  (now, prev) => {
+    if (now && !prev && val.value.allowAllEndings) {
+      val.value.allowAllEndings = false;
+    }
+  }
+);
+
+watch(
+  () => val.value.allowAllEndings,
+  (now, prev) => {
+    if (now && !prev && val.value.allowOnlyImages) {
+      val.value.allowOnlyImages = false;
     }
   }
 );

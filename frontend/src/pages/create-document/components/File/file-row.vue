@@ -36,11 +36,26 @@ const fileUploader = ref<QUploader | null>(null);
 
 const $q = useQuasar();
 
-function onRejected(rejectedEntries: any) {
-  console.log('type of rejectedEntries', typeof rejectedEntries);
+function onRejected(
+  rejectedEntries: { failedPropValidation: string; file: File }[]
+) {
+  let maxFiles = false;
+  rejectedEntries.forEach((entry) => {
+    if (entry.failedPropValidation === 'max-files') {
+      maxFiles = true;
+    }
+  });
+  let message = `${rejectedEntries.length} file(s) did not pass validation constraints`;
+  if (maxFiles) {
+    message = `You can only upload ${
+      val.value.uploadMultiple
+    } files at the same time. You uploaded ${
+      rejectedEntries.length + val.value.uploadMultiple
+    } files.`;
+  }
   $q.notify({
     type: 'negative',
-    message: `${rejectedEntries.length} file(s) did not pass validation constraints`,
+    message: message,
   });
 }
 
@@ -63,6 +78,8 @@ const allFileEndingsText = computed(() => {
     ? val.value.allowedEndings.reduce(
         (previousValue, currentValue) => previousValue + ' ' + currentValue
       )
+    : val.value.allowOnlyImages
+    ? 'image/*'
     : '';
 });
 </script>
@@ -73,7 +90,10 @@ const allFileEndingsText = computed(() => {
       ref="fileUploader"
       style="max-width: 300px"
       :label="val.name"
+      hide-upload-btn
       multiple
+      batch
+      :max-files="val.uploadMultiple"
       :accept="allFileEndingsText"
       @rejected="onRejected"
       @added="onAdded"
@@ -94,9 +114,12 @@ const allFileEndingsText = computed(() => {
             </div>
             <div
               v-if="val.allowedEndings.length > 0 && !val.allowAllEndings"
-              class="subtilte-2"
+              class="subtitle-2"
             >
               Allowed files: {{ allFileEndingsText }}
+            </div>
+            <div v-else-if="val.allowOnlyImages" class="subtitle-2">
+              Only images allowed
             </div>
           </div>
         </div>

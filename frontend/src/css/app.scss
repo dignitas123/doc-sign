@@ -48,7 +48,8 @@
     rgba(87, 87, 87, 1) 100%
   ) !important;
 
-  &.q-badge, .add-button-row & {
+  &.q-badge,
+  .add-button-row & {
     background: var(--q-accent) !important;
   }
 }
