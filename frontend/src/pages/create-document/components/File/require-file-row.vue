@@ -247,6 +247,8 @@ watch(
   () => {
     if (val.value.maxFileSize > 100) {
       val.value.maxFileSize = 100;
+    } else if (val.value.maxFileSize < 1) {
+      val.value.maxFileSize = 1;
     }
   }
 );
