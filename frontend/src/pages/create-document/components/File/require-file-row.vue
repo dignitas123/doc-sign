@@ -248,6 +248,12 @@ watch(
   (now, prev) => {
     if (now && !prev && val.value.allowAllEndings) {
       val.value.allowAllEndings = false;
+    } else if (
+      !now &&
+      !val.value.allowAllEndings &&
+      !val.value.allowedEndings.length
+    ) {
+      val.value.allowOnlyImages = true;
     }
   }
 );
@@ -257,6 +263,12 @@ watch(
   (now, prev) => {
     if (now && !prev && val.value.allowOnlyImages) {
       val.value.allowOnlyImages = false;
+    } else if (
+      !now &&
+      !val.value.allowOnlyImages &&
+      !val.value.allowedEndings.length
+    ) {
+      val.value.allowAllEndings = true;
     }
   }
 );
@@ -332,7 +344,11 @@ watch(
         </div>
       </div>
       <div
-        v-if="val.allowedEndings.length && !val.allowAllEndings"
+        v-if="
+          val.allowedEndings.length &&
+          !val.allowAllEndings &&
+          !val.allowOnlyImages
+        "
         class="row justify-center"
       >
         <div v-for="(name, i) in val.allowedEndings" :key="i">
