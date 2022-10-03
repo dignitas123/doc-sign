@@ -61,6 +61,10 @@ const prevValue = ref<boolean[]>([]);
 watch(
   () => val.value.radioChoices,
   (now) => {
+    if (now.length < prevValue.value.length) {
+      prevValue.value.pop();
+    }
+
     const changedIndex = prevValue.value.findIndex(
       (selected, index) => selected !== now[index].selected
     );
