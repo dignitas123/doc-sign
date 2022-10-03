@@ -3,7 +3,7 @@ import { useQuasar } from 'quasar';
 import { computed, onMounted, ref, watch, withDefaults } from 'vue';
 import HyphenText from 'src/core/components/hyphen-text.vue';
 import {
-  RadioChoice,
+  RadioChoiceMode,
   Alignment,
   RadioRowModel,
 } from './require-radio-choice-row.model';
@@ -50,29 +50,12 @@ onMounted(() => {
 
 const choiceName = ref('');
 
-const checkBoxValues = ref<boolean[]>([]);
-watch(
-  () => [...checkBoxValues.value],
-  (newValues, oldValues) => {
-    if (val.value.radioChoice === RadioChoice.single_choice) {
-      const checkedValues = newValues.filter((el) => el === true).length;
-      if (checkedValues > 1) {
-        // find out which value changed
-        const newValueIndex = newValues.findIndex(
-          (el, index) => el !== oldValues[index]
-        );
-        checkBoxValues.value = checkBoxValues.value.map((el, index) =>
-          index === newValueIndex ? el : false
-        );
-      }
-    }
-  }
-);
-
-function addRadioChoice() {
+function addradioChoice() {
   if (choiceName.value) {
-    val.value.radioChoiceNames.push(choiceName.value);
-    checkBoxValues.value.push(false);
+    val.value.radioChoices.push({
+      name: choiceName.value,
+      selected: false,
+    });
     choiceName.value = '';
   } else {
     $q.notify({
@@ -83,9 +66,8 @@ function addRadioChoice() {
   }
 }
 
-function removeRadioChoice() {
-  val.value.radioChoiceNames.pop();
-  checkBoxValues.value.pop();
+function removeradioChoice() {
+  val.value.radioChoices.pop();
 }
 
 const radioChoiceTitleFocused = ref(false);
@@ -104,18 +86,39 @@ function unfocusChoiceName() {
   choiceNameFocused.value = false;
 }
 
-const currentChoice = ref(val.value.radioChoice);
+const currentChoice = ref(val.value.radioChoiceMode);
 
 watch(
-  () => val.value.radioChoice,
-  (newChoice: RadioChoice) => {
+  () => val.value.radioChoiceMode,
+  (newChoice: RadioChoiceMode) => {
     if (
-      currentChoice.value === RadioChoice.multiple_choice &&
-      newChoice === RadioChoice.single_choice
-    )
-      checkBoxValues.value = checkBoxValues.value.map(() => false);
-    if (currentChoice.value !== val.value.radioChoice)
-      currentChoice.value = val.value.radioChoice;
+      currentChoice.value === RadioChoiceMode.multiple_choice &&
+      newChoice === RadioChoiceMode.single_choice
+    ) {
+      const selectedCount = val.value.radioChoices.filter(
+        (checkbox) => checkbox.selected === true
+      ).length;
+      if (selectedCount === 0 || selectedCount > 1) {
+        val.value.radioChoices.forEach((checkbox, index) => {
+          if (index === 0) {
+            checkbox.selected = true;
+          } else {
+            checkbox.selected = false;
+          }
+        });
+      }
+    }
+    if (currentChoice.value !== val.value.radioChoiceMode)
+      currentChoice.value = val.value.radioChoiceMode;
+  }
+);
+
+watch(
+  () => val.value.alignment,
+  (now) => {
+    if (now === Alignment.select) {
+      val.value.radioChoiceMode = RadioChoiceMode.single_choice;
+    }
   }
 );
 
@@ -124,17 +127,18 @@ const deleteConfirm = ref(false);
 const editActiveValue = ref(false);
 
 const validated = computed(() => {
-  return !!val.value.name.length && !!val.value.radioChoiceNames.length;
+  return !!val.value.name.length && !!val.value.radioChoices.length;
 });
 
 watch(editActiveValue, (editActiveValue) => {
   if (editActiveValue) {
-    for (let i = 0; i < val.value.radioChoice.length; i++) {
-      checkBoxValues.value.push(false);
-    }
+    val.value.radioChoices.forEach((checkbox) => (checkbox.selected = false));
 
     if (val.value.radioOneCheck) {
-      checkBoxValues.value[0] = true;
+      val.value.radioChoices[0] = {
+        name: val.value.radioChoices[0].name,
+        selected: true,
+      };
     }
   }
 });
@@ -144,7 +148,7 @@ const validationMessages = computed(() => {
   if (!val.value.name.length) {
     messages.push("Name of Radio Choice can't be empty.");
   }
-  if (!val.value.radioChoiceNames.length) {
+  if (!val.value.radioChoices.length) {
     messages.push('At least one Choice has to be added.');
   }
   return validated.value ? [''] : messages;
@@ -273,7 +277,7 @@ const choiceNameInput = ref<HTMLElement>();
       </div>
       <div class="col-xs-12 col-sm-6 text-center q-my-xs justify-center">
         <q-btn-toggle
-          v-model="val.radioChoice"
+          v-model="val.radioChoiceMode"
           class="radio-choice-toggle-multi-single-choice"
           no-caps
           unelevated
@@ -281,8 +285,11 @@ const choiceNameInput = ref<HTMLElement>();
           color="secondary"
           text-color="accent"
           :options="[
-            { label: 'Multiple Choice', value: RadioChoice.multiple_choice },
-            { label: 'Single Choice', value: RadioChoice.single_choice },
+            {
+              label: 'Multiple Choice',
+              value: RadioChoiceMode.multiple_choice,
+            },
+            { label: 'Single Choice', value: RadioChoiceMode.single_choice },
           ]"
         />
       </div>
@@ -295,10 +302,10 @@ const choiceNameInput = ref<HTMLElement>();
           outlined
           :disable="val.name ? false : true"
           label="Choice Name"
-          :placeholder="val.radioChoiceNames.length ? '' : 'Choice1, Choice2'"
+          :placeholder="val.radioChoices.length ? '' : 'Choice1, Choice2'"
           @focus="focusChoiceName"
           @blur="unfocusChoiceName"
-          @keydown.enter.prevent="addRadioChoice"
+          @keydown.enter.prevent="addradioChoice"
           maxlength="63"
         />
       </div>
@@ -315,7 +322,7 @@ const choiceNameInput = ref<HTMLElement>();
           :disabled="val.name ? false : true"
           style="margin-top: 1px"
           @click="
-            addRadioChoice();
+            addradioChoice();
             choiceNameInput?.focus();
           "
         />
@@ -323,12 +330,12 @@ const choiceNameInput = ref<HTMLElement>();
           class="q-ml-xs"
           unelevated
           outline
-          :color="val.radioChoiceNames.length ? 'primary' : 'info'"
+          :color="val.radioChoices.length ? 'primary' : 'info'"
           icon="remove"
-          :disabled="val.radioChoiceNames.length ? false : true"
+          :disabled="val.radioChoices.length ? false : true"
           style="margin-top: 1px"
           @click="
-            removeRadioChoice();
+            removeradioChoice();
             choiceNameInput?.focus();
           "
         />

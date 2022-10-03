@@ -1,4 +1,4 @@
-export enum RadioChoice {
+export enum RadioChoiceMode {
   multiple_choice = 'multiple_choice',
   single_choice = 'single_choice',
 }
@@ -9,10 +9,15 @@ export enum Alignment {
   select = 'select',
 }
 
+export interface RadioChoice {
+  name: string;
+  selected: boolean;
+}
+
 export interface RadioRowModel {
   name: string;
-  radioChoice: RadioChoice;
+  radioChoiceMode: RadioChoiceMode;
   radioOneCheck: boolean;
-  radioChoiceNames: string[];
+  radioChoices: RadioChoice[];
   alignment: Alignment;
 }

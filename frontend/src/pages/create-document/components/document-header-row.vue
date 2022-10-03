@@ -12,7 +12,9 @@ const props = withDefaults(
   }
 );
 
-defineEmits(['update:modelValue']);
+defineEmits<{
+  (event: 'update:modelValue'): void;
+}>();
 
 const val = ref(props.modelValue);
 

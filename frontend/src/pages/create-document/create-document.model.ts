@@ -2,18 +2,23 @@ import { reactive, ref } from 'vue';
 import { useQuasar } from 'quasar';
 import RequireInputFieldRow from './components/Input/require-input-field-row.vue';
 import RequireTextRow from './components/Text/require-text-row.vue';
-import RequireRadioChoiceRow from './components/Radio/require-radio-choice-row.vue';
+import RequireradioChoiceRow from './components/Radio/require-radio-choice-row.vue';
 import RequireFileRow from './components/File/require-file-row.vue';
 import { ComponentDefinition } from 'src/core/interfaces/component-definition';
 import {
+  InputFieldModel,
   InputLength,
   InputTypes,
+  InputFieldAllowed,
 } from './components/Input/require-input-field-row.model';
 import {
   Alignment,
   RadioChoice,
+  RadioChoiceMode,
+  RadioRowModel,
 } from './components/Radio/require-radio-choice-row.model';
 import { FileRowModel } from './components/File/require-file-row.model';
+import { TextRowModel } from './components/Text/require-text-row.model';
 
 // require Field names
 export enum RequireField {
@@ -38,9 +43,9 @@ export function useCreateDocumentModel() {
   });
 
   const requireInputFieldRow = Object.freeze(RequireInputFieldRow);
-  const inputFieldInput = reactive({
+  const inputFieldInput = reactive<InputFieldModel>({
     name: '',
-    inputFieldAllowed: reactive({
+    inputFieldAllowed: reactive<InputFieldAllowed>({
       Text: true,
       Numbers: false,
       SpecialCharacters: false,
@@ -50,7 +55,7 @@ export function useCreateDocumentModel() {
   });
   function resetInputFieldInput() {
     inputFieldInput.name = '';
-    inputFieldInput.inputFieldAllowed = reactive({
+    inputFieldInput.inputFieldAllowed = reactive<InputFieldAllowed>({
       Text: true,
       Numbers: false,
       SpecialCharacters: false,
@@ -60,26 +65,26 @@ export function useCreateDocumentModel() {
   }
 
   const requireTextRow = Object.freeze(RequireTextRow);
-  const editorInput = reactive({
+  const editorInput = reactive<TextRowModel>({
     text: '',
   });
   function resetEditorInput() {
     editorInput.text = '';
   }
 
-  const requireRadioChoiceRow = Object.freeze(RequireRadioChoiceRow);
-  const radioChoiceInput = reactive({
+  const requireradioChoiceRow = Object.freeze(RequireradioChoiceRow);
+  const radioChoiceInput = reactive<RadioRowModel>({
     name: '',
-    radioChoice: RadioChoice.multiple_choice,
+    radioChoiceMode: RadioChoiceMode.multiple_choice,
     radioOneCheck: true,
-    radioChoiceNames: reactive([]),
+    radioChoices: reactive<RadioChoice[]>([]),
     alignment: Alignment.row,
   });
-  function resetRadioChoiceInput() {
+  function resetradioChoiceInput() {
     radioChoiceInput.name = '';
-    radioChoiceInput.radioChoice = RadioChoice.multiple_choice;
+    radioChoiceInput.radioChoiceMode = RadioChoiceMode.multiple_choice;
     radioChoiceInput.radioOneCheck = true;
-    radioChoiceInput.radioChoiceNames = reactive([]);
+    radioChoiceInput.radioChoices = reactive<RadioChoice[]>([]);
     radioChoiceInput.alignment = Alignment.row;
   }
 
@@ -111,7 +116,7 @@ export function useCreateDocumentModel() {
       activePreviewComponent.component = requireTextRow;
       activePreviewComponent.vModel = editorInput;
     } else if (type === RequireField.Radio) {
-      activePreviewComponent.component = requireRadioChoiceRow;
+      activePreviewComponent.component = requireradioChoiceRow;
       activePreviewComponent.vModel = radioChoiceInput;
     } else if (type === RequireField.File) {
       activePreviewComponent.component = requireFileRow;
@@ -125,7 +130,7 @@ export function useCreateDocumentModel() {
     } else if (type === RequireField.Text) {
       resetEditorInput();
     } else if (type === RequireField.Radio) {
-      resetRadioChoiceInput();
+      resetradioChoiceInput();
     } else if (type === RequireField.File) {
       resetFileRequireInput();
     }
@@ -151,7 +156,7 @@ export function useCreateDocumentModel() {
           props: {
             preview: true,
           },
-          vModel: reactive({
+          vModel: reactive<InputFieldModel>({
             name: inputFieldInput.name,
             inputFieldAllowed: { ...inputFieldInput.inputFieldAllowed },
             inputLength: inputFieldInput.inputLength,
@@ -207,7 +212,7 @@ export function useCreateDocumentModel() {
           props: {
             preview: true,
           },
-          vModel: reactive({
+          vModel: reactive<TextRowModel>({
             text: editorInput.text,
           }),
         });
@@ -238,15 +243,15 @@ export function useCreateDocumentModel() {
       );
       if (index === -1) {
         componentPreviewList.value.push({
-          component: requireRadioChoiceRow,
+          component: requireradioChoiceRow,
           props: {
             preview: true,
           },
-          vModel: reactive({
+          vModel: reactive<RadioRowModel>({
             name: radioChoiceInput.name,
-            radioChoice: radioChoiceInput.radioChoice,
+            radioChoiceMode: radioChoiceInput.radioChoiceMode,
             radioOneCheck: radioChoiceInput.radioOneCheck,
-            radioChoiceNames: [...radioChoiceInput.radioChoiceNames],
+            radioChoices:[...radioChoiceInput.radioChoices],
             alignment: radioChoiceInput.alignment,
           }),
         });
@@ -271,7 +276,7 @@ export function useCreateDocumentModel() {
 
         if (duplication) {
           componentPreviewList.value.splice(index + 1, 0, {
-            component: requireRadioChoiceRow,
+            component: requireradioChoiceRow,
             props: {
               preview: true,
             },
@@ -279,7 +284,7 @@ export function useCreateDocumentModel() {
           });
         } else {
           componentPreviewList.value.push({
-            component: requireRadioChoiceRow,
+            component: requireradioChoiceRow,
             props: {
               preview: true,
             },
@@ -299,7 +304,7 @@ export function useCreateDocumentModel() {
           props: {
             preview: true,
           },
-          vModel: reactive({
+          vModel: reactive<FileRowModel>({
             name: fileRequireInput.name,
             allowAllEndings: fileRequireInput.allowAllEndings,
             allowOnlyImages: fileRequireInput.allowOnlyImages,

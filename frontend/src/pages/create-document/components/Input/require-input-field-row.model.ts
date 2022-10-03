@@ -1,4 +1,4 @@
-interface InputFieldAllowed {
+export interface InputFieldAllowed {
   Text: boolean;
   Numbers: boolean;
   SpecialCharacters: boolean;

@@ -2,7 +2,7 @@
 import { computed, reactive, ref, watch, withDefaults } from 'vue';
 import {
   Alignment,
-  RadioChoice,
+  RadioChoiceMode,
   RadioRowModel,
 } from './require-radio-choice-row.model';
 
@@ -15,16 +15,18 @@ const props = withDefaults(
   }
 );
 
-defineEmits(['update:modelValue']);
+defineEmits<{
+  (event: 'update:modelValue'): void;
+}>();
 
 function getModelValue() {
   return (
     props.modelValue ??
-    reactive({
+    reactive<RadioRowModel>({
       name: '',
-      radioChoice: RadioChoice.multiple_choice,
+      radioChoiceMode: RadioChoiceMode.multiple_choice,
       radioOneCheck: true,
-      radioChoiceNames: reactive([]),
+      radioChoices: [],
       alignment: Alignment.row,
     })
   );
@@ -32,36 +34,13 @@ function getModelValue() {
 
 const val = ref(getModelValue());
 
-const checkBoxValues = ref<boolean[]>([]);
+val.value.radioChoices.forEach((checkbox) => {
+  checkbox.selected = false;
+});
 
-const selectedValue = ref(val.value.radioChoiceNames[0]);
-
-for (let i = 0; i < val.value.radioChoice.length; i++) {
-  checkBoxValues.value.push(false);
+if (val.value.radioOneCheck && val.value.radioChoices.length > 0) {
+  val.value.radioChoices[0].selected = true;
 }
-
-if (val.value.radioOneCheck) {
-  checkBoxValues.value[0] = true;
-}
-
-watch(
-  () => [...checkBoxValues.value],
-  (newValues, oldValues) => {
-    // find out which value changed
-    const newValueIndex = newValues.findIndex(
-      (el, index) => el !== oldValues[index]
-    );
-    if (val.value.radioChoice === RadioChoice.single_choice) {
-      const checkedValues = newValues.filter((el) => el === true).length;
-      if (checkedValues > 1) {
-        checkBoxValues.value = checkBoxValues.value.map((el, index) =>
-          index === newValueIndex ? el : false
-        );
-      }
-      selectedValue.value = val.value.radioChoiceNames[newValueIndex];
-    }
-  }
-);
 
 const alignmentClasses = computed(() => {
   return val.value.alignment === Alignment.row
@@ -70,6 +49,42 @@ const alignmentClasses = computed(() => {
     ? ['row']
     : [''];
 });
+
+const selectOptions = computed(() => {
+  return val.value.radioChoices.map((checkbox) => checkbox.name);
+});
+
+const selectedOption = ref('');
+
+const prevValue = ref<boolean[]>([]);
+
+watch(
+  () => val.value.radioChoices,
+  (now) => {
+    const changedIndex = prevValue.value.findIndex(
+      (selected, index) => selected !== now[index].selected
+    );
+
+    if (
+      changedIndex !== -1 &&
+      val.value.radioChoiceMode === RadioChoiceMode.single_choice
+    ) {
+      val.value.radioChoices.forEach((checkBox, index) => {
+        if (index !== changedIndex && checkBox.selected) {
+          checkBox.selected = false;
+        }
+      });
+    }
+
+    prevValue.value = [];
+    now.forEach((el) => prevValue.value.push(el.selected));
+
+    if (changedIndex !== -1) {
+      selectedOption.value = now[changedIndex].name;
+    }
+  },
+  { deep: true }
+);
 </script>
 
 <template>
@@ -87,17 +102,17 @@ const alignmentClasses = computed(() => {
         <div :class="alignmentClasses">
           <template v-if="val.alignment === Alignment.select">
             <q-select
-              v-model="selectedValue"
-              :options="val.radioChoiceNames"
+              v-model="selectedOption"
+              :options="selectOptions"
               :label="val.name"
             />
           </template>
           <template v-else>
-            <div v-for="(name, i) in val.radioChoiceNames" :key="i">
+            <div v-for="(radioChoice, i) in val.radioChoices" :key="i">
               <q-checkbox
-                v-model="checkBoxValues[i]"
+                v-model="val.radioChoices[i].selected"
                 color="primary"
-                :label="name"
+                :label="radioChoice.name"
               />
             </div>
           </template>

@@ -14,7 +14,9 @@ const props = withDefaults(
   }
 );
 
-defineEmits(['update:modelValue']);
+defineEmits<{
+  (event: 'update:modelValue'): void;
+}>();
 
 function getModelValue() {
   return (

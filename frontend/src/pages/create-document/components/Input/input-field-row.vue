@@ -5,6 +5,7 @@ import {
   InputTypes,
   getInputTypeIconForInputField,
   InputLength,
+  InputFieldAllowed,
 } from './require-input-field-row.model';
 
 const props = withDefaults(
@@ -18,14 +19,16 @@ const props = withDefaults(
   }
 );
 
-defineEmits(['update:modelValue']);
+defineEmits<{
+  (event: 'update:modelValue'): void;
+}>();
 
 function getModelValue() {
   return (
     props.modelValue ??
-    reactive({
+    reactive<InputFieldModel>({
       name: '',
-      inputFieldAllowed: reactive({
+      inputFieldAllowed: reactive<InputFieldAllowed>({
         Text: true,
         Numbers: false,
         SpecialCharacters: false,
