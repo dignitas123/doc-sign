@@ -141,48 +141,61 @@ const inputPrependShow = computed(() => {
 </script>
 
 <template>
-  <div class="row justify-center">
-    <div :class="descriptionRowClass">
-      <p class="q-my-xs">
-        <b>{{ val.name }}:</b>
-      </p>
-    </div>
-    <div :class="textRowClass" :style="$q.screen.xs ? 'max-width: 270px;' : ''">
-      <q-input
-        v-model="textInput"
-        outlined
-        dense
-        hide-hint
-        :type="val.inputType"
-        :maxlength="val.inputLength + 1"
-        :rules="[
-          (inputValue) =>
-            inputValue.length <= val.inputLength ||
-            `Please use maximum ${val.inputLength} characters`,
-          (inputValue) =>
-            val.inputFieldAllowed.Numbers ||
-            (!val.inputFieldAllowed.Numbers && !/\d/.test(inputValue)) ||
-            'Numbers are not allowed',
-          (inputValue) =>
-            val.inputFieldAllowed.SpecialCharacters ||
-            (!val.inputFieldAllowed.SpecialCharacters &&
-              !specialCharacters.test(inputValue)) ||
-            'Special characters are not allowed',
-          (inputValue) =>
-            val.inputFieldAllowed.Text ||
-            (!val.inputFieldAllowed.Text && !/^[a-zA-Z]+$/.test(inputValue)) ||
-            'Alphabetical letters are not allowed',
-        ]"
-        :autogrow="val.inputLength === InputLength.textarea"
-        :placeholder="preview ? previewPlaceHolder : ''"
-        :hint="allowedHint"
-        @focus="focusInputFieldName"
-        @blur="unfocusInputFieldName"
+  <div class="input-field-row">
+    <div class="row justify-center">
+      <div :class="descriptionRowClass">
+        <p class="q-my-xs">
+          <b>{{ val.name }}:</b>
+        </p>
+      </div>
+      <div
+        :class="textRowClass"
+        :style="$q.screen.xs ? 'max-width: 270px;' : ''"
       >
-        <template v-if="inputPrependShow" #prepend>
-          <q-icon :name="getInputTypeIconForInputField(val.inputType)" />
-        </template>
-      </q-input>
+        <q-input
+          v-model="textInput"
+          outlined
+          dense
+          hide-hint
+          :type="val.inputType"
+          :maxlength="val.inputLength + 1"
+          :rules="[
+            (inputValue) =>
+              inputValue.length <= val.inputLength ||
+              `Please use maximum ${val.inputLength} characters`,
+            (inputValue) =>
+              val.inputFieldAllowed.Numbers ||
+              (!val.inputFieldAllowed.Numbers && !/\d/.test(inputValue)) ||
+              'Numbers are not allowed',
+            (inputValue) =>
+              val.inputFieldAllowed.SpecialCharacters ||
+              (!val.inputFieldAllowed.SpecialCharacters &&
+                !specialCharacters.test(inputValue)) ||
+              'Special characters are not allowed',
+            (inputValue) =>
+              val.inputFieldAllowed.Text ||
+              (!val.inputFieldAllowed.Text &&
+                !/^[a-zA-Z]+$/.test(inputValue)) ||
+              'Alphabetical letters are not allowed',
+          ]"
+          :autogrow="val.inputLength === InputLength.textarea"
+          :placeholder="preview ? previewPlaceHolder : ''"
+          :hint="allowedHint"
+          @focus="focusInputFieldName"
+          @blur="unfocusInputFieldName"
+        >
+          <template v-if="inputPrependShow" #prepend>
+            <q-icon :name="getInputTypeIconForInputField(val.inputType)" />
+          </template>
+        </q-input>
+      </div>
     </div>
   </div>
 </template>
+
+<style lang="scss" scoped>
+.input-field-row {
+  max-height: calc(100vh - 415px);
+  overflow-y: auto;
+}
+</style>
