@@ -57,6 +57,9 @@ function addradioChoice() {
       selected: false,
     });
     choiceName.value = '';
+    if (val.value.radioOneCheck) {
+      val.value.radioChoices[0].selected = true;
+    }
   } else {
     $q.notify({
       type: 'negative',
@@ -88,6 +91,26 @@ function unfocusChoiceName() {
 
 const currentChoice = ref(val.value.radioChoiceMode);
 
+function setOneRadioChoiceTrue() {
+  if (selectedCount.value === 1) {
+    return;
+  }
+  if (!val.value.radioOneCheck) {
+    val.value.radioChoices.forEach((checkbox, index) => {
+      if (index === 0) {
+        checkbox.selected = true;
+      } else {
+        checkbox.selected = false;
+      }
+    });
+  }
+}
+
+const selectedCount = computed(() => {
+  return val.value.radioChoices.filter((checkbox) => checkbox.selected === true)
+    .length;
+});
+
 watch(
   () => val.value.radioChoiceMode,
   (newChoice: RadioChoiceMode) => {
@@ -95,18 +118,7 @@ watch(
       currentChoice.value === RadioChoiceMode.multiple_choice &&
       newChoice === RadioChoiceMode.single_choice
     ) {
-      const selectedCount = val.value.radioChoices.filter(
-        (checkbox) => checkbox.selected === true
-      ).length;
-      if (selectedCount === 0 || selectedCount > 1) {
-        val.value.radioChoices.forEach((checkbox, index) => {
-          if (index === 0) {
-            checkbox.selected = true;
-          } else {
-            checkbox.selected = false;
-          }
-        });
-      }
+      setOneRadioChoiceTrue();
     }
     if (currentChoice.value !== val.value.radioChoiceMode)
       currentChoice.value = val.value.radioChoiceMode;
@@ -115,9 +127,12 @@ watch(
 
 watch(
   () => val.value.alignment,
-  (now) => {
+  (now, prev) => {
     if (now === Alignment.select) {
       val.value.radioChoiceMode = RadioChoiceMode.single_choice;
+      if (prev === Alignment.column || prev === Alignment.row) {
+        setOneRadioChoiceTrue();
+      }
     }
   }
 );
@@ -135,10 +150,7 @@ watch(editActiveValue, (editActiveValue) => {
     val.value.radioChoices.forEach((checkbox) => (checkbox.selected = false));
 
     if (val.value.radioOneCheck) {
-      val.value.radioChoices[0] = {
-        name: val.value.radioChoices[0].name,
-        selected: true,
-      };
+      val.value.radioChoices[0].selected = true;
     }
   }
 });
