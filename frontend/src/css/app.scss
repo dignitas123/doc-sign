@@ -80,3 +80,13 @@ body.desktop {
   border: 4px dashed $info;
   padding: 4px;
 }
+
+.q-field {
+  max-width: 350px;
+  margin: 0 auto;
+
+  #document-header & {
+    max-width: 100%;
+    margin: auto;
+  }
+}

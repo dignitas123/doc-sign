@@ -31,7 +31,7 @@ function inputUnfocus() {
 
 <template>
   <div class="row document-header-row">
-    <div class="col q-mt-xs q-mb-md q-mx-md">
+    <div id="document-header" class="col q-mt-xs q-mb-md q-mx-md">
       <q-input
         v-model="val"
         outined

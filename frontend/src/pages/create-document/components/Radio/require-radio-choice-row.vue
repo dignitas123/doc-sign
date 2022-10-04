@@ -322,7 +322,7 @@ const choiceNameInput = ref<HTMLElement>();
         />
       </div>
       <div
-        class="col-xs-12 col-sm-6 q-my-xs text-center justify-center self-center"
+        class="col-xs-12 col-sm-6 q-my-xs text-center justify-evenly self-center"
         style="display: inline-flex; height: 50%"
       >
         <q-btn
